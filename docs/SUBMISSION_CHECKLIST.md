@@ -54,6 +54,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [ ] Upload publicly to YouTube and add the URL to Devpost.
 - [x] Use no music or unlicensed third-party footage.
 - [x] Use English narration throughout.
+- [x] Prepare YouTube title, description, chapters, thumbnail, and settings in `docs/YOUTUBE_UPLOAD.md`.
 
 ## Final freeze
 
