@@ -3,7 +3,7 @@
 Rendered runtime: **2:09**. Narration and on-screen labels are in English. The video uses no music.
 
 The repository includes a reproducible narrated render at
-`artifacts/submission/tendergraph-build-week-demo.mp4`. Regenerate it with
+`public/tendergraph-build-week-demo.mp4`. Regenerate it with
 `scripts/render-submission-video.sh` after setting `PIPER_BIN` and `VOICE_MODEL`
 to a local Piper installation and English voice model.
 

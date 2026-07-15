@@ -2,7 +2,8 @@
 
 ## Primary video
 
-- File: `tendergraph-build-week-demo.mp4`
+- File: `../../public/tendergraph-build-week-demo.mp4`
+- Public copy: `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4`
 - Duration: 128.970 seconds
 - Video: H.264, 1920x1080
 - Audio: AAC, mono, 48 kHz

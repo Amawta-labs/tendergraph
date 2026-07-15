@@ -134,7 +134,8 @@ for segment in "${segment_files[@]}"; do
   printf "file '%s'\n" "$segment" >>"$concat_file"
 done
 
-final_video="$OUTPUT_DIR/tendergraph-build-week-demo.mp4"
+final_video="${VIDEO_OUTPUT:-$ROOT_DIR/public/tendergraph-build-week-demo.mp4}"
+mkdir -p "$(dirname "$final_video")"
 ffmpeg -hide_banner -loglevel error -y \
   -f concat -safe 0 -i "$concat_file" \
   -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p \

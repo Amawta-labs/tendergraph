@@ -48,7 +48,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 ## Video
 
-- [x] Render a clear 2:09 demo with English audio at `artifacts/submission/tendergraph-build-week-demo.mp4`.
+- [x] Render a clear 2:09 demo with English audio at `public/tendergraph-build-week-demo.mp4`.
 - [x] Keep the video under three minutes.
 - [x] Show what was built and how Codex and GPT-5.6 were used.
 - [ ] Upload publicly to YouTube and add the URL to Devpost.
