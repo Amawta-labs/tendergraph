@@ -1,0 +1,18 @@
+{
+  "id": "delta-cl-5802381-public-selection",
+  "procedureId": "5802381-7547UCUK",
+  "lotId": null,
+  "title": "Public selection record added",
+  "description": "The public quotation detail corroborates the commission report without changing prices, scores, or the stated decision stage.",
+  "addedSourceManifestIds": ["manifest-cl-real-detail"],
+  "addedEvidenceIds": ["ev-cl-real-public-selection"],
+  "affectedClaims": [
+    {
+      "claimId": "claim-cl-real-award-recommendation",
+      "changeType": "evidence_added",
+      "beforeEvidenceIds": ["ev-cl-real-recommendation"],
+      "afterEvidenceIds": ["ev-cl-real-recommendation", "ev-cl-real-public-selection"],
+      "explanation": "The award recommendation gains a second public source; its wording and decision-stage limitation remain unchanged."
+    }
+  ]
+}

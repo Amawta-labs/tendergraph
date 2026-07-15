@@ -14,6 +14,7 @@ The model composes answers. It does not decide which sources, claims, policies, 
 - A distributable Codex plugin and skill for running the evidence audit without an API key.
 - Automatic deterministic fallback when the model is unavailable or violates a contract.
 - Separate reader output and audit trace.
+- A validated incremental evidence diff showing which claim changed and which claims did not rerun.
 - An 18-scenario benchmark and eight one-property fault-injection tests.
 - A responsive workbench for findings, evidence, review gaps, and gate status.
 
@@ -75,6 +76,8 @@ request + procedure scope
 ```
 
 Only `eligible` claims may enter an answer plan. Consequential claims additionally require a reviewer and review timestamp. A confidence score never grants runtime authority.
+
+The default public case includes a versioned evidence event: adding the public selection record affects only the award-recommendation claim. The workbench exposes the before/after source anchors and opens the newly added evidence without implying that unrelated claims changed.
 
 See [`docs/HARNESS_ENGINEERING_PLAN.md`](docs/HARNESS_ENGINEERING_PLAN.md) for the engineering contract and [`PREPROJECT_TENDERGRAPH.md`](PREPROJECT_TENDERGRAPH.md) for the product baseline.
 The boundary between prior domain exploration and new Build Week work is recorded in [`docs/BUILD_WEEK_PROVENANCE.md`](docs/BUILD_WEEK_PROVENANCE.md).

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { composeDeterministicFallback } from "../src/lib/harness/fallback";
+import { evaluateEvidenceDelta } from "../src/lib/harness/evidence-delta";
 import {
   finalizeCodexRun,
   prepareCodexRun,
@@ -10,7 +11,11 @@ import {
   validateReaderOutput,
   validateTrace,
 } from "../src/lib/harness/gates";
-import { getFixture, listFixtures } from "../src/lib/harness/fixtures";
+import {
+  getDefaultEvidenceDelta,
+  getFixture,
+  listFixtures,
+} from "../src/lib/harness/fixtures";
 import { buildAnswerPlan, isRuntimeEligible } from "../src/lib/harness/policy";
 import { promoteClaim } from "../src/lib/harness/promotion";
 import { runHarness } from "../src/lib/harness/run";
@@ -66,8 +71,9 @@ describe("fixture contracts", () => {
   });
 
   it("verifies the real public snapshot bytes and evidence hashes", () => {
-    const fixture = getFixture("cl-real-5802381-7547UCUK");
-    if (!fixture) throw new Error("Real Chile fixture missing");
+    const source = getFixture("cl-real-5802381-7547UCUK");
+    if (!source) throw new Error("Real Chile fixture missing");
+    const fixture = structuredClone(source);
     const plan = buildAnswerPlan(
       fixture,
       "Who was recommended for award and why?",
@@ -190,6 +196,30 @@ describe("Codex composition boundary", () => {
     expect(result.mode).toBe("deterministic_fallback");
     expect(result.trace.compositionSurface).toBe("deterministic");
     expect(result.trace.fallbackReason).toContain("UNPROMOTED_OR_UNSELECTED_CLAIM");
+  });
+});
+
+describe("incremental evidence delta", () => {
+  it("isolates the public selection update to the award recommendation", () => {
+    const delta = getDefaultEvidenceDelta();
+
+    expect(delta.affectedClaimIds).toEqual([
+      "claim-cl-real-award-recommendation",
+    ]);
+    expect(delta.addedEvidenceIds).toEqual(["ev-cl-real-public-selection"]);
+    expect(delta.unchangedClaimIds).toHaveLength(5);
+  });
+
+  it("rejects an event that hides another claim affected by new evidence", () => {
+    const source = getFixture("cl-real-5802381-7547UCUK");
+    if (!source) throw new Error("Real Chile fixture missing");
+    const fixture = structuredClone(source);
+    const delta = getDefaultEvidenceDelta();
+    fixture.claims[0].evidenceIds.push("ev-cl-real-public-selection");
+
+    expect(() => evaluateEvidenceDelta(fixture, delta.event)).toThrow(
+      "Evidence delta omits affected claim",
+    );
   });
 });
 

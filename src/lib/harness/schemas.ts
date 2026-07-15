@@ -157,6 +157,34 @@ export const CompositionResultSchema = z.object({
   trace: HarnessTraceSchema,
 });
 
+export const EvidenceDeltaEventSchema = z.object({
+  id: z.string().min(1),
+  procedureId: z.string().min(1),
+  lotId: z.string().min(1).nullable(),
+  title: z.string().min(1),
+  description: z.string().min(1),
+  addedSourceManifestIds: z.array(z.string().min(1)).min(1),
+  addedEvidenceIds: z.array(z.string().min(1)).min(1),
+  affectedClaims: z.array(
+    z.object({
+      claimId: z.string().min(1),
+      changeType: z.literal("evidence_added"),
+      beforeEvidenceIds: z.array(z.string().min(1)).min(1),
+      afterEvidenceIds: z.array(z.string().min(1)).min(1),
+      explanation: z.string().min(1),
+    }),
+  ).min(1),
+});
+
+export const EvidenceDeltaResultSchema = z.object({
+  event: EvidenceDeltaEventSchema,
+  affectedClaimIds: z.array(z.string().min(1)),
+  unchangedClaimIds: z.array(z.string().min(1)),
+  addedEvidenceIds: z.array(z.string().min(1)),
+  addedSourceManifestIds: z.array(z.string().min(1)),
+  valid: z.literal(true),
+});
+
 export const CodexRunInputSchema = z.object({
   contractVersion: z.literal("codex-composition.v1"),
   runId: z.string().min(1),
@@ -190,4 +218,6 @@ export type StructuredTenderAnswer = z.infer<typeof StructuredTenderAnswerSchema
 export type ValidationGateResult = z.infer<typeof ValidationGateResultSchema>;
 export type HarnessTrace = z.infer<typeof HarnessTraceSchema>;
 export type CompositionResult = z.infer<typeof CompositionResultSchema>;
+export type EvidenceDeltaEvent = z.infer<typeof EvidenceDeltaEventSchema>;
+export type EvidenceDeltaResult = z.infer<typeof EvidenceDeltaResultSchema>;
 export type CodexRunInput = z.infer<typeof CodexRunInputSchema>;

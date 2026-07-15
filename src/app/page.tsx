@@ -1,6 +1,10 @@
 import { Workbench } from "@/components/workbench";
 import { loadLatestCodexResult } from "@/lib/harness/codex-runtime";
-import { getFixture, listFixtures } from "@/lib/harness/fixtures";
+import {
+  getDefaultEvidenceDelta,
+  getFixture,
+  listFixtures,
+} from "@/lib/harness/fixtures";
 import { runHarness } from "@/lib/harness/run";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +25,7 @@ export default async function Home() {
       fixtures={listFixtures()}
       initialFixtureId={fixture.id}
       initialResult={initialResult}
+      evidenceDelta={getDefaultEvidenceDelta()}
     />
   );
 }

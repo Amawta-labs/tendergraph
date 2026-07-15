@@ -44,6 +44,12 @@ Runtime answers may use only claims selected in the deterministic `AnswerPlan`. 
 10. If any live-composition step fails, discard it and compose deterministically from the same plan.
 11. Return reader output and persist the audit trace separately.
 
+The implemented public Chile case also validates an `EvidenceDeltaEvent`. The
+event must name every claim that consumes newly added evidence, reproduce the
+current claim's exact evidence set, and prove that the prior evidence set is a
+strict subset. Unlisted consumers make the delta invalid. This provides the
+first code-owned dependency boundary for incremental reevaluation.
+
 ## 4. Procurement Governance
 
 ### Automatic admission

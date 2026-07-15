@@ -9,7 +9,9 @@ import {
   Database,
   ExternalLink,
   FileSearch,
+  FilePlus2,
   GitBranch,
+  GitCompareArrows,
   Globe2,
   LoaderCircle,
   Play,
@@ -22,6 +24,7 @@ import type {
   CaseFixture,
   CompositionResult,
   EvidenceRecord,
+  EvidenceDeltaResult,
   SourceManifest,
 } from "@/lib/harness/schemas";
 
@@ -29,6 +32,7 @@ interface WorkbenchProps {
   fixtures: CaseFixture[];
   initialFixtureId: string;
   initialResult: CompositionResult;
+  evidenceDelta: EvidenceDeltaResult;
 }
 
 const questions: Record<string, string> = {
@@ -77,6 +81,7 @@ export function Workbench({
   fixtures,
   initialFixtureId,
   initialResult,
+  evidenceDelta,
 }: WorkbenchProps) {
   const [fixtureId, setFixtureId] = useState(initialFixtureId);
   const [question, setQuestion] = useState(questions[initialFixtureId]);
@@ -87,6 +92,7 @@ export function Workbench({
   );
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
+  const [deltaExpanded, setDeltaExpanded] = useState(false);
 
   const fixture = useMemo(
     () => fixtures.find((item) => item.id === fixtureId) ?? fixtures[0],
@@ -103,6 +109,10 @@ export function Workbench({
   const coverage = Math.round(
     (evidenceUsed / Math.max(1, fixture.evidence.length)) * 100,
   );
+  const activeDelta =
+    evidenceDelta.event.procedureId === fixture.scope.procedureId
+      ? evidenceDelta
+      : null;
 
   function changeFixture(nextId: string) {
     const nextQuestion = questions[nextId];
@@ -145,6 +155,18 @@ export function Workbench({
     void executeAudit(fixtureId, question, mode);
   }
 
+  function inspectEvidenceDelta() {
+    if (!activeDelta) return;
+    setDeltaExpanded(true);
+    setSelectedEvidenceId(activeDelta.addedEvidenceIds[0]);
+    requestAnimationFrame(() => {
+      document.getElementById("evidence")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -153,6 +175,7 @@ export function Workbench({
           <a className="nav-item active" href="#workspace"><Activity size={18} />Case workspace</a>
           <a className="nav-item" href="#findings"><BookOpenCheck size={18} />Findings</a>
           <a className="nav-item" href="#evidence"><FileSearch size={18} />Evidence</a>
+          <a className="nav-item" href="#delta"><GitCompareArrows size={18} />Evidence diff</a>
           <a className="nav-item" href="#trace"><ShieldCheck size={18} />Audit trace</a>
         </nav>
         <div className="sidebar-note">
@@ -220,6 +243,44 @@ export function Workbench({
           </button>
         </section>
         {error && <div className="error-banner">{error}</div>}
+
+        {activeDelta && (
+          <section className="delta-band" id="delta" aria-label="Incremental evidence diff">
+            <div className="delta-heading">
+              <div className="delta-icon"><GitCompareArrows size={19} /></div>
+              <div>
+                <div className="eyebrow">Incremental reevaluation</div>
+                <h2>{activeDelta.event.title}</h2>
+                <p>{activeDelta.event.description}</p>
+              </div>
+              <div className="delta-metrics">
+                <span><strong>{activeDelta.affectedClaimIds.length}</strong> claim affected</span>
+                <span><strong>{activeDelta.unchangedClaimIds.length}</strong> unchanged</span>
+              </div>
+              <button className="inspect-delta" onClick={inspectEvidenceDelta}>
+                <FilePlus2 size={16} /> Inspect update
+              </button>
+            </div>
+            {deltaExpanded && (
+              <div className="delta-details">
+                {activeDelta.event.affectedClaims.map((change) => (
+                  <div className="delta-row" key={change.claimId}>
+                    <div>
+                      <span>Before</span>
+                      <strong>{change.beforeEvidenceIds.length} source anchor</strong>
+                    </div>
+                    <ChevronRight size={17} />
+                    <div>
+                      <span>After</span>
+                      <strong>{change.afterEvidenceIds.length} source anchors</strong>
+                    </div>
+                    <p>{change.explanation}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
 
         <div className="workspace-grid">
           <section className="findings-panel" id="findings">
