@@ -46,7 +46,7 @@ codex plugin add tendergraph@tendergraph-local
 
 Invoke `$tendergraph-analyze` from Codex to run the same workflow. Invalid or policy-violating GPT-5.6 output is discarded and replaced by the deterministic composer.
 
-The Responses API adapter remains available for teams with separate API billing, but it is optional and is not the Build Week demo path.
+The `Codex live` workbench action calls the local `/api/codex-run` bridge, which executes the same typed plugin workflow and returns a safe deterministic result if the Codex process is unavailable. The Responses API adapter remains available for teams with separate API billing, but it is optional and is not the Build Week demo path.
 
 ## Verify
 

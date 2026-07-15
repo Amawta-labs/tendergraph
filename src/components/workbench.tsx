@@ -85,13 +85,14 @@ export function Workbench({
 }: WorkbenchProps) {
   const [fixtureId, setFixtureId] = useState(initialFixtureId);
   const [question, setQuestion] = useState(questions[initialFixtureId]);
-  const [mode, setMode] = useState<"auto" | "fallback">("auto");
+  const [mode, setMode] = useState<"codex" | "fallback">("codex");
   const [result, setResult] = useState(initialResult);
   const [selectedEvidenceId, setSelectedEvidenceId] = useState(
     initialResult.readerOutput.sections[0]?.evidenceIds[0] ?? "",
   );
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
+  const [runtimeWarning, setRuntimeWarning] = useState("");
   const [deltaExpanded, setDeltaExpanded] = useState(false);
 
   const fixture = useMemo(
@@ -119,30 +120,35 @@ export function Workbench({
     setFixtureId(nextId);
     setQuestion(nextQuestion);
     setSelectedEvidenceId("");
-    void executeAudit(nextId, nextQuestion, mode);
+    void executeAudit(nextId, nextQuestion, "fallback");
   }
 
   async function executeAudit(
     targetFixtureId: string,
     targetQuestion: string,
-    targetMode: "auto" | "fallback",
+    targetMode: "codex" | "fallback",
   ) {
     setRunning(true);
     setError("");
+    setRuntimeWarning("");
     try {
-      const response = await fetch("/api/harness", {
+      const response = await fetch(
+        targetMode === "codex" ? "/api/codex-run" : "/api/harness",
+        {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           fixtureId: targetFixtureId,
           question: targetQuestion,
-          mode: targetMode,
+          ...(targetMode === "fallback" ? { mode: "fallback" } : {}),
         }),
-      });
+        },
+      );
       const body = await response.json();
       if (!response.ok) throw new Error(body.error ?? "Harness request failed");
-      const nextResult = body as CompositionResult;
+      const nextResult = body as CompositionResult & { runtimeWarning?: string };
       setResult(nextResult);
+      setRuntimeWarning(nextResult.runtimeWarning ?? "");
       setSelectedEvidenceId(nextResult.readerOutput.sections[0]?.evidenceIds[0] ?? "");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Harness request failed");
@@ -234,7 +240,7 @@ export function Workbench({
             onChange={(event) => setQuestion(event.target.value)}
           />
           <div className="mode-control" aria-label="Composition mode">
-            <button className={mode === "auto" ? "selected" : ""} onClick={() => setMode("auto")}>GPT + fallback</button>
+            <button className={mode === "codex" ? "selected" : ""} onClick={() => setMode("codex")}>Codex live</button>
             <button className={mode === "fallback" ? "selected" : ""} onClick={() => setMode("fallback")}>Deterministic</button>
           </div>
           <button className="run-button" disabled={running || question.length < 3} onClick={runAudit}>
@@ -243,6 +249,12 @@ export function Workbench({
           </button>
         </section>
         {error && <div className="error-banner">{error}</div>}
+        {runtimeWarning && (
+          <div className="simulation-banner" role="status">
+            <CircleAlert size={17} />
+            <span><strong>Codex unavailable.</strong> The audit completed with the deterministic composer.</span>
+          </div>
+        )}
 
         {activeDelta && (
           <section className="delta-band" id="delta" aria-label="Incremental evidence diff">

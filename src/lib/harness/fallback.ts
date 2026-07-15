@@ -33,7 +33,7 @@ export function composeDeterministicFallback(
 
   return {
     title: `${fixture.name}: verified findings`,
-    summary: `${selected.length} promoted claim${selected.length === 1 ? "" : "s"} answer the request. The wording below is assembled deterministically from reviewed evidence.`,
+    summary: `${selected.length} promoted claim${selected.length === 1 ? "" : "s"} answer the request. Every statement below is bound to reviewed evidence by the claim contract.`,
     status: fixture.dataStatus === "synthetic" ? "simulated" : "official",
     sections,
     gaps: fixture.claims
