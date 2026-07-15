@@ -7,7 +7,7 @@ export async function GET(
   context: { params: Promise<{ traceId: string }> },
 ) {
   const { traceId } = await context.params;
-  const trace = getTrace(traceId);
+  const trace = await getTrace(traceId);
   if (!trace) {
     return NextResponse.json({ error: "Trace not found" }, { status: 404 });
   }

@@ -2,6 +2,7 @@ import { composeDeterministicFallback } from "../src/lib/harness/fallback";
 import { validateLatency, validateReaderOutput } from "../src/lib/harness/gates";
 import { getFixture } from "../src/lib/harness/fixtures";
 import { buildAnswerPlan } from "../src/lib/harness/policy";
+import { StructuredTenderAnswerSchema } from "../src/lib/harness/schemas";
 
 function main() {
   const fixture = getFixture("cl-deep-demo");
@@ -28,14 +29,15 @@ function main() {
     return {
       fault: fault.name,
       harnessAdmitted: gateResults.every((gate) => gate.passed),
-      promptOnlyAdmitted: true,
+      schemaOnlyAdmitted: StructuredTenderAnswerSchema.safeParse(output).success,
       detectedBy: gateResults.filter((gate) => !gate.passed).map((gate) => gate.gate),
     };
   });
+  const latencyControl = StructuredTenderAnswerSchema.safeParse(baseline).success;
   results.push({
     fault: "latency",
     harnessAdmitted: validateLatency(501, 500).passed,
-    promptOnlyAdmitted: true,
+    schemaOnlyAdmitted: latencyControl,
     detectedBy: ["latency_budget"],
   });
 
@@ -43,10 +45,10 @@ function main() {
     JSON.stringify(
       {
         contract: "tendergraph-enforcement-ablation.v1",
-        note: "Controlled fault ablation; this measures enforcement, not model quality.",
+        note: "Controlled fault ablation against schema-only admission; this measures enforcement, not model quality or prompt adherence.",
         faults: results.length,
         harnessViolationsAdmitted: results.filter((result) => result.harnessAdmitted).length,
-        promptOnlyViolationsAdmitted: results.filter((result) => result.promptOnlyAdmitted).length,
+        schemaOnlyViolationsAdmitted: results.filter((result) => result.schemaOnlyAdmitted).length,
         results,
       },
       null,

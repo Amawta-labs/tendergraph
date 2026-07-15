@@ -1,39 +1,37 @@
 {
-  "title": "Award recommendation and evaluation",
-  "summary": "3 promoted claims answer the request. The wording below is assembled deterministically from reviewed evidence.",
-  "status": "official",
+  "title": "StructuredTenderAnswer",
+  "summary": "3 promoted claims answer the request. Every statement below is bound to reviewed evidence by the claim contract.",
+  "status": "simulated",
   "sections": [
     {
-      "heading": "Evaluation scores",
-      "body": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
+      "heading": "Award rule",
+      "body": "The benchmark awards Lot 1 to the admissible offer with the highest corrected total score.",
       "claimIds": [
-        "claim-cl-real-scores"
+        "claim-cl-correction-rule"
       ],
       "evidenceIds": [
-        "ev-cl-real-scores"
+        "ev-cl-correction-criterion"
       ]
     },
     {
-      "heading": "Award recommendation",
-      "body": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
+      "heading": "Corrected winner",
+      "body": "The corrective benchmark resolution supersedes the original decision and names Andes Clinical Supply as winner of Lot 1 with 94.1 corrected points.",
       "claimIds": [
-        "claim-cl-real-award-recommendation"
+        "claim-cl-correction-winner"
       ],
       "evidenceIds": [
-        "ev-cl-real-recommendation",
-        "ev-cl-real-public-selection"
+        "ev-cl-correction-new-winner"
       ]
     },
     {
-      "heading": "Reason other suppliers were not recommended",
-      "body": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
+      "heading": "Corrected score comparison",
+      "body": "DemoMed Ltd. is not awarded in the corrected benchmark because its 91.8 corrected points are below Andes Clinical Supply's 94.1 points after the warranty-score formula was fixed.",
       "claimIds": [
-        "claim-cl-real-loss-reason"
+        "claim-cl-correction-loss"
       ],
       "evidenceIds": [
-        "ev-cl-real-criteria",
-        "ev-cl-real-scores",
-        "ev-cl-real-recommendation"
+        "ev-cl-correction-new-winner",
+        "ev-cl-correction-new-loss"
       ]
     }
   ],

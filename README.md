@@ -55,12 +55,13 @@ npm run typecheck
 npm test
 npm run eval
 npm run eval:ablation
+npm run eval:codex
 npm run build
 ```
 
 The evaluation command executes the versioned scenarios in [`evals/scenarios.json`](evals/scenarios.json). The unit suite separately proves that missing claims, wrong routing, incomplete traces, answer omissions, internal leakage, unknown evidence, broken source links, and excess latency are detected.
 
-`npm run eval:live` exercises the optional Responses API adapter and requires separately billed `OPENAI_API_KEY`. `npm run eval:ablation` is a credential-free controlled enforcement ablation; it must not be represented as a model-quality experiment.
+`npm run eval:codex` performs two representative live Codex runs and writes the session-bearing report to `artifacts/evals/codex-smoke.json`. `npm run eval:live` exercises the optional Responses API adapter and requires separately billed `OPENAI_API_KEY`. `npm run eval:ablation` compares code-owned gates with schema-only admission; it is a credential-free enforcement experiment, not a model-quality or prompt-adherence experiment.
 
 ## Harness flow
 
@@ -102,7 +103,7 @@ Accepts `fixtureId` and `question`, invokes the authenticated local Codex CLI wi
 
 ### `GET /api/traces/:traceId`
 
-Returns the stored audit trace for a run. The in-memory store is a demo adapter; the production boundary is PostgreSQL plus immutable object storage.
+Returns the stored audit trace for a run. The local adapter writes immutable records under `.tendergraph/traces`; the production boundary is PostgreSQL plus immutable object storage.
 
 ## Codex collaboration
 

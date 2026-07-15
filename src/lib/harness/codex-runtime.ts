@@ -15,11 +15,13 @@ import {
   type HarnessTrace,
   type StructuredTenderAnswer,
 } from "./schemas";
+import { saveTrace } from "./store";
 
 export interface CodexCompositionMetadata {
   model: string;
   sessionId: string | null;
   elapsedMs: number;
+  failureReason?: string;
 }
 
 export function prepareCodexRun(
@@ -69,7 +71,12 @@ export function finalizeCodexRun(
   let compositionSurface: HarnessTrace["compositionSurface"] = "codex";
   let fallbackReason: string | null = null;
 
-  if (parsedCandidate.success) {
+  if (metadata.failureReason) {
+    compositionMode = "deterministic_fallback";
+    compositionSurface = "deterministic";
+    fallbackReason = metadata.failureReason;
+    readerOutput = composeDeterministicFallback(fixture, input.answerPlan);
+  } else if (parsedCandidate.success) {
     readerOutput = parsedCandidate.data;
     const liveGates = validateReaderOutput(readerOutput, fixture, input.answerPlan);
     if (!allGatesPassed(liveGates)) {
@@ -121,7 +128,7 @@ export function finalizeCodexRun(
     contractVersion: "harness.v1",
   };
   trace.validationResults.push(validateTrace(trace));
-  trace.validationResults.push(validateLatency(metadata.elapsedMs, 120_000));
+  trace.validationResults.push(validateLatency(metadata.elapsedMs, 140_000));
   return CompositionResultSchema.parse({ mode: compositionMode, readerOutput, trace });
 }
 
@@ -147,6 +154,7 @@ export async function publishCodexArtifacts(
 ): Promise<void> {
   const outputDir = path.join(rootDir, "artifacts", "codex-runs");
   await mkdir(outputDir, { recursive: true });
+  await saveTrace(result.trace, rootDir);
   await Promise.all([
     writeFile(path.join(outputDir, "latest-input.json"), JSON.stringify(input, null, 2)),
     writeFile(

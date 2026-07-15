@@ -1,41 +1,39 @@
 {
   "mode": "live",
   "readerOutput": {
-    "title": "Award recommendation and evaluation",
-    "summary": "3 promoted claims answer the request. The wording below is assembled deterministically from reviewed evidence.",
-    "status": "official",
+    "title": "StructuredTenderAnswer",
+    "summary": "3 promoted claims answer the request. Every statement below is bound to reviewed evidence by the claim contract.",
+    "status": "simulated",
     "sections": [
       {
-        "heading": "Evaluation scores",
-        "body": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
+        "heading": "Award rule",
+        "body": "The benchmark awards Lot 1 to the admissible offer with the highest corrected total score.",
         "claimIds": [
-          "claim-cl-real-scores"
+          "claim-cl-correction-rule"
         ],
         "evidenceIds": [
-          "ev-cl-real-scores"
+          "ev-cl-correction-criterion"
         ]
       },
       {
-        "heading": "Award recommendation",
-        "body": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
+        "heading": "Corrected winner",
+        "body": "The corrective benchmark resolution supersedes the original decision and names Andes Clinical Supply as winner of Lot 1 with 94.1 corrected points.",
         "claimIds": [
-          "claim-cl-real-award-recommendation"
+          "claim-cl-correction-winner"
         ],
         "evidenceIds": [
-          "ev-cl-real-recommendation",
-          "ev-cl-real-public-selection"
+          "ev-cl-correction-new-winner"
         ]
       },
       {
-        "heading": "Reason other suppliers were not recommended",
-        "body": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
+        "heading": "Corrected score comparison",
+        "body": "DemoMed Ltd. is not awarded in the corrected benchmark because its 91.8 corrected points are below Andes Clinical Supply's 94.1 points after the warranty-score formula was fixed.",
         "claimIds": [
-          "claim-cl-real-loss-reason"
+          "claim-cl-correction-loss"
         ],
         "evidenceIds": [
-          "ev-cl-real-criteria",
-          "ev-cl-real-scores",
-          "ev-cl-real-recommendation"
+          "ev-cl-correction-new-winner",
+          "ev-cl-correction-new-loss"
         ]
       }
     ],
@@ -43,34 +41,32 @@
     "recommendation": "Use the cited evidence and unresolved review items before taking a consequential procurement decision."
   },
   "trace": {
-    "traceId": "cac2f515-5cb3-43b9-9c1b-b110e94a4332",
-    "requestId": "bc8c0676-ace4-41a4-8135-cc2ef252ed92",
-    "createdAt": "2026-07-15T04:00:50.141Z",
+    "traceId": "aa34d4fd-d0d0-4b1a-b511-6ae2be58d906",
+    "requestId": "604b6764-bd31-4bc9-874a-0d616e911dc0",
+    "createdAt": "2026-07-15T04:26:50.666Z",
     "resolvedScope": {
       "jurisdiction": "CL",
-      "procedureId": "5802381-7547UCUK",
-      "lotId": null
+      "procedureId": "CL-CORRECTION-001",
+      "lotId": "LOT-1"
     },
     "sourceManifestIds": [
-      "manifest-cl-real-evaluation",
-      "manifest-cl-real-detail"
+      "manifest-cl-correction-original",
+      "manifest-cl-correction-resolution"
     ],
     "evidenceIds": [
-      "ev-cl-real-scores",
-      "ev-cl-real-recommendation",
-      "ev-cl-real-public-selection",
-      "ev-cl-real-criteria",
-      "ev-cl-real-scores",
-      "ev-cl-real-recommendation"
+      "ev-cl-correction-criterion",
+      "ev-cl-correction-new-winner",
+      "ev-cl-correction-new-winner",
+      "ev-cl-correction-new-loss"
     ],
     "selectedClaimIds": [
-      "claim-cl-real-scores",
-      "claim-cl-real-award-recommendation",
-      "claim-cl-real-loss-reason"
+      "claim-cl-correction-rule",
+      "claim-cl-correction-winner",
+      "claim-cl-correction-loss"
     ],
     "model": "gpt-5.6-terra",
     "compositionSurface": "codex",
-    "codexSessionId": "019f63ee-b4e1-7c10-90dd-3eeb1b0a20c3",
+    "codexSessionId": "019f6406-ea94-7121-8cac-40f43b6dd5ee",
     "compositionMode": "live",
     "validationResults": [
       {
@@ -87,9 +83,9 @@
         "code": null,
         "details": {
           "outputClaimIds": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ]
         }
       },
@@ -99,14 +95,14 @@
         "code": null,
         "details": {
           "expected": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ],
           "actual": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ]
         }
       },
@@ -128,12 +124,10 @@
         "code": null,
         "details": {
           "outputEvidenceIds": [
-            "ev-cl-real-scores",
-            "ev-cl-real-recommendation",
-            "ev-cl-real-public-selection",
-            "ev-cl-real-criteria",
-            "ev-cl-real-scores",
-            "ev-cl-real-recommendation"
+            "ev-cl-correction-criterion",
+            "ev-cl-correction-new-winner",
+            "ev-cl-correction-new-winner",
+            "ev-cl-correction-new-loss"
           ]
         }
       },
@@ -159,14 +153,14 @@
         "code": null,
         "details": {
           "expected": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ],
           "actual": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ]
         }
       },
@@ -175,8 +169,8 @@
         "passed": true,
         "code": null,
         "details": {
-          "expected": "official",
-          "actual": "official"
+          "expected": "simulated",
+          "actual": "simulated"
         }
       },
       {
@@ -208,15 +202,15 @@
         "passed": true,
         "code": null,
         "details": {
-          "elapsedMs": 34225,
-          "limitMs": 120000
+          "elapsedMs": 8127,
+          "limitMs": 140000
         }
       }
     ],
     "fallbackReason": null,
     "timings": {
-      "compositionMs": 34225,
-      "totalMs": 34225
+      "compositionMs": 8127,
+      "totalMs": 8127
     },
     "contractVersion": "harness.v1"
   }

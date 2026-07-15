@@ -105,7 +105,7 @@ export async function runHarness(
       compositionMode === "live" ? 20_000 : 500,
     ),
   );
-  saveTrace(trace);
+  await saveTrace(trace);
 
   return { mode: compositionMode, readerOutput, trace };
 }

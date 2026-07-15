@@ -7,6 +7,7 @@ import {
   finalizeCodexRun,
   prepareCodexRun,
   publishCodexArtifacts,
+  type CodexCompositionMetadata,
 } from "../lib/harness/codex-runtime";
 import { getFixture } from "../lib/harness/fixtures";
 
@@ -14,6 +15,27 @@ interface CliOptions {
   fixtureId: string;
   question: string;
   model: string;
+}
+
+class CodexProcessError extends Error {
+  constructor(message: string, readonly sessionId: string | null) {
+    super(message);
+  }
+}
+
+function extractSessionId(stdout: string): string | null {
+  const sessionId = stdout
+    .split("\n")
+    .filter(Boolean)
+    .flatMap((line) => {
+      try {
+        return [JSON.parse(line) as Record<string, unknown>];
+      } catch {
+        return [];
+      }
+    })
+    .find((event) => event.type === "thread.started")?.thread_id;
+  return typeof sessionId === "string" ? sessionId : null;
 }
 
 function parseArgs(args: string[]): CliOptions {
@@ -33,11 +55,13 @@ async function runCodex(
   inputPath: string,
   candidatePath: string,
   model: string,
-): Promise<{ sessionId: string | null; elapsedMs: number }> {
+): Promise<CodexCompositionMetadata> {
   const schemaPath = path.join(rootDir, "contracts", "structured-tender-answer.schema.json");
+  const contractJson = await readFile(inputPath, "utf8");
   const prompt = [
     "You are the composition boundary of the TenderGraph procurement harness.",
-    `Read the complete run contract at ${inputPath}.`,
+    "The complete run contract is attached in the stdin block. Use it directly.",
+    "Do not inspect the repository and do not call tools.",
     "Return only the reader-facing answer required by the supplied JSON Schema.",
     "Create exactly one section for every selected claim and use each claim exactly once.",
     "Each section must contain one claim ID. Copy its statement verbatim into body and copy its evidenceIds exactly.",
@@ -57,6 +81,7 @@ async function runCodex(
         "--json",
         "--model",
         model,
+        "--ignore-user-config",
         "--sandbox",
         "read-only",
         "--cd",
@@ -67,11 +92,35 @@ async function runCodex(
         candidatePath,
         prompt,
       ],
-      { cwd: rootDir, env: process.env },
+      { cwd: rootDir, env: process.env, detached: process.platform !== "win32" },
     );
-    child.stdin.end();
+    child.stdin.end(contractJson);
     let stdout = "";
     let stderr = "";
+    let settled = false;
+    const finish = (callback: () => void) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      callback();
+    };
+    const timeout = setTimeout(() => {
+      try {
+        if (child.pid && process.platform !== "win32") {
+          process.kill(-child.pid, "SIGTERM");
+        } else {
+          child.kill("SIGTERM");
+        }
+      } catch {
+        // The process may already have exited while the timeout fired.
+      }
+      finish(() => reject(
+        new CodexProcessError(
+          "Codex process exceeded the 130 second limit",
+          extractSessionId(stdout),
+        ),
+      ));
+    }, 130_000);
     child.stdout.on("data", (chunk) => {
       const text = chunk.toString();
       stdout += text;
@@ -82,27 +131,22 @@ async function runCodex(
       stderr += text;
       process.stderr.write(text);
     });
-    child.on("error", reject);
+    child.on("error", (error) => finish(() => reject(error)));
     child.on("close", (code) => {
       if (code !== 0) {
-        reject(new Error(`Codex exited with code ${code}: ${stderr}`));
+        finish(() => reject(
+          new CodexProcessError(
+            `Codex exited with code ${code}`,
+            extractSessionId(stdout),
+          ),
+        ));
         return;
       }
-      const sessionId = stdout
-        .split("\n")
-        .filter(Boolean)
-        .map((line) => {
-          try {
-            return JSON.parse(line) as Record<string, unknown>;
-          } catch {
-            return {};
-          }
-        })
-        .find((event) => event.type === "thread.started")?.thread_id;
-      resolve({
-        sessionId: typeof sessionId === "string" ? sessionId : null,
+      finish(() => resolve({
+        model,
+        sessionId: extractSessionId(stdout),
         elapsedMs: Math.round(performance.now() - startedAt),
-      });
+      }));
     });
   });
 }
@@ -122,12 +166,24 @@ async function main() {
   console.log(
     JSON.stringify({ event: "tendergraph.run.prepared", runId: input.runId, model: options.model }),
   );
-  const metadata = await runCodex(rootDir, inputPath, candidatePath, options.model);
-  const candidate = JSON.parse(await readFile(candidatePath, "utf8")) as unknown;
+  let candidate: unknown = null;
+  let metadata: CodexCompositionMetadata;
+  const compositionStartedAt = performance.now();
+  try {
+    metadata = await runCodex(rootDir, inputPath, candidatePath, options.model);
+    candidate = JSON.parse(await readFile(candidatePath, "utf8")) as unknown;
+  } catch (error) {
+    metadata = {
+      model: options.model,
+      sessionId: error instanceof CodexProcessError ? error.sessionId : null,
+      elapsedMs: Math.round(performance.now() - compositionStartedAt),
+      failureReason:
+        error instanceof Error ? error.message : "Codex process failed",
+    };
+  }
   const result = finalizeCodexRun(fixture, input, candidate, {
+    ...metadata,
     model: options.model,
-    sessionId: metadata.sessionId,
-    elapsedMs: metadata.elapsedMs,
   });
   await writeFile(path.join(runDir, "result.json"), JSON.stringify(result, null, 2));
   await publishCodexArtifacts(rootDir, input, candidate, result);

@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 
 import { composeDeterministicFallback } from "../src/lib/harness/fallback";
 import { evaluateEvidenceDelta } from "../src/lib/harness/evidence-delta";
@@ -20,6 +23,7 @@ import {
 import { buildAnswerPlan, isRuntimeEligible } from "../src/lib/harness/policy";
 import { promoteClaim } from "../src/lib/harness/promotion";
 import { runHarness } from "../src/lib/harness/run";
+import { saveTrace } from "../src/lib/harness/store";
 import type {
   CaseFixture,
   EvidenceDeltaEvent,
@@ -199,6 +203,53 @@ describe("Codex composition boundary", () => {
     expect(result.mode).toBe("deterministic_fallback");
     expect(result.trace.compositionSurface).toBe("deterministic");
     expect(result.trace.fallbackReason).toContain("UNPROMOTED_OR_UNSELECTED_CLAIM");
+  });
+
+  it("falls back when the Codex process fails before producing a candidate", () => {
+    const fixture = chile();
+    const input = prepareCodexRun(
+      fixture,
+      "Who won Lot 1 and why?",
+      "gpt-5.6-terra",
+    );
+    const result = finalizeCodexRun(fixture, input, null, {
+      model: "gpt-5.6-terra",
+      sessionId: null,
+      elapsedMs: 50,
+      failureReason: "Codex process failed with exit code 1",
+    });
+
+    expect(result.mode).toBe("deterministic_fallback");
+    expect(result.trace.compositionSurface).toBe("deterministic");
+    expect(result.trace.fallbackReason).toBe("Codex process failed with exit code 1");
+    expect(result.trace.validationResults.every((gate) => gate.passed)).toBe(true);
+  });
+});
+
+describe("trace persistence", () => {
+  it("writes immutable trace records outside process memory", async () => {
+    const rootDir = await mkdtemp(path.join(tmpdir(), "tendergraph-trace-"));
+    try {
+      const result = await runHarness(chile(), "Who won and why?", {
+        mode: "fallback",
+      });
+      await saveTrace(result.trace, rootDir);
+      const persisted = JSON.parse(
+        await readFile(
+          path.join(rootDir, ".tendergraph", "traces", `${result.trace.traceId}.json`),
+          "utf8",
+        ),
+      );
+      expect(persisted.traceId).toBe(result.trace.traceId);
+
+      const changed = structuredClone(result.trace);
+      changed.timings.totalMs += 1;
+      await expect(saveTrace(changed, rootDir)).rejects.toThrow(
+        "Immutable trace collision",
+      );
+    } finally {
+      await rm(rootDir, { recursive: true, force: true });
+    }
   });
 });
 

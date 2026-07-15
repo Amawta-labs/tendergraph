@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "eval": "tsx evals/run.ts",
     "eval:live": "tsx evals/live.ts",
+    "eval:codex": "tsx evals/codex-smoke.ts",
     "eval:ablation": "tsx evals/ablation.ts",
     "tendergraph:codex": "tsx src/cli/codex-run.ts"
   },
