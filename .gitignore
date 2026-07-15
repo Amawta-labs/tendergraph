@@ -8,3 +8,4 @@ npm-debug.log*
 evals/results/
 .tendergraph/
 *.tsbuildinfo
+.vercel

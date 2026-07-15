@@ -12,7 +12,10 @@ globalStore.tenderGraphTraces = traces;
 
 function tracePath(rootDir: string, traceId: string): string {
   if (!/^[a-f0-9-]{36}$/.test(traceId)) throw new Error("Invalid trace ID");
-  return path.join(rootDir, ".tendergraph", "traces", `${traceId}.json`);
+  const traceRoot = process.env.VERCEL
+    ? path.join("/tmp", "tendergraph", "traces")
+    : path.join(rootDir, ".tendergraph", "traces");
+  return path.join(traceRoot, `${traceId}.json`);
 }
 
 export async function saveTrace(

@@ -103,7 +103,7 @@ Accepts `fixtureId` and `question`, invokes the authenticated local Codex CLI wi
 
 ### `GET /api/traces/:traceId`
 
-Returns the stored audit trace for a run. The local adapter writes immutable records under `.tendergraph/traces`; the production boundary is PostgreSQL plus immutable object storage.
+Returns the stored audit trace for a run. The local adapter writes immutable records under `.tendergraph/traces`. Vercel uses ephemeral `/tmp` storage for the public demo; the production boundary is PostgreSQL plus immutable object storage.
 
 ## Codex collaboration
 
