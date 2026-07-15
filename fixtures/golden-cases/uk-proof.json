@@ -1,0 +1,52 @@
+{
+  "id": "uk-portability-demo",
+  "name": "UK facilities award portability proof",
+  "description": "Synthetic Contracts Finder-shaped fixture proving the shared source, evidence, and claim contracts.",
+  "dataStatus": "synthetic",
+  "sourceNote": "Illustrative benchmark only. It does not represent a real Contracts Finder procedure.",
+  "scope": { "jurisdiction": "UK", "procedureId": "UK-DEMO-001", "lotId": "LOT-1" },
+  "buyer": { "type": "buyer", "id": "buyer-uk-demo", "label": "UK Public Authority (demo)" },
+  "manifests": [{
+    "id": "manifest-uk-release",
+    "connector": "contracts_finder",
+    "jurisdiction": "UK",
+    "procedureId": "UK-DEMO-001",
+    "lotId": "LOT-1",
+    "artifactType": "ocds_award_release",
+    "canonicalUrl": "https://www.contractsfinder.service.gov.uk/",
+    "retrievedAt": "2026-07-14T12:00:00.000Z",
+    "publishedAt": "2026-07-03T12:00:00.000Z",
+    "mimeType": "application/json",
+    "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "license": "Contracts Finder data reuse terms apply",
+    "snapshotKey": "fixtures/golden-cases/uk/release.json",
+    "retrievalMode": "snapshot"
+  }],
+  "evidence": [{
+    "id": "ev-uk-award-value",
+    "sourceManifestId": "manifest-uk-release",
+    "contentHash": "8888888888888888888888888888888888888888888888888888888888888888",
+    "locator": { "page": null, "section": "awards[0].value", "table": null, "startOffset": null, "endOffset": null },
+    "extractedText": "The award value is GBP 780,000 (demo).",
+    "parserVersion": "fixture-parser.v1"
+  }],
+  "claims": [{
+    "id": "claim-uk-award-value",
+    "procedureId": "UK-DEMO-001",
+    "lotId": "LOT-1",
+    "subject": { "type": "lot", "id": "LOT-1", "label": "Lot 1" },
+    "predicate": "award_price",
+    "value": "GBP 780,000",
+    "statement": "The OCDS-shaped award release records a value of GBP 780,000 for Lot 1.",
+    "qualifiers": { "currency": "GBP" },
+    "evidenceIds": ["ev-uk-award-value"],
+    "extractorRunId": "extract-uk-demo-v1",
+    "confidence": 0.99,
+    "riskTier": "low",
+    "status": "eligible",
+    "promotionReason": "The amount and currency are explicit in the award value object.",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "supersedesClaimId": null
+  }]
+}

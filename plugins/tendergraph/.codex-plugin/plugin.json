@@ -1,0 +1,25 @@
+{
+  "name": "tendergraph",
+  "version": "0.1.0",
+  "description": "Evidence-backed tender analysis with GPT-5.6 and a code-owned audit harness",
+  "author": {
+    "name": "TenderGraph"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["procurement", "tenders", "audit", "gpt-5.6"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "TenderGraph",
+    "shortDescription": "Audit tenders with evidence-backed GPT-5.6",
+    "longDescription": "Runs procurement analysis through GPT-5.6 in Codex, then enforces claim admission, evidence grounding, scope isolation, and deterministic fallback in application code.",
+    "developerName": "TenderGraph",
+    "category": "Productivity",
+    "capabilities": ["Analysis", "Structured output", "Audit trace"],
+    "brandColor": "#19704D",
+    "defaultPrompt": [
+      "Audit the Chile golden tender and publish its trace.",
+      "Explain who won Lot 1 and why, with evidence.",
+      "Run the TenderGraph portability proof for the EU case."
+    ]
+  }
+}

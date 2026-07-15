@@ -1,0 +1,20 @@
+[
+  { "id": "cl-award-01", "fixtureId": "cl-deep-demo", "question": "Who won Lot 1 and why?", "expectedClaimIds": ["claim-cl-prices", "claim-cl-scores", "claim-cl-winner", "claim-cl-loss-reason"], "expectedStatus": "simulated" },
+  { "id": "cl-award-02", "fixtureId": "cl-deep-demo", "question": "Why did Andes Clinical Supply lose the award?", "expectedClaimIds": ["claim-cl-prices", "claim-cl-scores", "claim-cl-winner", "claim-cl-loss-reason"], "expectedStatus": "simulated" },
+  { "id": "cl-award-03", "fixtureId": "cl-deep-demo", "question": "Show the winner, official score and award evidence.", "expectedClaimIds": ["claim-cl-prices", "claim-cl-scores", "claim-cl-winner", "claim-cl-loss-reason"], "expectedStatus": "simulated" },
+  { "id": "cl-award-04", "fixtureId": "cl-deep-demo", "question": "Compare award price and scoring for the suppliers.", "expectedClaimIds": ["claim-cl-prices", "claim-cl-scores", "claim-cl-winner", "claim-cl-loss-reason"], "expectedStatus": "simulated" },
+  { "id": "cl-compliance-01", "fixtureId": "cl-deep-demo", "question": "Which certificate documents are present?", "expectedClaimIds": ["claim-cl-certificate-present"], "expectedStatus": "simulated" },
+  { "id": "cl-compliance-02", "fixtureId": "cl-deep-demo", "question": "Can we prove certificate compliance?", "expectedClaimIds": ["claim-cl-certificate-present"], "expectedStatus": "simulated" },
+  { "id": "cl-compliance-03", "fixtureId": "cl-deep-demo", "question": "Review the documentary requirement evidence.", "expectedClaimIds": ["claim-cl-certificate-present"], "expectedStatus": "simulated" },
+  { "id": "cl-opening-01", "fixtureId": "cl-deep-demo", "question": "Who participated at opening and what did they offer?", "expectedClaimIds": ["claim-cl-participants", "claim-cl-prices"], "expectedStatus": "simulated" },
+  { "id": "cl-opening-02", "fixtureId": "cl-deep-demo", "question": "Compare the opening prices.", "expectedClaimIds": ["claim-cl-participants", "claim-cl-prices"], "expectedStatus": "simulated" },
+  { "id": "cl-overview-01", "fixtureId": "cl-deep-demo", "question": "Give me an evidence-backed case overview.", "expectedClaimIds": ["claim-cl-participants", "claim-cl-prices", "claim-cl-scores", "claim-cl-winner", "claim-cl-loss-reason", "claim-cl-certificate-present"], "expectedStatus": "simulated" },
+  { "id": "cl-overview-02", "fixtureId": "cl-deep-demo", "question": "Summarize the verified findings and unresolved review work.", "expectedClaimIds": ["claim-cl-participants", "claim-cl-prices", "claim-cl-scores", "claim-cl-winner", "claim-cl-loss-reason", "claim-cl-certificate-present"], "expectedStatus": "simulated" },
+  { "id": "cl-overview-03", "fixtureId": "cl-deep-demo", "question": "What can the evidence establish for this case?", "expectedClaimIds": ["claim-cl-participants", "claim-cl-prices", "claim-cl-scores", "claim-cl-winner", "claim-cl-loss-reason", "claim-cl-certificate-present"], "expectedStatus": "simulated" },
+  { "id": "eu-award-01", "fixtureId": "eu-portability-demo", "question": "Who won the EU lot?", "expectedClaimIds": ["claim-eu-winner"], "expectedStatus": "simulated" },
+  { "id": "eu-overview-01", "fixtureId": "eu-portability-demo", "question": "Give me the verified EU case overview.", "expectedClaimIds": ["claim-eu-winner"], "expectedStatus": "simulated" },
+  { "id": "eu-gap-01", "fixtureId": "eu-portability-demo", "question": "Which compliance documents were submitted?", "expectedClaimIds": [], "expectedStatus": "insufficient_evidence" },
+  { "id": "uk-award-01", "fixtureId": "uk-portability-demo", "question": "What was the UK award price?", "expectedClaimIds": ["claim-uk-award-value"], "expectedStatus": "simulated" },
+  { "id": "uk-overview-01", "fixtureId": "uk-portability-demo", "question": "Give me the UK case overview.", "expectedClaimIds": ["claim-uk-award-value"], "expectedStatus": "simulated" },
+  { "id": "uk-opening-01", "fixtureId": "uk-portability-demo", "question": "What offer price is recorded?", "expectedClaimIds": ["claim-uk-award-value"], "expectedStatus": "simulated" }
+]

@@ -1,0 +1,20 @@
+{
+  "name": "tendergraph-local",
+  "interface": {
+    "displayName": "TenderGraph Local"
+  },
+  "plugins": [
+    {
+      "name": "tendergraph",
+      "source": {
+        "source": "local",
+        "path": "./plugins/tendergraph"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

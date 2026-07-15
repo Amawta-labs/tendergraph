@@ -1,0 +1,52 @@
+{
+  "id": "eu-portability-demo",
+  "name": "EU services notice portability proof",
+  "description": "Synthetic TED-shaped fixture proving the shared source, evidence, and claim contracts.",
+  "dataStatus": "synthetic",
+  "sourceNote": "Illustrative benchmark only. It does not represent a real TED procedure.",
+  "scope": { "jurisdiction": "EU", "procedureId": "EU-DEMO-001", "lotId": "LOT-1" },
+  "buyer": { "type": "buyer", "id": "buyer-eu-demo", "label": "European Contracting Authority (demo)" },
+  "manifests": [{
+    "id": "manifest-eu-notice",
+    "connector": "ted",
+    "jurisdiction": "EU",
+    "procedureId": "EU-DEMO-001",
+    "lotId": "LOT-1",
+    "artifactType": "contract_award_notice",
+    "canonicalUrl": "https://ted.europa.eu/en/",
+    "retrievedAt": "2026-07-14T12:00:00.000Z",
+    "publishedAt": "2026-07-01T12:00:00.000Z",
+    "mimeType": "application/xml",
+    "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "license": "TED data reuse terms apply",
+    "snapshotKey": "fixtures/golden-cases/eu/notice.xml",
+    "retrievalMode": "snapshot"
+  }],
+  "evidence": [{
+    "id": "ev-eu-winner",
+    "sourceManifestId": "manifest-eu-notice",
+    "contentHash": "7777777777777777777777777777777777777777777777777777777777777777",
+    "locator": { "page": null, "section": "BT-720", "table": null, "startOffset": 820, "endOffset": 860 },
+    "extractedText": "The selected tenderer for Lot 1 is Northstar Services BV (demo).",
+    "parserVersion": "fixture-parser.v1"
+  }],
+  "claims": [{
+    "id": "claim-eu-winner",
+    "procedureId": "EU-DEMO-001",
+    "lotId": "LOT-1",
+    "subject": { "type": "supplier", "id": "supplier-northstar", "label": "Northstar Services BV" },
+    "predicate": "award_winner",
+    "value": "Northstar Services BV",
+    "statement": "The contract award notice identifies Northstar Services BV as the selected tenderer for Lot 1.",
+    "qualifiers": { "noticeField": "BT-720" },
+    "evidenceIds": ["ev-eu-winner"],
+    "extractorRunId": "extract-eu-demo-v1",
+    "confidence": 0.99,
+    "riskTier": "consequential",
+    "status": "eligible",
+    "promotionReason": "Reviewer confirmed the selected tenderer field in the synthetic notice.",
+    "reviewedBy": "benchmark-reviewer",
+    "reviewedAt": "2026-07-14T13:10:00.000Z",
+    "supersedesClaimId": null
+  }]
+}

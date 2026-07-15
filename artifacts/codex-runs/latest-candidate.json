@@ -1,0 +1,54 @@
+{
+  "title": "Lot 1 award review",
+  "summary": "This is a simulated review: DemoMed Ltd. is identified as the Lot 1 winner. Although Andes Clinical Supply submitted the lower-priced offer, DemoMed received the higher evaluation score.",
+  "status": "simulated",
+  "sections": [
+    {
+      "heading": "Award outcome",
+      "body": "The award resolution names DemoMed Ltd. as the winner of Lot 1.",
+      "claimIds": [
+        "claim-cl-winner"
+      ],
+      "evidenceIds": [
+        "ev-cl-winner"
+      ]
+    },
+    {
+      "heading": "Evaluation scores",
+      "body": "The evaluation report records 92.4 points for DemoMed and 86.1 points for Andes Clinical Supply.",
+      "claimIds": [
+        "claim-cl-scores"
+      ],
+      "evidenceIds": [
+        "ev-cl-scores"
+      ]
+    },
+    {
+      "heading": "Opening prices",
+      "body": "The opening record lists DemoMed at CLP 48,500,000 and Andes Clinical Supply at CLP 46,900,000.",
+      "claimIds": [
+        "claim-cl-prices"
+      ],
+      "evidenceIds": [
+        "ev-cl-prices"
+      ]
+    },
+    {
+      "heading": "Why Andes was not awarded",
+      "body": "Andes Clinical Supply was not awarded because its total evaluated score was lower. The reviewed evaluation identifies delivery time and warranty within the technical difference.",
+      "claimIds": [
+        "claim-cl-loss-reason"
+      ],
+      "evidenceIds": [
+        "ev-cl-scores",
+        "ev-cl-technical",
+        "ev-cl-winner"
+      ]
+    }
+  ],
+  "gaps": [
+    "This is a synthetic fixture for illustration, not an official tender record or award decision.",
+    "The available evidence identifies the reviewed score and technical differences, but does not provide a full criterion-by-criterion scoring breakdown."
+  ],
+  "recommendation": "Use the award resolution and final evaluation report together when reviewing the Lot 1 outcome; do not treat the lower opening price alone as determinative."
+}

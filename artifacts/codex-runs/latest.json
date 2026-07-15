@@ -1,0 +1,186 @@
+{
+  "mode": "live",
+  "readerOutput": {
+    "title": "Lot 1 award review",
+    "summary": "This is a simulated review: DemoMed Ltd. is identified as the Lot 1 winner. Although Andes Clinical Supply submitted the lower-priced offer, DemoMed received the higher evaluation score.",
+    "status": "simulated",
+    "sections": [
+      {
+        "heading": "Award outcome",
+        "body": "The award resolution names DemoMed Ltd. as the winner of Lot 1.",
+        "claimIds": [
+          "claim-cl-winner"
+        ],
+        "evidenceIds": [
+          "ev-cl-winner"
+        ]
+      },
+      {
+        "heading": "Evaluation scores",
+        "body": "The evaluation report records 92.4 points for DemoMed and 86.1 points for Andes Clinical Supply.",
+        "claimIds": [
+          "claim-cl-scores"
+        ],
+        "evidenceIds": [
+          "ev-cl-scores"
+        ]
+      },
+      {
+        "heading": "Opening prices",
+        "body": "The opening record lists DemoMed at CLP 48,500,000 and Andes Clinical Supply at CLP 46,900,000.",
+        "claimIds": [
+          "claim-cl-prices"
+        ],
+        "evidenceIds": [
+          "ev-cl-prices"
+        ]
+      },
+      {
+        "heading": "Why Andes was not awarded",
+        "body": "Andes Clinical Supply was not awarded because its total evaluated score was lower. The reviewed evaluation identifies delivery time and warranty within the technical difference.",
+        "claimIds": [
+          "claim-cl-loss-reason"
+        ],
+        "evidenceIds": [
+          "ev-cl-scores",
+          "ev-cl-technical",
+          "ev-cl-winner"
+        ]
+      }
+    ],
+    "gaps": [
+      "This is a synthetic fixture for illustration, not an official tender record or award decision.",
+      "The available evidence identifies the reviewed score and technical differences, but does not provide a full criterion-by-criterion scoring breakdown."
+    ],
+    "recommendation": "Use the award resolution and final evaluation report together when reviewing the Lot 1 outcome; do not treat the lower opening price alone as determinative."
+  },
+  "trace": {
+    "traceId": "7a1ee326-a572-45bf-b589-1293d7184b90",
+    "requestId": "13b30722-763e-46d9-a973-c7205dfe66ac",
+    "createdAt": "2026-07-15T03:39:00.953Z",
+    "resolvedScope": {
+      "jurisdiction": "CL",
+      "procedureId": "CL-DEMO-001",
+      "lotId": "LOT-1"
+    },
+    "sourceManifestIds": [
+      "manifest-cl-opening",
+      "manifest-cl-evaluation",
+      "manifest-cl-award"
+    ],
+    "evidenceIds": [
+      "ev-cl-winner",
+      "ev-cl-scores",
+      "ev-cl-prices",
+      "ev-cl-scores",
+      "ev-cl-technical",
+      "ev-cl-winner"
+    ],
+    "selectedClaimIds": [
+      "claim-cl-prices",
+      "claim-cl-scores",
+      "claim-cl-winner",
+      "claim-cl-loss-reason"
+    ],
+    "model": "gpt-5.6-terra",
+    "compositionSurface": "codex",
+    "codexSessionId": "019f63da-96d6-7583-8e03-bf7f87050b7e",
+    "compositionMode": "live",
+    "validationResults": [
+      {
+        "gate": "output_schema",
+        "passed": true,
+        "code": null,
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "gate": "claim_admission",
+        "passed": true,
+        "code": null,
+        "details": {
+          "outputClaimIds": [
+            "claim-cl-winner",
+            "claim-cl-scores",
+            "claim-cl-prices",
+            "claim-cl-loss-reason"
+          ]
+        }
+      },
+      {
+        "gate": "evidence_grounding",
+        "passed": true,
+        "code": null,
+        "details": {
+          "outputEvidenceIds": [
+            "ev-cl-winner",
+            "ev-cl-scores",
+            "ev-cl-prices",
+            "ev-cl-scores",
+            "ev-cl-technical",
+            "ev-cl-winner"
+          ]
+        }
+      },
+      {
+        "gate": "source_integrity",
+        "passed": true,
+        "code": null,
+        "details": {}
+      },
+      {
+        "gate": "scope_isolation",
+        "passed": true,
+        "code": null,
+        "details": {}
+      },
+      {
+        "gate": "answer_completeness",
+        "passed": true,
+        "code": null,
+        "details": {
+          "expected": [
+            "claim-cl-prices",
+            "claim-cl-scores",
+            "claim-cl-winner",
+            "claim-cl-loss-reason"
+          ],
+          "actual": [
+            "claim-cl-winner",
+            "claim-cl-scores",
+            "claim-cl-prices",
+            "claim-cl-loss-reason"
+          ]
+        }
+      },
+      {
+        "gate": "output_hygiene",
+        "passed": true,
+        "code": null,
+        "details": {}
+      },
+      {
+        "gate": "trace_completeness",
+        "passed": true,
+        "code": null,
+        "details": {}
+      },
+      {
+        "gate": "latency_budget",
+        "passed": true,
+        "code": null,
+        "details": {
+          "elapsedMs": 43462,
+          "limitMs": 120000
+        }
+      }
+    ],
+    "fallbackReason": null,
+    "timings": {
+      "compositionMs": 43462,
+      "totalMs": 43462
+    },
+    "contractVersion": "harness.v1"
+  }
+}
