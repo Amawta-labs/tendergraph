@@ -32,11 +32,12 @@ interface WorkbenchProps {
   fixtures: CaseFixture[];
   initialFixtureId: string;
   initialResult: CompositionResult;
-  evidenceDelta: EvidenceDeltaResult;
+  evidenceDeltas: EvidenceDeltaResult[];
 }
 
 const questions: Record<string, string> = {
   "cl-real-5802381-7547UCUK": "Who was recommended for award and why?",
+  "cl-correction-demo": "Who won after the correction and why?",
   "cl-deep-demo": "Who won Lot 1 and why?",
   "eu-portability-demo": "Who won the EU lot?",
   "uk-portability-demo": "What was the UK award price?",
@@ -81,7 +82,7 @@ export function Workbench({
   fixtures,
   initialFixtureId,
   initialResult,
-  evidenceDelta,
+  evidenceDeltas,
 }: WorkbenchProps) {
   const [fixtureId, setFixtureId] = useState(initialFixtureId);
   const [question, setQuestion] = useState(questions[initialFixtureId]);
@@ -93,7 +94,9 @@ export function Workbench({
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
   const [runtimeWarning, setRuntimeWarning] = useState("");
-  const [deltaExpanded, setDeltaExpanded] = useState(false);
+  const [deltaExpanded, setDeltaExpanded] = useState(
+    initialFixtureId === "cl-correction-demo",
+  );
 
   const fixture = useMemo(
     () => fixtures.find((item) => item.id === fixtureId) ?? fixtures[0],
@@ -110,16 +113,20 @@ export function Workbench({
   const coverage = Math.round(
     (evidenceUsed / Math.max(1, fixture.evidence.length)) * 100,
   );
-  const activeDelta =
-    evidenceDelta.event.procedureId === fixture.scope.procedureId
-      ? evidenceDelta
-      : null;
+  const activeDelta = evidenceDeltas.find(
+    (delta) => delta.event.procedureId === fixture.scope.procedureId,
+  ) ?? null;
+  const publicFixtureCount = fixtures.filter(
+    (item) => item.dataStatus === "public_snapshot",
+  ).length;
+  const syntheticFixtureCount = fixtures.length - publicFixtureCount;
 
   function changeFixture(nextId: string) {
     const nextQuestion = questions[nextId];
     setFixtureId(nextId);
     setQuestion(nextQuestion);
     setSelectedEvidenceId("");
+    setDeltaExpanded(nextId === "cl-correction-demo");
     void executeAudit(nextId, nextQuestion, "fallback");
   }
 
@@ -186,7 +193,7 @@ export function Workbench({
         </nav>
         <div className="sidebar-note">
           <Database size={17} />
-          <div><strong>Golden corpus</strong><span>1 public · 3 synthetic</span></div>
+          <div><strong>Golden corpus</strong><span>{publicFixtureCount} public · {syntheticFixtureCount} synthetic</span></div>
         </div>
       </aside>
 
@@ -275,20 +282,32 @@ export function Workbench({
             </div>
             {deltaExpanded && (
               <div className="delta-details">
-                {activeDelta.event.affectedClaims.map((change) => (
-                  <div className="delta-row" key={change.claimId}>
-                    <div>
-                      <span>Before</span>
-                      <strong>{change.beforeEvidenceIds.length} source anchor</strong>
+                {activeDelta.event.affectedClaims.map((change) => {
+                  const previousClaimId =
+                    change.changeType === "claim_superseded"
+                      ? change.previousClaimId
+                      : change.claimId;
+                  const previousClaim = fixture.claims.find(
+                    (claim) => claim.id === previousClaimId,
+                  );
+                  const currentClaim = fixture.claims.find(
+                    (claim) => claim.id === change.claimId,
+                  );
+                  return (
+                    <div className="delta-row" key={`${previousClaimId}-${change.claimId}`}>
+                      <div>
+                        <span>Before · {change.beforeEvidenceIds.length} anchor{change.beforeEvidenceIds.length === 1 ? "" : "s"}</span>
+                        <strong>{previousClaim?.statement ?? "Prior claim unavailable"}</strong>
+                      </div>
+                      <ChevronRight size={17} />
+                      <div>
+                        <span>After · {change.afterEvidenceIds.length} anchor{change.afterEvidenceIds.length === 1 ? "" : "s"}</span>
+                        <strong>{currentClaim?.statement ?? "Current claim unavailable"}</strong>
+                      </div>
+                      <p><b>{change.changeType.replaceAll("_", " ")}</b> · {change.explanation}</p>
                     </div>
-                    <ChevronRight size={17} />
-                    <div>
-                      <span>After</span>
-                      <strong>{change.afterEvidenceIds.length} source anchors</strong>
-                    </div>
-                    <p>{change.explanation}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </section>

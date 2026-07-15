@@ -14,6 +14,7 @@ import {
 import {
   getDefaultEvidenceDelta,
   getFixture,
+  listEvidenceDeltas,
   listFixtures,
 } from "../src/lib/harness/fixtures";
 import { buildAnswerPlan, isRuntimeEligible } from "../src/lib/harness/policy";
@@ -21,6 +22,7 @@ import { promoteClaim } from "../src/lib/harness/promotion";
 import { runHarness } from "../src/lib/harness/run";
 import type {
   CaseFixture,
+  EvidenceDeltaEvent,
   HarnessTrace,
   StructuredTenderAnswer,
 } from "../src/lib/harness/schemas";
@@ -34,6 +36,7 @@ function chile(): CaseFixture {
 describe("fixture contracts", () => {
   it("loads all three jurisdiction fixtures", () => {
     expect(listFixtures().map((fixture) => fixture.scope.jurisdiction)).toEqual([
+      "CL",
       "CL",
       "CL",
       "EU",
@@ -210,6 +213,23 @@ describe("incremental evidence delta", () => {
     expect(delta.unchangedClaimIds).toHaveLength(5);
   });
 
+  it("loads the correction event as two explicit supersessions", () => {
+    const delta = listEvidenceDeltas().find(
+      (item) => item.event.id === "delta-cl-correction-resolution",
+    );
+
+    expect(delta?.supersededClaimIds).toEqual([
+      "claim-cl-correction-original-winner",
+      "claim-cl-correction-original-loss",
+    ]);
+    expect(delta?.replacementClaimIds).toEqual([
+      "claim-cl-correction-winner",
+      "claim-cl-correction-loss",
+    ]);
+    expect(delta?.affectedClaimIds).toHaveLength(4);
+    expect(delta?.unchangedClaimIds).toEqual(["claim-cl-correction-rule"]);
+  });
+
   it("rejects an event that hides another claim affected by new evidence", () => {
     const source = getFixture("cl-real-5802381-7547UCUK");
     if (!source) throw new Error("Real Chile fixture missing");
@@ -220,6 +240,100 @@ describe("incremental evidence delta", () => {
     expect(() => evaluateEvidenceDelta(fixture, delta.event)).toThrow(
       "Evidence delta omits affected claim",
     );
+  });
+
+  it("validates a claim supersession and excludes both versions from unchanged claims", () => {
+    const fixture = chile();
+    const previous = fixture.claims.find((claim) => claim.id === "claim-cl-winner");
+    if (!previous) throw new Error("Winner claim missing");
+    previous.status = "superseded";
+    fixture.manifests.push({
+      ...fixture.manifests[2],
+      id: "manifest-cl-correction",
+      sha256: "a".repeat(64),
+      snapshotKey: "synthetic/cl-correction.json",
+    });
+    fixture.evidence.push({
+      ...fixture.evidence[5],
+      id: "ev-cl-correction",
+      sourceManifestId: "manifest-cl-correction",
+      contentHash: "b".repeat(64),
+      extractedText: "A correction names Andes Clinical Supply as the winner.",
+    });
+    fixture.claims.push({
+      ...previous,
+      id: "claim-cl-winner-corrected",
+      statement: "A correction resolution names Andes Clinical Supply as the winner of Lot 1.",
+      value: "Andes Clinical Supply",
+      evidenceIds: ["ev-cl-correction"],
+      status: "eligible",
+      supersedesClaimId: previous.id,
+    });
+
+    const delta = evaluateEvidenceDelta(fixture, {
+      id: "delta-cl-correction",
+      procedureId: fixture.scope.procedureId,
+      lotId: fixture.scope.lotId,
+      title: "Award correction",
+      description: "A correction replaces the prior winner claim.",
+      addedSourceManifestIds: ["manifest-cl-correction"],
+      addedEvidenceIds: ["ev-cl-correction"],
+      affectedClaims: [{
+        claimId: "claim-cl-winner-corrected",
+        previousClaimId: "claim-cl-winner",
+        changeType: "claim_superseded",
+        beforeEvidenceIds: ["ev-cl-winner"],
+        afterEvidenceIds: ["ev-cl-correction"],
+        explanation: "The correction replaces the original award resolution.",
+      }],
+    });
+
+    expect(delta.supersededClaimIds).toEqual(["claim-cl-winner"]);
+    expect(delta.replacementClaimIds).toEqual(["claim-cl-winner-corrected"]);
+    expect(delta.unchangedClaimIds).not.toContain("claim-cl-winner");
+  });
+
+  it("rejects an invalidation unless the current claim is rejected", () => {
+    const fixture = chile();
+    const claim = fixture.claims.find((item) => item.id === "claim-cl-winner");
+    if (!claim) throw new Error("Winner claim missing");
+    fixture.manifests.push({
+      ...fixture.manifests[2],
+      id: "manifest-cl-withdrawal",
+      sha256: "c".repeat(64),
+      snapshotKey: "synthetic/cl-withdrawal.json",
+    });
+    fixture.evidence.push({
+      ...fixture.evidence[5],
+      id: "ev-cl-withdrawal",
+      sourceManifestId: "manifest-cl-withdrawal",
+      contentHash: "d".repeat(64),
+      extractedText: "The award resolution was withdrawn.",
+    });
+    claim.evidenceIds.push("ev-cl-withdrawal");
+
+    const event: EvidenceDeltaEvent = {
+      id: "delta-cl-withdrawal",
+      procedureId: fixture.scope.procedureId,
+      lotId: fixture.scope.lotId,
+      title: "Award withdrawal",
+      description: "New evidence invalidates the award claim.",
+      addedSourceManifestIds: ["manifest-cl-withdrawal"],
+      addedEvidenceIds: ["ev-cl-withdrawal"],
+      affectedClaims: [{
+        claimId: "claim-cl-winner",
+        changeType: "claim_invalidated",
+        beforeEvidenceIds: ["ev-cl-winner"],
+        afterEvidenceIds: ["ev-cl-winner", "ev-cl-withdrawal"],
+        explanation: "The withdrawal invalidates the prior award claim.",
+      }],
+    };
+
+    expect(() => evaluateEvidenceDelta(fixture, event)).toThrow("is not rejected");
+    claim.status = "rejected";
+    const delta = evaluateEvidenceDelta(fixture, event);
+    expect(delta.invalidatedClaimIds).toEqual(["claim-cl-winner"]);
+    expect(delta.unchangedClaimIds).not.toContain("claim-cl-winner");
   });
 });
 

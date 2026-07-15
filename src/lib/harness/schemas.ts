@@ -157,6 +157,37 @@ export const CompositionResultSchema = z.object({
   trace: HarnessTraceSchema,
 });
 
+const EvidenceAddedChangeSchema = z.object({
+  claimId: z.string().min(1),
+  changeType: z.literal("evidence_added"),
+  beforeEvidenceIds: z.array(z.string().min(1)).min(1),
+  afterEvidenceIds: z.array(z.string().min(1)).min(1),
+  explanation: z.string().min(1),
+});
+
+const ClaimInvalidatedChangeSchema = z.object({
+  claimId: z.string().min(1),
+  changeType: z.literal("claim_invalidated"),
+  beforeEvidenceIds: z.array(z.string().min(1)).min(1),
+  afterEvidenceIds: z.array(z.string().min(1)).min(1),
+  explanation: z.string().min(1),
+});
+
+const ClaimSupersededChangeSchema = z.object({
+  claimId: z.string().min(1),
+  previousClaimId: z.string().min(1),
+  changeType: z.literal("claim_superseded"),
+  beforeEvidenceIds: z.array(z.string().min(1)).min(1),
+  afterEvidenceIds: z.array(z.string().min(1)).min(1),
+  explanation: z.string().min(1),
+});
+
+export const EvidenceDeltaChangeSchema = z.discriminatedUnion("changeType", [
+  EvidenceAddedChangeSchema,
+  ClaimInvalidatedChangeSchema,
+  ClaimSupersededChangeSchema,
+]);
+
 export const EvidenceDeltaEventSchema = z.object({
   id: z.string().min(1),
   procedureId: z.string().min(1),
@@ -165,21 +196,16 @@ export const EvidenceDeltaEventSchema = z.object({
   description: z.string().min(1),
   addedSourceManifestIds: z.array(z.string().min(1)).min(1),
   addedEvidenceIds: z.array(z.string().min(1)).min(1),
-  affectedClaims: z.array(
-    z.object({
-      claimId: z.string().min(1),
-      changeType: z.literal("evidence_added"),
-      beforeEvidenceIds: z.array(z.string().min(1)).min(1),
-      afterEvidenceIds: z.array(z.string().min(1)).min(1),
-      explanation: z.string().min(1),
-    }),
-  ).min(1),
+  affectedClaims: z.array(EvidenceDeltaChangeSchema).min(1),
 });
 
 export const EvidenceDeltaResultSchema = z.object({
   event: EvidenceDeltaEventSchema,
   affectedClaimIds: z.array(z.string().min(1)),
   unchangedClaimIds: z.array(z.string().min(1)),
+  invalidatedClaimIds: z.array(z.string().min(1)),
+  supersededClaimIds: z.array(z.string().min(1)),
+  replacementClaimIds: z.array(z.string().min(1)),
   addedEvidenceIds: z.array(z.string().min(1)),
   addedSourceManifestIds: z.array(z.string().min(1)),
   valid: z.literal(true),

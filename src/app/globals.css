@@ -88,12 +88,13 @@ h2 { margin: 0; font-size: 16px; line-height: 1.25; }
 .inspect-delta { height: 36px; padding: 0 12px; border: 1px solid #9fc5b2; border-radius: 5px; background: var(--surface); color: var(--green); display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 650; white-space: nowrap; }
 .inspect-delta:hover { background: var(--green-soft); }
 .delta-details { padding: 0 16px 14px 64px; }
-.delta-row { padding: 12px; border-top: 1px solid #cee1d7; display: grid; grid-template-columns: 120px 20px 130px minmax(180px, 1fr); align-items: center; gap: 10px; }
+.delta-row { padding: 12px; border-top: 1px solid #cee1d7; display: grid; grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr); align-items: center; gap: 10px; }
 .delta-row > div { display: grid; gap: 3px; }
 .delta-row span { color: var(--muted); font-size: 10px; text-transform: uppercase; }
-.delta-row strong { font-size: 12px; }
+.delta-row strong { font-size: 12px; line-height: 1.45; }
 .delta-row > svg { color: var(--green); }
-.delta-row p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+.delta-row p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+.delta-row p b { color: var(--green); font-weight: 700; text-transform: uppercase; }
 
 .workspace-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, .8fr); gap: 16px; margin-top: 18px; align-items: start; }
 .findings-panel, .evidence-panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }

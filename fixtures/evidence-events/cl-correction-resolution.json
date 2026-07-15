@@ -1,0 +1,27 @@
+{
+  "id": "delta-cl-correction-resolution",
+  "procedureId": "CL-CORRECTION-001",
+  "lotId": "LOT-1",
+  "title": "Corrective resolution supersedes award",
+  "description": "A later resolution changes the winner and reverses the loss explanation while leaving the award rule unchanged.",
+  "addedSourceManifestIds": ["manifest-cl-correction-resolution"],
+  "addedEvidenceIds": ["ev-cl-correction-new-winner", "ev-cl-correction-new-loss"],
+  "affectedClaims": [
+    {
+      "claimId": "claim-cl-correction-winner",
+      "previousClaimId": "claim-cl-correction-original-winner",
+      "changeType": "claim_superseded",
+      "beforeEvidenceIds": ["ev-cl-correction-original-winner"],
+      "afterEvidenceIds": ["ev-cl-correction-new-winner"],
+      "explanation": "The corrective resolution replaces DemoMed with Andes as the benchmark winner."
+    },
+    {
+      "claimId": "claim-cl-correction-loss",
+      "previousClaimId": "claim-cl-correction-original-loss",
+      "changeType": "claim_superseded",
+      "beforeEvidenceIds": ["ev-cl-correction-original-loss"],
+      "afterEvidenceIds": ["ev-cl-correction-new-winner", "ev-cl-correction-new-loss"],
+      "explanation": "The corrected score table reverses which supplier lost and records the formula correction as the reason."
+    }
+  ]
+}

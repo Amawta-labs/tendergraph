@@ -27,7 +27,11 @@ export function evaluateEvidenceDelta(
   const manifestIds = new Set(fixture.manifests.map((manifest) => manifest.id));
   const evidenceIds = new Set(fixture.evidence.map((evidence) => evidence.id));
   const claimById = new Map(fixture.claims.map((claim) => [claim.id, claim]));
-  const affectedClaimIds = event.affectedClaims.map((change) => change.claimId);
+  const affectedClaimIds = event.affectedClaims.flatMap((change) =>
+    change.changeType === "claim_superseded"
+      ? [change.previousClaimId, change.claimId]
+      : [change.claimId],
+  );
   const affectedSet = new Set(affectedClaimIds);
   const addedEvidenceSet = new Set(event.addedEvidenceIds);
 
@@ -44,12 +48,52 @@ export function evaluateEvidenceDelta(
   for (const change of event.affectedClaims) {
     const claim = claimById.get(change.claimId);
     if (!claim) throw new Error(`Evidence delta references unknown claim ${change.claimId}`);
+    const beforeClaim =
+      change.changeType === "claim_superseded"
+        ? claimById.get(change.previousClaimId)
+        : claim;
+    if (!beforeClaim) {
+      const priorId =
+        change.changeType === "claim_superseded"
+          ? change.previousClaimId
+          : change.claimId;
+      throw new Error(`Evidence delta references unknown prior claim ${priorId}`);
+    }
+    if (
+      change.changeType === "claim_superseded" &&
+      !sameMembers(change.beforeEvidenceIds, beforeClaim.evidenceIds)
+    ) {
+      throw new Error(`Before evidence does not match prior claim ${beforeClaim.id}`);
+    }
     if (!sameMembers(change.afterEvidenceIds, claim.evidenceIds)) {
       throw new Error(`After evidence does not match current claim ${change.claimId}`);
     }
-    if (!change.beforeEvidenceIds.every((id) => change.afterEvidenceIds.includes(id))) {
-      throw new Error(`Before evidence is not a subset for ${change.claimId}`);
+
+    if (
+      change.changeType === "evidence_added" ||
+      change.changeType === "claim_invalidated"
+    ) {
+      if (!change.beforeEvidenceIds.every((id) => change.afterEvidenceIds.includes(id))) {
+        throw new Error(`Before evidence is not a subset for ${change.claimId}`);
+      }
     }
+    if (change.changeType === "claim_invalidated") {
+      if (claim.status !== "rejected") {
+        throw new Error(`Invalidated claim ${change.claimId} is not rejected`);
+      }
+    } else if (change.changeType === "claim_superseded") {
+      if (beforeClaim.status !== "superseded") {
+        throw new Error(`Prior claim ${beforeClaim.id} is not superseded`);
+      }
+      if (
+        claim.status !== "eligible" ||
+        claim.supersedesClaimId !== beforeClaim.id ||
+        claim.statement === beforeClaim.statement
+      ) {
+        throw new Error(`Replacement claim ${claim.id} is not a valid supersession`);
+      }
+    }
+
     const introduced = change.afterEvidenceIds.filter(
       (id) => !change.beforeEvidenceIds.includes(id),
     );
@@ -76,6 +120,15 @@ export function evaluateEvidenceDelta(
     unchangedClaimIds: fixture.claims
       .filter((claim) => !affectedSet.has(claim.id))
       .map((claim) => claim.id),
+    invalidatedClaimIds: event.affectedClaims
+      .filter((change) => change.changeType === "claim_invalidated")
+      .map((change) => change.claimId),
+    supersededClaimIds: event.affectedClaims
+      .filter((change) => change.changeType === "claim_superseded")
+      .map((change) => change.previousClaimId),
+    replacementClaimIds: event.affectedClaims
+      .filter((change) => change.changeType === "claim_superseded")
+      .map((change) => change.claimId),
     addedEvidenceIds: event.addedEvidenceIds,
     addedSourceManifestIds: event.addedSourceManifestIds,
     valid: true,

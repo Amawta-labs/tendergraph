@@ -6,7 +6,7 @@ The model composes answers. It does not decide which sources, claims, policies, 
 
 ## What runs today
 
-- One hash-verified public Chilean evaluation case plus three synthetic portability benchmarks representing Chile, TED, and UK Contracts Finder structures.
+- One hash-verified public Chilean evaluation case plus four synthetic benchmarks covering Chilean corrections, Chilean deep evidence, TED, and UK Contracts Finder structures.
 - Source manifests with hashes, retrieval mode, provenance, and evidence anchors.
 - Risk-tiered claim admission with human review required for consequential claims.
 - Deterministic answer planning and validation gates outside the prompt.
@@ -14,8 +14,8 @@ The model composes answers. It does not decide which sources, claims, policies, 
 - A distributable Codex plugin and skill for running the evidence audit without an API key.
 - Automatic deterministic fallback when the model is unavailable or violates a contract.
 - Separate reader output and audit trace.
-- A validated incremental evidence diff showing which claim changed and which claims did not rerun.
-- An 18-scenario benchmark and eight one-property fault-injection tests.
+- A validated incremental evidence diff for corroboration, invalidation, and claim supersession.
+- A 23-scenario benchmark and one-property fault-injection tests.
 - A responsive workbench for findings, evidence, review gaps, and gate status.
 
 The default case is a frozen public Mercado Público evaluation report. TenderGraph preserves its decision-stage limitation: the source contains a commission recommendation, not proof of a signed final contract. The remaining portability fixtures are synthetic and visibly labelled.
@@ -77,7 +77,7 @@ request + procedure scope
 
 Only `eligible` claims may enter an answer plan. Consequential claims additionally require a reviewer and review timestamp. A confidence score never grants runtime authority.
 
-The default public case includes a versioned evidence event: adding the public selection record affects only the award-recommendation claim. The workbench exposes the before/after source anchors and opens the newly added evidence without implying that unrelated claims changed.
+The default public case includes a versioned evidence event: adding the public selection record affects only the award-recommendation claim. A separate synthetic correction benchmark proves that a later resolution can supersede the winner and loss explanation while leaving the award rule unchanged. Open that story directly at `http://localhost:3000/?case=cl-correction-demo`.
 
 See [`docs/HARNESS_ENGINEERING_PLAN.md`](docs/HARNESS_ENGINEERING_PLAN.md) for the engineering contract and [`PREPROJECT_TENDERGRAPH.md`](PREPROJECT_TENDERGRAPH.md) for the product baseline.
 The boundary between prior domain exploration and new Build Week work is recorded in [`docs/BUILD_WEEK_PROVENANCE.md`](docs/BUILD_WEEK_PROVENANCE.md).
@@ -95,6 +95,10 @@ The boundary between prior domain exploration and new Build Week work is recorde
 ```
 
 Returns `readerOutput` and `trace`. `mode` accepts `auto` or `fallback`.
+
+### `POST /api/codex-run`
+
+Accepts `fixtureId` and `question`, invokes the authenticated local Codex CLI with `gpt-5.6-terra`, and applies the same code-owned validation gates. If Codex is unavailable or violates the contract, the endpoint returns a deterministic result with `runtimeWarning`.
 
 ### `GET /api/traces/:traceId`
 
