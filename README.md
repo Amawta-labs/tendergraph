@@ -4,6 +4,10 @@ TenderGraph is an auditable procurement intelligence workbench for bidder teams.
 
 The model composes answers. It does not decide which sources, claims, policies, or validations are authoritative.
 
+**Public demo:** https://openaihack.vercel.app
+
+**Supersession story:** https://openaihack.vercel.app/?case=cl-correction-demo
+
 ## What runs today
 
 - One hash-verified public Chilean evaluation case plus four synthetic benchmarks covering Chilean corrections, Chilean deep evidence, TED, and UK Contracts Finder structures.
@@ -47,6 +51,8 @@ codex plugin add tendergraph@tendergraph-local
 Invoke `$tendergraph-analyze` from Codex to run the same workflow. Invalid or policy-violating GPT-5.6 output is discarded and replaced by the deterministic composer.
 
 The `Codex live` workbench action calls the local `/api/codex-run` bridge, which executes the same typed plugin workflow and returns a safe deterministic result if the Codex process is unavailable. The Responses API adapter remains available for teams with separate API billing, but it is optional and is not the Build Week demo path.
+
+The hosted demo cannot inherit a developer's ChatGPT login. Its `Codex live` action therefore demonstrates the explicit deterministic fallback; use the local command or plugin instructions above to execute a live Codex session.
 
 ## Verify
 

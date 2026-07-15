@@ -6,7 +6,7 @@
 - **Track:** Work & Productivity
 - **Tagline:** An auditable procurement decision compiler that shows what changed, why it changed, and which evidence supports every claim.
 - **Repository:** `TODO_AFTER_GITHUB_REAUTH`
-- **Hosted demo:** `TODO_AFTER_VERCEL_DEPLOY`
+- **Hosted demo:** https://openaihack.vercel.app
 - **Video:** `TODO_PUBLIC_YOUTUBE_URL`
 - **Primary Codex /feedback session:** `TODO_PRIMARY_PROJECT_THREAD_FEEDBACK_ID`
 
@@ -57,9 +57,9 @@ At runtime, GPT-5.6 Terra performs only structured composition. It cannot select
 
 ### Hosted demo
 
-1. Open the hosted URL.
+1. Open https://openaihack.vercel.app.
 2. Inspect the public Chile case, its exact evidence anchors, and the 15 validation gates.
-3. Open `?case=cl-correction-demo` to inspect the expanded supersession diff.
+3. Open https://openaihack.vercel.app/?case=cl-correction-demo to inspect the expanded supersession diff.
 4. The hosted environment may use the deterministic composer because ChatGPT-authenticated Codex sessions are local credentials and are not copied into Vercel.
 
 ### Live Codex path
