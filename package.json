@@ -2,6 +2,7 @@
   "name": "tendergraph",
   "version": "0.1.0",
   "private": true,
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,6 +14,7 @@
     "eval:live": "tsx evals/live.ts",
     "eval:codex": "tsx evals/codex-smoke.ts",
     "eval:ablation": "tsx evals/ablation.ts",
+    "compliance:licenses": "node scripts/generate-license-inventory.mjs",
     "tendergraph:codex": "tsx src/cli/codex-run.ts"
   },
   "dependencies": {

@@ -24,9 +24,7 @@ Official portal URLs identify the structures being modelled. They do not imply e
 
 ## Runtime dependencies
 
-Runtime and development dependencies retain their respective upstream licenses. Their authoritative license texts are available in each installed package and package registry record. Material dependencies include Next.js, React, OpenAI's JavaScript SDK, Zod, Lucide, TypeScript, and Vitest.
-
-Before public submission, generate and archive a dependency license inventory from the locked `package-lock.json` and review every live public-data connector's terms.
+Runtime and development dependencies retain their respective upstream licenses. Their authoritative license texts are available in each installed package and package registry record. Material dependencies include Next.js, React, OpenAI's JavaScript SDK, Zod, Lucide, TypeScript, and Vitest. The locked dependency inventory is preserved at `artifacts/compliance/dependency-licenses.json` and can be regenerated with `npm run compliance:licenses`.
 
 ## ChileCompra public procurement snapshot
 
@@ -42,3 +40,10 @@ TenderGraph is not affiliated with ChileCompra or the University of Chile.
 Source documents remain attributable to their publishers. Normalized English
 evidence excerpts are identified as reviewed translations and do not replace
 the original Spanish records.
+
+## Piper voice synthesis
+
+The submission demo narration was rendered locally with the MIT-licensed
+`rhasspy/piper` engine and the MIT-licensed `en_US-lessac-medium` Piper voice.
+Neither the Piper executable nor the voice model is redistributed in this
+repository; only the generated narration embedded in the demo video is stored.

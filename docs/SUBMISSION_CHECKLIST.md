@@ -48,12 +48,12 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 ## Video
 
-- [ ] Record a clear demo with audio using `docs/VIDEO_SCRIPT.md`.
-- [ ] Keep the video under three minutes.
-- [ ] Show what was built and how Codex and GPT-5.6 were used.
+- [x] Render a clear 2:09 demo with English audio at `artifacts/submission/tendergraph-build-week-demo.mp4`.
+- [x] Keep the video under three minutes.
+- [x] Show what was built and how Codex and GPT-5.6 were used.
 - [ ] Upload publicly to YouTube and add the URL to Devpost.
-- [ ] Use no unlicensed music, trademarks, or third-party copyrighted material.
-- [ ] Ensure every non-English segment has an English translation; an all-English video is simpler.
+- [x] Use no music or unlicensed third-party footage.
+- [x] Use English narration throughout.
 
 ## Final freeze
 
