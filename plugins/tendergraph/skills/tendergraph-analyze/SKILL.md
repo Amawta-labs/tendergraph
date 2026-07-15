@@ -11,6 +11,7 @@ Run the application-owned harness. Do not answer the procurement question direct
 
 1. Confirm the current directory is the TenderGraph repository by checking for `package.json` and `contracts/structured-tender-answer.schema.json`.
 2. Select the fixture:
+   - Chile public evaluation: `cl-real-5802381-7547UCUK`
    - Chile deep case: `cl-deep-demo`
    - TED portability case: `eu-portability-demo`
    - UK portability case: `uk-portability-demo`
@@ -18,8 +19,8 @@ Run the application-owned harness. Do not answer the procurement question direct
 
 ```bash
 npm run tendergraph:codex -- \
-  --fixture cl-deep-demo \
-  --question "Who won Lot 1 and why?" \
+  --fixture cl-real-5802381-7547UCUK \
+  --question "Who was recommended for award and why?" \
   --model gpt-5.6-terra
 ```
 

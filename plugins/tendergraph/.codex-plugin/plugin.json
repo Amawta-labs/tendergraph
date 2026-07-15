@@ -17,8 +17,8 @@
     "capabilities": ["Analysis", "Structured output", "Audit trace"],
     "brandColor": "#19704D",
     "defaultPrompt": [
-      "Audit the Chile golden tender and publish its trace.",
-      "Explain who won Lot 1 and why, with evidence.",
+      "Audit the Chile public evaluation and publish its trace.",
+      "Explain who was recommended for award and why, with evidence.",
       "Run the TenderGraph portability proof for the EU case."
     ]
   }

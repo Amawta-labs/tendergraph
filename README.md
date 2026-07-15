@@ -6,7 +6,7 @@ The model composes answers. It does not decide which sources, claims, policies, 
 
 ## What runs today
 
-- Three schema-validated golden cases representing Chile, TED, and UK Contracts Finder structures.
+- One hash-verified public Chilean evaluation case plus three synthetic portability benchmarks representing Chile, TED, and UK Contracts Finder structures.
 - Source manifests with hashes, retrieval mode, provenance, and evidence anchors.
 - Risk-tiered claim admission with human review required for consequential claims.
 - Deterministic answer planning and validation gates outside the prompt.
@@ -17,7 +17,7 @@ The model composes answers. It does not decide which sources, claims, policies, 
 - An 18-scenario benchmark and eight one-property fault-injection tests.
 - A responsive workbench for findings, evidence, review gaps, and gate status.
 
-All included fixtures are synthetic and visibly labelled. They demonstrate contracts and behavior without presenting invented records as official procurement decisions.
+The default case is a frozen public Mercado Público evaluation report. TenderGraph preserves its decision-stage limitation: the source contains a commission recommendation, not proof of a signed final contract. The remaining portability fixtures are synthetic and visibly labelled.
 
 ## Run locally
 

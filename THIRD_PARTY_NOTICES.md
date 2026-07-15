@@ -27,3 +27,18 @@ Official portal URLs identify the structures being modelled. They do not imply e
 Runtime and development dependencies retain their respective upstream licenses. Their authoritative license texts are available in each installed package and package registry record. Material dependencies include Next.js, React, OpenAI's JavaScript SDK, Zod, Lucide, TypeScript, and Vitest.
 
 Before public submission, generate and archive a dependency license inventory from the locked `package-lock.json` and review every live public-data connector's terms.
+
+## ChileCompra public procurement snapshot
+
+`fixtures/public-snapshots/cl-5802381-7547UCUK` contains a frozen evaluation
+report and public-detail page retrieved from Mercado Publico/ChileCompra on
+July 14, 2026. ChileCompra publishes procurement information in open and
+reusable formats for analysis, oversight, and application development:
+
+- https://www.chilecompra.cl/datos-abiertos/
+- https://datos-abiertos.chilecompra.cl/datos-abiertos
+
+TenderGraph is not affiliated with ChileCompra or the University of Chile.
+Source documents remain attributable to their publishers. Normalized English
+evidence excerpts are identified as reviewed translations and do not replace
+the original Spanish records.

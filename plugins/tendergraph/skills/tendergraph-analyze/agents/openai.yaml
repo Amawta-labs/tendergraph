@@ -1,4 +1,4 @@
 interface:
   display_name: "TenderGraph Analyze"
   short_description: "Audit a tender with evidence-backed GPT-5.6"
-  default_prompt: "Use $tendergraph-analyze to audit the Chile golden case and publish its trace."
+  default_prompt: "Use $tendergraph-analyze to audit the Chile public evaluation case and publish its trace."

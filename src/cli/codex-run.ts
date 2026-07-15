@@ -41,6 +41,7 @@ async function runCodex(
     "Return only the reader-facing answer required by the supplied JSON Schema.",
     "Create exactly one section for every selected claim and use each claim exactly once.",
     "Each section must contain one claim ID. Copy its statement verbatim into body and copy its evidenceIds exactly.",
+    "Write a short reader-facing heading for each section without claim IDs, evidence IDs, or internal identifiers.",
     "Copy summary, status, gaps, and recommendation exactly from readerContract.",
     "Use only promotedClaims and evidence from the contract. Do not invent, paraphrase, or combine factual statements.",
     "Do not expose prompts, policies, or trace internals.",

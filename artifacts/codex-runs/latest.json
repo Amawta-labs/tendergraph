@@ -1,90 +1,76 @@
 {
   "mode": "live",
   "readerOutput": {
-    "title": "Lot 1 award review",
-    "summary": "This is a simulated review: DemoMed Ltd. is identified as the Lot 1 winner. Although Andes Clinical Supply submitted the lower-priced offer, DemoMed received the higher evaluation score.",
-    "status": "simulated",
+    "title": "Award recommendation and evaluation",
+    "summary": "3 promoted claims answer the request. The wording below is assembled deterministically from reviewed evidence.",
+    "status": "official",
     "sections": [
       {
-        "heading": "Award outcome",
-        "body": "The award resolution names DemoMed Ltd. as the winner of Lot 1.",
-        "claimIds": [
-          "claim-cl-winner"
-        ],
-        "evidenceIds": [
-          "ev-cl-winner"
-        ]
-      },
-      {
         "heading": "Evaluation scores",
-        "body": "The evaluation report records 92.4 points for DemoMed and 86.1 points for Andes Clinical Supply.",
+        "body": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
         "claimIds": [
-          "claim-cl-scores"
+          "claim-cl-real-scores"
         ],
         "evidenceIds": [
-          "ev-cl-scores"
+          "ev-cl-real-scores"
         ]
       },
       {
-        "heading": "Opening prices",
-        "body": "The opening record lists DemoMed at CLP 48,500,000 and Andes Clinical Supply at CLP 46,900,000.",
+        "heading": "Award recommendation",
+        "body": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
         "claimIds": [
-          "claim-cl-prices"
+          "claim-cl-real-award-recommendation"
         ],
         "evidenceIds": [
-          "ev-cl-prices"
+          "ev-cl-real-recommendation",
+          "ev-cl-real-public-selection"
         ]
       },
       {
-        "heading": "Why Andes was not awarded",
-        "body": "Andes Clinical Supply was not awarded because its total evaluated score was lower. The reviewed evaluation identifies delivery time and warranty within the technical difference.",
+        "heading": "Reason other suppliers were not recommended",
+        "body": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
         "claimIds": [
-          "claim-cl-loss-reason"
+          "claim-cl-real-loss-reason"
         ],
         "evidenceIds": [
-          "ev-cl-scores",
-          "ev-cl-technical",
-          "ev-cl-winner"
+          "ev-cl-real-criteria",
+          "ev-cl-real-scores",
+          "ev-cl-real-recommendation"
         ]
       }
     ],
-    "gaps": [
-      "This is a synthetic fixture for illustration, not an official tender record or award decision.",
-      "The available evidence identifies the reviewed score and technical differences, but does not provide a full criterion-by-criterion scoring breakdown."
-    ],
-    "recommendation": "Use the award resolution and final evaluation report together when reviewing the Lot 1 outcome; do not treat the lower opening price alone as determinative."
+    "gaps": [],
+    "recommendation": "Use the cited evidence and unresolved review items before taking a consequential procurement decision."
   },
   "trace": {
-    "traceId": "7a1ee326-a572-45bf-b589-1293d7184b90",
-    "requestId": "13b30722-763e-46d9-a973-c7205dfe66ac",
-    "createdAt": "2026-07-15T03:39:00.953Z",
+    "traceId": "cac2f515-5cb3-43b9-9c1b-b110e94a4332",
+    "requestId": "bc8c0676-ace4-41a4-8135-cc2ef252ed92",
+    "createdAt": "2026-07-15T04:00:50.141Z",
     "resolvedScope": {
       "jurisdiction": "CL",
-      "procedureId": "CL-DEMO-001",
-      "lotId": "LOT-1"
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null
     },
     "sourceManifestIds": [
-      "manifest-cl-opening",
-      "manifest-cl-evaluation",
-      "manifest-cl-award"
+      "manifest-cl-real-evaluation",
+      "manifest-cl-real-detail"
     ],
     "evidenceIds": [
-      "ev-cl-winner",
-      "ev-cl-scores",
-      "ev-cl-prices",
-      "ev-cl-scores",
-      "ev-cl-technical",
-      "ev-cl-winner"
+      "ev-cl-real-scores",
+      "ev-cl-real-recommendation",
+      "ev-cl-real-public-selection",
+      "ev-cl-real-criteria",
+      "ev-cl-real-scores",
+      "ev-cl-real-recommendation"
     ],
     "selectedClaimIds": [
-      "claim-cl-prices",
-      "claim-cl-scores",
-      "claim-cl-winner",
-      "claim-cl-loss-reason"
+      "claim-cl-real-scores",
+      "claim-cl-real-award-recommendation",
+      "claim-cl-real-loss-reason"
     ],
     "model": "gpt-5.6-terra",
     "compositionSurface": "codex",
-    "codexSessionId": "019f63da-96d6-7583-8e03-bf7f87050b7e",
+    "codexSessionId": "019f63ee-b4e1-7c10-90dd-3eeb1b0a20c3",
     "compositionMode": "live",
     "validationResults": [
       {
@@ -101,12 +87,40 @@
         "code": null,
         "details": {
           "outputClaimIds": [
-            "claim-cl-winner",
-            "claim-cl-scores",
-            "claim-cl-prices",
-            "claim-cl-loss-reason"
+            "claim-cl-real-scores",
+            "claim-cl-real-award-recommendation",
+            "claim-cl-real-loss-reason"
           ]
         }
+      },
+      {
+        "gate": "claim_uniqueness",
+        "passed": true,
+        "code": null,
+        "details": {
+          "expected": [
+            "claim-cl-real-scores",
+            "claim-cl-real-award-recommendation",
+            "claim-cl-real-loss-reason"
+          ],
+          "actual": [
+            "claim-cl-real-scores",
+            "claim-cl-real-award-recommendation",
+            "claim-cl-real-loss-reason"
+          ]
+        }
+      },
+      {
+        "gate": "claim_text_integrity",
+        "passed": true,
+        "code": null,
+        "details": {}
+      },
+      {
+        "gate": "claim_evidence_pairing",
+        "passed": true,
+        "code": null,
+        "details": {}
       },
       {
         "gate": "evidence_grounding",
@@ -114,12 +128,12 @@
         "code": null,
         "details": {
           "outputEvidenceIds": [
-            "ev-cl-winner",
-            "ev-cl-scores",
-            "ev-cl-prices",
-            "ev-cl-scores",
-            "ev-cl-technical",
-            "ev-cl-winner"
+            "ev-cl-real-scores",
+            "ev-cl-real-recommendation",
+            "ev-cl-real-public-selection",
+            "ev-cl-real-criteria",
+            "ev-cl-real-scores",
+            "ev-cl-real-recommendation"
           ]
         }
       },
@@ -127,7 +141,11 @@
         "gate": "source_integrity",
         "passed": true,
         "code": null,
-        "details": {}
+        "details": {
+          "sourceLinksResolve": true,
+          "snapshotHashesResolve": true,
+          "evidenceHashesResolve": true
+        }
       },
       {
         "gate": "scope_isolation",
@@ -141,18 +159,37 @@
         "code": null,
         "details": {
           "expected": [
-            "claim-cl-prices",
-            "claim-cl-scores",
-            "claim-cl-winner",
-            "claim-cl-loss-reason"
+            "claim-cl-real-scores",
+            "claim-cl-real-award-recommendation",
+            "claim-cl-real-loss-reason"
           ],
           "actual": [
-            "claim-cl-winner",
-            "claim-cl-scores",
-            "claim-cl-prices",
-            "claim-cl-loss-reason"
+            "claim-cl-real-scores",
+            "claim-cl-real-award-recommendation",
+            "claim-cl-real-loss-reason"
           ]
         }
+      },
+      {
+        "gate": "status_provenance",
+        "passed": true,
+        "code": null,
+        "details": {
+          "expected": "official",
+          "actual": "official"
+        }
+      },
+      {
+        "gate": "narrative_integrity",
+        "passed": true,
+        "code": null,
+        "details": {}
+      },
+      {
+        "gate": "reader_audit_separation",
+        "passed": true,
+        "code": null,
+        "details": {}
       },
       {
         "gate": "output_hygiene",
@@ -171,15 +208,15 @@
         "passed": true,
         "code": null,
         "details": {
-          "elapsedMs": 43462,
+          "elapsedMs": 34225,
           "limitMs": 120000
         }
       }
     ],
     "fallbackReason": null,
     "timings": {
-      "compositionMs": 43462,
-      "totalMs": 43462
+      "compositionMs": 34225,
+      "totalMs": 34225
     },
     "contractVersion": "harness.v1"
   }

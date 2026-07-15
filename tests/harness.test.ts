@@ -30,6 +30,7 @@ describe("fixture contracts", () => {
   it("loads all three jurisdiction fixtures", () => {
     expect(listFixtures().map((fixture) => fixture.scope.jurisdiction)).toEqual([
       "CL",
+      "CL",
       "EU",
       "UK",
     ]);
@@ -62,6 +63,36 @@ describe("fixture contracts", () => {
     });
     expect(promoted.status).toBe("pending_review");
     expect(isRuntimeEligible(promoted)).toBe(false);
+  });
+
+  it("verifies the real public snapshot bytes and evidence hashes", () => {
+    const fixture = getFixture("cl-real-5802381-7547UCUK");
+    if (!fixture) throw new Error("Real Chile fixture missing");
+    const plan = buildAnswerPlan(
+      fixture,
+      "Who was recommended for award and why?",
+    );
+    const output = composeDeterministicFallback(fixture, plan);
+
+    expect(validateReaderOutput(output, fixture, plan)).toContainEqual(
+      expect.objectContaining({ gate: "source_integrity", passed: true }),
+    );
+  });
+
+  it("rejects a public snapshot whose declared hash does not match its bytes", () => {
+    const source = getFixture("cl-real-5802381-7547UCUK");
+    if (!source) throw new Error("Real Chile fixture missing");
+    const fixture = structuredClone(source);
+    fixture.manifests[0].sha256 = "0".repeat(64);
+    const plan = buildAnswerPlan(
+      fixture,
+      "Who was recommended for award and why?",
+    );
+    const output = composeDeterministicFallback(fixture, plan);
+
+    expect(validateReaderOutput(output, fixture, plan)).toContainEqual(
+      expect.objectContaining({ code: "BROKEN_SOURCE_LINK", passed: false }),
+    );
   });
 });
 
@@ -255,6 +286,14 @@ describe("one-property fault injection", () => {
     output.sections.push(structuredClone(output.sections[0]));
     expect(validateReaderOutput(output, fixture, plan)).toContainEqual(
       expect.objectContaining({ code: "DUPLICATE_OR_MISSING_CLAIM", passed: false }),
+    );
+  });
+
+  it("rejects internal claim identifiers in reader-facing prose", () => {
+    const { fixture, plan, output } = baseline();
+    output.sections[0].heading = `Finding ${output.sections[0].claimIds[0]}`;
+    expect(validateReaderOutput(output, fixture, plan)).toContainEqual(
+      expect.objectContaining({ code: "INTERNAL_IDENTIFIER_LEAKAGE", passed: false }),
     );
   });
 

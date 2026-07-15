@@ -6,13 +6,15 @@ import { runHarness } from "@/lib/harness/run";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const fixture = getFixture("cl-deep-demo");
+  const fixture = getFixture("cl-real-5802381-7547UCUK");
   if (!fixture) throw new Error("Default fixture not found");
   const latestCodexResult = await loadLatestCodexResult(process.cwd());
   const initialResult =
     latestCodexResult?.trace.resolvedScope.procedureId === fixture.scope.procedureId
       ? latestCodexResult
-      : await runHarness(fixture, "Who won Lot 1 and why?", { mode: "fallback" });
+      : await runHarness(fixture, "Who was recommended for award and why?", {
+          mode: "fallback",
+        });
 
   return (
     <Workbench

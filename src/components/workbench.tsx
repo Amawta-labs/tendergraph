@@ -32,6 +32,7 @@ interface WorkbenchProps {
 }
 
 const questions: Record<string, string> = {
+  "cl-real-5802381-7547UCUK": "Who was recommended for award and why?",
   "cl-deep-demo": "Who won Lot 1 and why?",
   "eu-portability-demo": "Who won the EU lot?",
   "uk-portability-demo": "What was the UK award price?",
@@ -156,7 +157,7 @@ export function Workbench({
         </nav>
         <div className="sidebar-note">
           <Database size={17} />
-          <div><strong>Golden corpus</strong><span>3 jurisdictions · synthetic</span></div>
+          <div><strong>Golden corpus</strong><span>1 public · 3 synthetic</span></div>
         </div>
       </aside>
 
@@ -185,7 +186,14 @@ export function Workbench({
 
         <div className="simulation-banner">
           <CircleAlert size={17} />
-          <span><strong>Illustrative benchmark.</strong> {fixture.sourceNote}</span>
+          <span>
+            <strong>
+              {fixture.dataStatus === "public_snapshot"
+                ? "Hash-verified public snapshot."
+                : "Illustrative benchmark."}
+            </strong>{" "}
+            {fixture.sourceNote}
+          </span>
         </div>
 
         <section className="metrics" aria-label="Harness metrics">

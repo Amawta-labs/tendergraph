@@ -1,54 +1,42 @@
 {
-  "title": "Lot 1 award review",
-  "summary": "This is a simulated review: DemoMed Ltd. is identified as the Lot 1 winner. Although Andes Clinical Supply submitted the lower-priced offer, DemoMed received the higher evaluation score.",
-  "status": "simulated",
+  "title": "Award recommendation and evaluation",
+  "summary": "3 promoted claims answer the request. The wording below is assembled deterministically from reviewed evidence.",
+  "status": "official",
   "sections": [
     {
-      "heading": "Award outcome",
-      "body": "The award resolution names DemoMed Ltd. as the winner of Lot 1.",
-      "claimIds": [
-        "claim-cl-winner"
-      ],
-      "evidenceIds": [
-        "ev-cl-winner"
-      ]
-    },
-    {
       "heading": "Evaluation scores",
-      "body": "The evaluation report records 92.4 points for DemoMed and 86.1 points for Andes Clinical Supply.",
+      "body": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
       "claimIds": [
-        "claim-cl-scores"
+        "claim-cl-real-scores"
       ],
       "evidenceIds": [
-        "ev-cl-scores"
+        "ev-cl-real-scores"
       ]
     },
     {
-      "heading": "Opening prices",
-      "body": "The opening record lists DemoMed at CLP 48,500,000 and Andes Clinical Supply at CLP 46,900,000.",
+      "heading": "Award recommendation",
+      "body": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
       "claimIds": [
-        "claim-cl-prices"
+        "claim-cl-real-award-recommendation"
       ],
       "evidenceIds": [
-        "ev-cl-prices"
+        "ev-cl-real-recommendation",
+        "ev-cl-real-public-selection"
       ]
     },
     {
-      "heading": "Why Andes was not awarded",
-      "body": "Andes Clinical Supply was not awarded because its total evaluated score was lower. The reviewed evaluation identifies delivery time and warranty within the technical difference.",
+      "heading": "Reason other suppliers were not recommended",
+      "body": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
       "claimIds": [
-        "claim-cl-loss-reason"
+        "claim-cl-real-loss-reason"
       ],
       "evidenceIds": [
-        "ev-cl-scores",
-        "ev-cl-technical",
-        "ev-cl-winner"
+        "ev-cl-real-criteria",
+        "ev-cl-real-scores",
+        "ev-cl-real-recommendation"
       ]
     }
   ],
-  "gaps": [
-    "This is a synthetic fixture for illustration, not an official tender record or award decision.",
-    "The available evidence identifies the reviewed score and technical differences, but does not provide a full criterion-by-criterion scoring breakdown."
-  ],
-  "recommendation": "Use the award resolution and final evaluation report together when reviewing the Lot 1 outcome; do not treat the lower opening price alone as determinative."
+  "gaps": [],
+  "recommendation": "Use the cited evidence and unresolved review items before taking a consequential procurement decision."
 }

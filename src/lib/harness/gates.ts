@@ -27,6 +27,9 @@ export function validateReaderOutput(
   const claimById = new Map(fixture.claims.map((claim) => [claim.id, claim]));
   const evidenceIds = new Set(fixture.evidence.map((evidence) => evidence.id));
   const manifestIds = new Set(fixture.manifests.map((manifest) => manifest.id));
+  const manifestById = new Map(
+    fixture.manifests.map((manifest) => [manifest.id, manifest]),
+  );
   const selected = new Set(plan.selectedClaimIds);
   const outputClaimIds = output.sections.flatMap((section) => section.claimIds);
   const outputEvidenceIds = output.sections.flatMap((section) => section.evidenceIds);
@@ -38,9 +41,42 @@ export function validateReaderOutput(
   const evidenceGrounded = outputEvidenceIds.every((evidenceId) =>
     evidenceIds.has(evidenceId),
   );
-  const sourceLinksResolve = fixture.evidence.every((evidence) =>
-    manifestIds.has(evidence.sourceManifestId),
-  );
+  const sourceLinksResolve = fixture.evidence.every((evidence) => {
+    const manifest = manifestById.get(evidence.sourceManifestId);
+    return Boolean(
+      manifestIds.has(evidence.sourceManifestId) &&
+        manifest?.procedureId === fixture.scope.procedureId &&
+        manifest?.jurisdiction === fixture.scope.jurisdiction &&
+        manifest?.lotId === fixture.scope.lotId,
+    );
+  });
+  const snapshotHashesResolve =
+    fixture.dataStatus !== "public_snapshot" ||
+    fixture.manifests.every((manifest) => {
+      const snapshotRoot = path.join(
+        process.cwd(),
+        "fixtures",
+        "public-snapshots",
+      );
+      const prefix = `fixtures/public-snapshots/`;
+      if (!manifest.snapshotKey.startsWith(prefix)) return false;
+      const snapshotPath = path.resolve(
+        snapshotRoot,
+        manifest.snapshotKey.slice(prefix.length),
+      );
+      if (!snapshotPath.startsWith(`${snapshotRoot}${path.sep}`)) return false;
+      if (!existsSync(snapshotPath)) return false;
+      const hash = createHash("sha256").update(readFileSync(snapshotPath)).digest("hex");
+      return hash === manifest.sha256;
+    });
+  const evidenceHashesResolve =
+    fixture.dataStatus !== "public_snapshot" ||
+    fixture.evidence.every((evidence) => {
+      const hash = createHash("sha256")
+        .update(evidence.extractedText)
+        .digest("hex");
+      return hash === evidence.contentHash;
+    });
   const scoped = outputClaimIds.every((claimId) => {
     const claim = claimById.get(claimId);
     return (
@@ -81,6 +117,16 @@ export function validateReaderOutput(
     output.recommendation === canonicalOutput.recommendation &&
     output.gaps.length === canonicalOutput.gaps.length &&
     output.gaps.every((gap, index) => gap === canonicalOutput.gaps[index]);
+  const readerProse = [
+    output.title,
+    output.summary,
+    ...output.sections.flatMap((section) => [section.heading, section.body]),
+    ...output.gaps,
+    output.recommendation,
+  ].join(" ");
+  const readerProseHasNoInternalIds = !/\b(?:claim|ev|manifest)-[a-z0-9-]+\b/i.test(
+    readerProse,
+  );
 
   return [
     gate("output_schema", schema.success, "INVALID_OUTPUT_SCHEMA", {
@@ -102,7 +148,12 @@ export function validateReaderOutput(
     gate("evidence_grounding", evidenceGrounded, "UNKNOWN_EVIDENCE", {
       outputEvidenceIds,
     }),
-    gate("source_integrity", sourceLinksResolve, "BROKEN_SOURCE_LINK"),
+    gate(
+      "source_integrity",
+      sourceLinksResolve && snapshotHashesResolve && evidenceHashesResolve,
+      "BROKEN_SOURCE_LINK",
+      { sourceLinksResolve, snapshotHashesResolve, evidenceHashesResolve },
+    ),
     gate("scope_isolation", scoped, "SCOPE_CONTAMINATION"),
     gate("answer_completeness", expectedClaimCoverage, "MISSING_EXPECTED_CLAIM", {
       expected: plan.selectedClaimIds,
@@ -113,6 +164,11 @@ export function validateReaderOutput(
       actual: output.status,
     }),
     gate("narrative_integrity", narrativeIsCanonical, "ALTERED_CANONICAL_NARRATIVE"),
+    gate(
+      "reader_audit_separation",
+      readerProseHasNoInternalIds,
+      "INTERNAL_IDENTIFIER_LEAKAGE",
+    ),
     gate(
       "output_hygiene",
       !containsInternalLeakage(output),
@@ -146,3 +202,6 @@ export function validateLatency(
 export function allGatesPassed(results: ValidationGateResult[]): boolean {
   return results.every((result) => result.passed);
 }
+import { createHash } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";

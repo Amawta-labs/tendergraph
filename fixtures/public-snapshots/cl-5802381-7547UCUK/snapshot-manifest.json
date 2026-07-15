@@ -1,0 +1,26 @@
+{
+  "snapshotVersion": "tendergraph-source-snapshot.v1",
+  "retrievedAt": "2026-07-15T03:53:23.000Z",
+  "reuseBasis": "ChileCompra publishes procurement information in open and reusable formats for analysis, monitoring, oversight, and application development.",
+  "reuseReference": "https://www.chilecompra.cl/datos-abiertos/",
+  "files": [
+    {
+      "path": "evaluation-report.pdf",
+      "canonicalUrl": "https://mobiliariov3.mercadopublico.cl/media/chilecompra/files/formattributes/i/n/informe_de_evaluacion_convenio_marco_mobiliarios.pdf",
+      "sha256": "8f66f0ddf76f48c645920976948e2ff43aded7f74f56f1756145712128a43124",
+      "bytes": 475231
+    },
+    {
+      "path": "public-detail.html",
+      "canonicalUrl": "https://mobiliariov3.mercadopublico.cl/mobiliario3/quote_public/requestquote/view/id/5802381-7547UCUK/",
+      "sha256": "f0f8216bdae1622428aede760119d0c9a7e312570f5baa64812f2e12766f8c89",
+      "bytes": 73827
+    },
+    {
+      "path": "evaluation-report.txt",
+      "derivedFrom": "evaluation-report.pdf",
+      "parser": "pdftotext 26.01.0 -layout",
+      "sha256": "e3934426093839f67663cdad922ec7e35731a939ac4573f21c6ea5b180b773ff"
+    }
+  ]
+}

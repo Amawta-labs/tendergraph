@@ -1,33 +1,32 @@
 {
   "contractVersion": "codex-composition.v1",
-  "runId": "b5bc403a-961a-4e84-b0c4-b7b2867e5aa9",
-  "createdAt": "2026-07-15T03:38:17.482Z",
+  "runId": "c71a598e-1a51-406c-86fd-735a1f1e4cee",
+  "createdAt": "2026-07-15T04:00:15.905Z",
   "requestedModel": "gpt-5.6-terra",
   "fixture": {
-    "id": "cl-deep-demo",
-    "name": "Chile medical supplies award review",
-    "dataStatus": "synthetic",
-    "sourceNote": "Illustrative benchmark only. It is not an official tender record or award decision.",
+    "id": "cl-real-5802381-7547UCUK",
+    "name": "University of Chile office furniture evaluation",
+    "dataStatus": "public_snapshot",
+    "sourceNote": "Official public snapshot. TenderGraph reports the evaluation commission's recommendation, not evidence of a signed final contract.",
     "scope": {
       "jurisdiction": "CL",
-      "procedureId": "CL-DEMO-001",
-      "lotId": "LOT-1"
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null
     }
   },
   "answerPlan": {
-    "requestId": "13b30722-763e-46d9-a973-c7205dfe66ac",
+    "requestId": "bc8c0676-ace4-41a4-8135-cc2ef252ed92",
     "scope": {
       "jurisdiction": "CL",
-      "procedureId": "CL-DEMO-001",
-      "lotId": "LOT-1"
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null
     },
     "intent": "award_explanation",
-    "question": "Who won Lot 1 and why?",
+    "question": "Who was recommended for award and why?",
     "selectedClaimIds": [
-      "claim-cl-prices",
-      "claim-cl-scores",
-      "claim-cl-winner",
-      "claim-cl-loss-reason"
+      "claim-cl-real-scores",
+      "claim-cl-real-award-recommendation",
+      "claim-cl-real-loss-reason"
     ],
     "requiredSignals": [
       "winner",
@@ -47,174 +46,157 @@
     ],
     "outputContract": "structured_tender_answer.v1"
   },
+  "readerContract": {
+    "summary": "3 promoted claims answer the request. The wording below is assembled deterministically from reviewed evidence.",
+    "status": "official",
+    "gaps": [],
+    "recommendation": "Use the cited evidence and unresolved review items before taking a consequential procurement decision."
+  },
   "promotedClaims": [
     {
-      "id": "claim-cl-prices",
-      "procedureId": "CL-DEMO-001",
-      "lotId": "LOT-1",
+      "id": "claim-cl-real-scores",
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null,
       "subject": {
-        "type": "lot",
-        "id": "LOT-1",
-        "label": "Lot 1"
-      },
-      "predicate": "opening_prices",
-      "value": "DemoMed CLP 48,500,000; Andes CLP 46,900,000",
-      "statement": "The opening record lists DemoMed at CLP 48,500,000 and Andes Clinical Supply at CLP 46,900,000.",
-      "qualifiers": {
-        "currency": "CLP"
-      },
-      "evidenceIds": [
-        "ev-cl-prices"
-      ],
-      "extractorRunId": "extract-cl-demo-v1",
-      "confidence": 0.99,
-      "riskTier": "low",
-      "status": "eligible",
-      "promotionReason": "Amounts are explicitly stated in the opening table.",
-      "reviewedBy": null,
-      "reviewedAt": null,
-      "supersedesClaimId": null
-    },
-    {
-      "id": "claim-cl-scores",
-      "procedureId": "CL-DEMO-001",
-      "lotId": "LOT-1",
-      "subject": {
-        "type": "lot",
-        "id": "LOT-1",
-        "label": "Lot 1"
+        "type": "procedure",
+        "id": "5802381-7547UCUK",
+        "label": "Office furniture quotation"
       },
       "predicate": "official_scores",
-      "value": "DemoMed 92.4; Andes 86.1",
-      "statement": "The evaluation report records 92.4 points for DemoMed and 86.1 for Andes Clinical Supply.",
+      "value": "Hagelin 98.33; Silcosil 88.50; Melman 72.09; Timaukel 69.01; Edge 65.19; LEFI 64.27; Status 57.62; Eventail 56.15",
+      "statement": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
       "qualifiers": {
-        "scoreType": "official"
+        "scoreType": "evaluation_report_percentage",
+        "sourceLanguage": "es"
       },
       "evidenceIds": [
-        "ev-cl-scores"
+        "ev-cl-real-scores"
       ],
-      "extractorRunId": "extract-cl-demo-v1",
-      "confidence": 0.98,
+      "extractorRunId": "manual-public-snapshot-v1",
+      "confidence": 1,
       "riskTier": "low",
       "status": "eligible",
-      "promotionReason": "Scores are directly stated in the final evaluation matrix.",
+      "promotionReason": "The final evaluation table explicitly states every percentage.",
       "reviewedBy": null,
       "reviewedAt": null,
       "supersedesClaimId": null
     },
     {
-      "id": "claim-cl-winner",
-      "procedureId": "CL-DEMO-001",
-      "lotId": "LOT-1",
+      "id": "claim-cl-real-award-recommendation",
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null,
       "subject": {
         "type": "supplier",
-        "id": "supplier-demomed",
-        "label": "DemoMed Ltd."
+        "id": "supplier-comercial-hagelin",
+        "label": "Comercial Hagelin SpA"
       },
-      "predicate": "award_winner",
-      "value": "DemoMed Ltd.",
-      "statement": "The award resolution names DemoMed Ltd. as the winner of Lot 1.",
+      "predicate": "award_recommendation",
+      "value": "Comercial Hagelin SpA",
+      "statement": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
       "qualifiers": {
-        "decisionType": "official_in_fixture"
+        "decisionStage": "commission_recommendation",
+        "sourceLanguage": "es"
       },
       "evidenceIds": [
-        "ev-cl-winner"
+        "ev-cl-real-recommendation",
+        "ev-cl-real-public-selection"
       ],
-      "extractorRunId": "extract-cl-demo-v1",
-      "confidence": 0.99,
+      "extractorRunId": "manual-public-snapshot-v1",
+      "confidence": 1,
       "riskTier": "consequential",
       "status": "eligible",
-      "promotionReason": "A reviewer confirmed the award statement against the resolution.",
-      "reviewedBy": "benchmark-reviewer",
-      "reviewedAt": "2026-07-14T13:00:00.000Z",
+      "promotionReason": "A reviewer verified the recommendation wording against the report and public detail while preserving the decision-stage limitation.",
+      "reviewedBy": "daslav-build-week-reviewer",
+      "reviewedAt": "2026-07-15T03:53:23.000Z",
       "supersedesClaimId": null
     },
     {
-      "id": "claim-cl-loss-reason",
-      "procedureId": "CL-DEMO-001",
-      "lotId": "LOT-1",
+      "id": "claim-cl-real-loss-reason",
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null,
       "subject": {
-        "type": "supplier",
-        "id": "supplier-andes",
-        "label": "Andes Clinical Supply"
+        "type": "procedure",
+        "id": "5802381-7547UCUK",
+        "label": "Office furniture quotation"
       },
       "predicate": "loss_reason",
-      "value": "Lower total evaluation score, including technical criteria",
-      "statement": "Andes Clinical Supply was not awarded because its total evaluated score was lower; the report identifies delivery time and warranty within the technical difference.",
+      "value": "Lower final evaluated percentage",
+      "statement": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
       "qualifiers": {
-        "causality": "reviewed"
+        "causality": "reviewed",
+        "decisionStage": "commission_recommendation"
       },
       "evidenceIds": [
-        "ev-cl-scores",
-        "ev-cl-technical",
-        "ev-cl-winner"
+        "ev-cl-real-criteria",
+        "ev-cl-real-scores",
+        "ev-cl-real-recommendation"
       ],
-      "extractorRunId": "extract-cl-demo-v1",
-      "confidence": 0.94,
+      "extractorRunId": "manual-public-snapshot-v1",
+      "confidence": 1,
       "riskTier": "consequential",
       "status": "eligible",
-      "promotionReason": "A reviewer confirmed the causal wording across evaluation and award records.",
-      "reviewedBy": "benchmark-reviewer",
-      "reviewedAt": "2026-07-14T13:05:00.000Z",
+      "promotionReason": "A reviewer checked the causal statement across the criteria, final percentages, and commission proposal.",
+      "reviewedBy": "daslav-build-week-reviewer",
+      "reviewedAt": "2026-07-15T03:53:23.000Z",
       "supersedesClaimId": null
     }
   ],
   "evidence": [
     {
-      "id": "ev-cl-prices",
-      "sourceManifestId": "manifest-cl-opening",
-      "contentHash": "2222222222222222222222222222222222222222222222222222222222222222",
+      "id": "ev-cl-real-criteria",
+      "sourceManifestId": "manifest-cl-real-evaluation",
+      "contentHash": "799af4a0c50b80f328ee232346d549014d1ae523751fd121258fb954c0b460a1",
       "locator": {
         "page": 3,
-        "section": "Economic offers",
-        "table": "Table 2",
+        "section": "5.1. Criterios de Evaluación",
+        "table": "Formulas and weights",
         "startOffset": null,
         "endOffset": null
       },
-      "extractedText": "DemoMed: CLP 48,500,000. Andes Clinical Supply: CLP 46,900,000.",
-      "parserVersion": "fixture-parser.v1"
+      "extractedText": "The evaluation weighted economic price at 90% and delivery time at 10%.",
+      "parserVersion": "pdftotext-reviewed-translation.v1"
     },
     {
-      "id": "ev-cl-scores",
-      "sourceManifestId": "manifest-cl-evaluation",
-      "contentHash": "3333333333333333333333333333333333333333333333333333333333333333",
+      "id": "ev-cl-real-scores",
+      "sourceManifestId": "manifest-cl-real-evaluation",
+      "contentHash": "2e1b778aadd64e89fc528acbe762815cb932d9df92ff372df3756a4efba5073d",
       "locator": {
-        "page": 7,
-        "section": "Final score",
-        "table": "Evaluation matrix",
+        "page": 4,
+        "section": "5.2. Cuadro de Evaluación",
+        "table": "Evaluation of offers",
         "startOffset": null,
         "endOffset": null
       },
-      "extractedText": "DemoMed obtained 92.4 points. Andes Clinical Supply obtained 86.1 points.",
-      "parserVersion": "fixture-parser.v1"
+      "extractedText": "Final evaluated percentages were: Comercial Hagelin 98.33%; Metalurgica Silcosil 88.50%; Melman 72.09%; Muebles Timaukel 69.01%; Edge 65.19%; LEFI 64.27%; Status 57.62%; Eventail 56.15%.",
+      "parserVersion": "pdftotext-reviewed-translation.v1"
     },
     {
-      "id": "ev-cl-technical",
-      "sourceManifestId": "manifest-cl-evaluation",
-      "contentHash": "4444444444444444444444444444444444444444444444444444444444444444",
+      "id": "ev-cl-real-recommendation",
+      "sourceManifestId": "manifest-cl-real-evaluation",
+      "contentHash": "f85c48d71c245a81e41432c0582159db096d16da3191cb3c9a0fed2c52d70e41",
       "locator": {
-        "page": 5,
-        "section": "Technical evaluation",
+        "page": 4,
+        "section": "6. Propuesta de la Comisión Evaluadora",
         "table": null,
         "startOffset": null,
         "endOffset": null
       },
-      "extractedText": "DemoMed received the maximum technical score based on documented delivery time and warranty.",
-      "parserVersion": "fixture-parser.v1"
+      "extractedText": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA because it met the administrative, technical, and economic criteria and obtained the highest percentage in the evaluation.",
+      "parserVersion": "pdftotext-reviewed-translation.v1"
     },
     {
-      "id": "ev-cl-winner",
-      "sourceManifestId": "manifest-cl-award",
-      "contentHash": "6666666666666666666666666666666666666666666666666666666666666666",
+      "id": "ev-cl-real-public-selection",
+      "sourceManifestId": "manifest-cl-real-detail",
+      "contentHash": "b06af45324ad97c162d09ce933612244e31b49b7e60fa8bf6096da09bec18d33",
       "locator": {
-        "page": 2,
-        "section": "Resolution",
+        "page": null,
+        "section": "Justificación de selección de proveedor",
         "table": null,
         "startOffset": null,
         "endOffset": null
       },
-      "extractedText": "Lot 1 is awarded to DemoMed Ltd.",
-      "parserVersion": "fixture-parser.v1"
+      "extractedText": "The public procurement detail identifies Comercial Hagelin SpA as the selected supplier justification for quotation 5802381-7547UCUK.",
+      "parserVersion": "html-reviewed-translation.v1"
     }
   ]
 }
