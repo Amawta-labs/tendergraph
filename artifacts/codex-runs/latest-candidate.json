@@ -1,37 +1,39 @@
 {
-  "title": "StructuredTenderAnswer",
+  "title": "Tender award explanation",
   "summary": "3 promoted claims answer the request. Every statement below is bound to reviewed evidence by the claim contract.",
-  "status": "simulated",
+  "status": "official",
   "sections": [
     {
-      "heading": "Award rule",
-      "body": "The benchmark awards Lot 1 to the admissible offer with the highest corrected total score.",
+      "heading": "Evaluation results",
+      "body": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
       "claimIds": [
-        "claim-cl-correction-rule"
+        "claim-cl-real-scores"
       ],
       "evidenceIds": [
-        "ev-cl-correction-criterion"
+        "ev-cl-real-scores"
       ]
     },
     {
-      "heading": "Corrected winner",
-      "body": "The corrective benchmark resolution supersedes the original decision and names Andes Clinical Supply as winner of Lot 1 with 94.1 corrected points.",
+      "heading": "Award recommendation",
+      "body": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
       "claimIds": [
-        "claim-cl-correction-winner"
+        "claim-cl-real-award-recommendation"
       ],
       "evidenceIds": [
-        "ev-cl-correction-new-winner"
+        "ev-cl-real-recommendation",
+        "ev-cl-real-public-selection"
       ]
     },
     {
-      "heading": "Corrected score comparison",
-      "body": "DemoMed Ltd. is not awarded in the corrected benchmark because its 91.8 corrected points are below Andes Clinical Supply's 94.1 points after the warranty-score formula was fixed.",
+      "heading": "Reason for recommendation",
+      "body": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
       "claimIds": [
-        "claim-cl-correction-loss"
+        "claim-cl-real-loss-reason"
       ],
       "evidenceIds": [
-        "ev-cl-correction-new-winner",
-        "ev-cl-correction-new-loss"
+        "ev-cl-real-criteria",
+        "ev-cl-real-scores",
+        "ev-cl-real-recommendation"
       ]
     }
   ],

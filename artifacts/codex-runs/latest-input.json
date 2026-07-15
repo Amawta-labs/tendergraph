@@ -1,32 +1,32 @@
 {
   "contractVersion": "codex-composition.v1",
-  "runId": "c0822db4-09df-49b9-a7ef-0682fa0ed466",
-  "createdAt": "2026-07-15T04:26:42.530Z",
+  "runId": "df4ebc99-a333-4bbe-b42e-0f29f5a7f1b4",
+  "createdAt": "2026-07-15T04:29:59.476Z",
   "requestedModel": "gpt-5.6-terra",
   "fixture": {
-    "id": "cl-correction-demo",
-    "name": "Chile award correction benchmark",
-    "dataStatus": "synthetic",
-    "sourceNote": "The procedure, suppliers, documents, and correction are fictional and must not be presented as an official procurement record.",
+    "id": "cl-real-5802381-7547UCUK",
+    "name": "University of Chile office furniture evaluation",
+    "dataStatus": "public_snapshot",
+    "sourceNote": "Official public snapshot. TenderGraph reports the evaluation commission's recommendation, not evidence of a signed final contract.",
     "scope": {
       "jurisdiction": "CL",
-      "procedureId": "CL-CORRECTION-001",
-      "lotId": "LOT-1"
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null
     }
   },
   "answerPlan": {
-    "requestId": "604b6764-bd31-4bc9-874a-0d616e911dc0",
+    "requestId": "ef23d7fe-ad4b-4b62-87eb-3f90258c2d65",
     "scope": {
       "jurisdiction": "CL",
-      "procedureId": "CL-CORRECTION-001",
-      "lotId": "LOT-1"
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null
     },
     "intent": "award_explanation",
-    "question": "Who won after the correction and why?",
+    "question": "Who was recommended for award and why?",
     "selectedClaimIds": [
-      "claim-cl-correction-rule",
-      "claim-cl-correction-winner",
-      "claim-cl-correction-loss"
+      "claim-cl-real-scores",
+      "claim-cl-real-award-recommendation",
+      "claim-cl-real-loss-reason"
     ],
     "requiredSignals": [
       "winner",
@@ -48,138 +48,155 @@
   },
   "readerContract": {
     "summary": "3 promoted claims answer the request. Every statement below is bound to reviewed evidence by the claim contract.",
-    "status": "simulated",
+    "status": "official",
     "gaps": [],
     "recommendation": "Use the cited evidence and unresolved review items before taking a consequential procurement decision."
   },
   "promotedClaims": [
     {
-      "id": "claim-cl-correction-rule",
-      "procedureId": "CL-CORRECTION-001",
-      "lotId": "LOT-1",
+      "id": "claim-cl-real-scores",
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null,
       "subject": {
-        "type": "lot",
-        "id": "CL-CORRECTION-001-LOT-1",
-        "label": "Lot 1"
+        "type": "procedure",
+        "id": "5802381-7547UCUK",
+        "label": "Office furniture quotation"
       },
-      "predicate": "award_rule",
-      "value": "highest corrected total score",
-      "statement": "The benchmark awards Lot 1 to the admissible offer with the highest corrected total score.",
+      "predicate": "official_scores",
+      "value": "Hagelin 98.33; Silcosil 88.50; Melman 72.09; Timaukel 69.01; Edge 65.19; LEFI 64.27; Status 57.62; Eventail 56.15",
+      "statement": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
       "qualifiers": {
-        "benchmark": "synthetic"
+        "scoreType": "evaluation_report_percentage",
+        "sourceLanguage": "es"
       },
       "evidenceIds": [
-        "ev-cl-correction-criterion"
+        "ev-cl-real-scores"
       ],
-      "extractorRunId": "extract-cl-correction-v1",
+      "extractorRunId": "manual-public-snapshot-v1",
       "confidence": 1,
       "riskTier": "low",
       "status": "eligible",
-      "promotionReason": "Directly stated in the synthetic evaluation rule.",
+      "promotionReason": "The final evaluation table explicitly states every percentage.",
       "reviewedBy": null,
       "reviewedAt": null,
       "supersedesClaimId": null
     },
     {
-      "id": "claim-cl-correction-winner",
-      "procedureId": "CL-CORRECTION-001",
-      "lotId": "LOT-1",
+      "id": "claim-cl-real-award-recommendation",
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null,
       "subject": {
         "type": "supplier",
-        "id": "supplier-andes",
-        "label": "Andes Clinical Supply"
+        "id": "supplier-comercial-hagelin",
+        "label": "Comercial Hagelin SpA"
       },
-      "predicate": "winner",
-      "value": "Andes Clinical Supply",
-      "statement": "The corrective benchmark resolution supersedes the original decision and names Andes Clinical Supply as winner of Lot 1 with 94.1 corrected points.",
+      "predicate": "award_recommendation",
+      "value": "Comercial Hagelin SpA",
+      "statement": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
       "qualifiers": {
-        "decisionVersion": "corrected",
-        "benchmark": "synthetic"
+        "decisionStage": "commission_recommendation",
+        "sourceLanguage": "es"
       },
       "evidenceIds": [
-        "ev-cl-correction-new-winner"
+        "ev-cl-real-recommendation",
+        "ev-cl-real-public-selection"
       ],
-      "extractorRunId": "extract-cl-correction-v2",
+      "extractorRunId": "manual-public-snapshot-v1",
       "confidence": 1,
       "riskTier": "consequential",
       "status": "eligible",
-      "promotionReason": "Directly stated in the later corrective resolution and human-reviewed.",
-      "reviewedBy": "Synthetic benchmark reviewer",
-      "reviewedAt": "2026-07-14T15:15:00.000Z",
-      "supersedesClaimId": "claim-cl-correction-original-winner"
+      "promotionReason": "A reviewer verified the recommendation wording against the report and public detail while preserving the decision-stage limitation.",
+      "reviewedBy": "daslav-build-week-reviewer",
+      "reviewedAt": "2026-07-15T03:53:23.000Z",
+      "supersedesClaimId": null
     },
     {
-      "id": "claim-cl-correction-loss",
-      "procedureId": "CL-CORRECTION-001",
-      "lotId": "LOT-1",
+      "id": "claim-cl-real-loss-reason",
+      "procedureId": "5802381-7547UCUK",
+      "lotId": null,
       "subject": {
-        "type": "supplier",
-        "id": "supplier-demomed",
-        "label": "DemoMed Ltd."
+        "type": "procedure",
+        "id": "5802381-7547UCUK",
+        "label": "Office furniture quotation"
       },
       "predicate": "loss_reason",
-      "value": "lower corrected score",
-      "statement": "DemoMed Ltd. is not awarded in the corrected benchmark because its 91.8 corrected points are below Andes Clinical Supply's 94.1 points after the warranty-score formula was fixed.",
+      "value": "Lower final evaluated percentage",
+      "statement": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
       "qualifiers": {
-        "decisionVersion": "corrected",
-        "benchmark": "synthetic"
+        "causality": "reviewed",
+        "decisionStage": "commission_recommendation"
       },
       "evidenceIds": [
-        "ev-cl-correction-new-winner",
-        "ev-cl-correction-new-loss"
+        "ev-cl-real-criteria",
+        "ev-cl-real-scores",
+        "ev-cl-real-recommendation"
       ],
-      "extractorRunId": "extract-cl-correction-v2",
+      "extractorRunId": "manual-public-snapshot-v1",
       "confidence": 1,
       "riskTier": "consequential",
       "status": "eligible",
-      "promotionReason": "The corrected score and stated formula correction establish the causal comparison.",
-      "reviewedBy": "Synthetic benchmark reviewer",
-      "reviewedAt": "2026-07-14T15:15:00.000Z",
-      "supersedesClaimId": "claim-cl-correction-original-loss"
+      "promotionReason": "A reviewer checked the causal statement across the criteria, final percentages, and commission proposal.",
+      "reviewedBy": "daslav-build-week-reviewer",
+      "reviewedAt": "2026-07-15T03:53:23.000Z",
+      "supersedesClaimId": null
     }
   ],
   "evidence": [
     {
-      "id": "ev-cl-correction-criterion",
-      "sourceManifestId": "manifest-cl-correction-original",
-      "contentHash": "3333333333333333333333333333333333333333333333333333333333333333",
+      "id": "ev-cl-real-criteria",
+      "sourceManifestId": "manifest-cl-real-evaluation",
+      "contentHash": "799af4a0c50b80f328ee232346d549014d1ae523751fd121258fb954c0b460a1",
       "locator": {
-        "page": 1,
-        "section": "Evaluation rule",
+        "page": 3,
+        "section": "5.1. Criterios de Evaluación",
+        "table": "Formulas and weights",
+        "startOffset": null,
+        "endOffset": null
+      },
+      "extractedText": "The evaluation weighted economic price at 90% and delivery time at 10%.",
+      "parserVersion": "pdftotext-reviewed-translation.v1"
+    },
+    {
+      "id": "ev-cl-real-scores",
+      "sourceManifestId": "manifest-cl-real-evaluation",
+      "contentHash": "2e1b778aadd64e89fc528acbe762815cb932d9df92ff372df3756a4efba5073d",
+      "locator": {
+        "page": 4,
+        "section": "5.2. Cuadro de Evaluación",
+        "table": "Evaluation of offers",
+        "startOffset": null,
+        "endOffset": null
+      },
+      "extractedText": "Final evaluated percentages were: Comercial Hagelin 98.33%; Metalurgica Silcosil 88.50%; Melman 72.09%; Muebles Timaukel 69.01%; Edge 65.19%; LEFI 64.27%; Status 57.62%; Eventail 56.15%.",
+      "parserVersion": "pdftotext-reviewed-translation.v1"
+    },
+    {
+      "id": "ev-cl-real-recommendation",
+      "sourceManifestId": "manifest-cl-real-evaluation",
+      "contentHash": "f85c48d71c245a81e41432c0582159db096d16da3191cb3c9a0fed2c52d70e41",
+      "locator": {
+        "page": 4,
+        "section": "6. Propuesta de la Comisión Evaluadora",
         "table": null,
         "startOffset": null,
         "endOffset": null
       },
-      "extractedText": "The lot is awarded to the admissible offer with the highest corrected total score.",
-      "parserVersion": "synthetic-benchmark.v1"
+      "extractedText": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA because it met the administrative, technical, and economic criteria and obtained the highest percentage in the evaluation.",
+      "parserVersion": "pdftotext-reviewed-translation.v1"
     },
     {
-      "id": "ev-cl-correction-new-winner",
-      "sourceManifestId": "manifest-cl-correction-resolution",
-      "contentHash": "6666666666666666666666666666666666666666666666666666666666666666",
+      "id": "ev-cl-real-public-selection",
+      "sourceManifestId": "manifest-cl-real-detail",
+      "contentHash": "b06af45324ad97c162d09ce933612244e31b49b7e60fa8bf6096da09bec18d33",
       "locator": {
-        "page": 1,
-        "section": "Corrected decision",
+        "page": null,
+        "section": "Justificación de selección de proveedor",
         "table": null,
         "startOffset": null,
         "endOffset": null
       },
-      "extractedText": "The corrective resolution supersedes the original decision and names Andes Clinical Supply as winner with 94.1 corrected points.",
-      "parserVersion": "synthetic-benchmark.v1"
-    },
-    {
-      "id": "ev-cl-correction-new-loss",
-      "sourceManifestId": "manifest-cl-correction-resolution",
-      "contentHash": "7777777777777777777777777777777777777777777777777777777777777777",
-      "locator": {
-        "page": 2,
-        "section": "Correction rationale",
-        "table": "Corrected scores",
-        "startOffset": null,
-        "endOffset": null
-      },
-      "extractedText": "After correcting the warranty-score formula, DemoMed records 91.8 points and is not awarded because Andes records 94.1 points.",
-      "parserVersion": "synthetic-benchmark.v1"
+      "extractedText": "The public procurement detail identifies Comercial Hagelin SpA as the selected supplier justification for quotation 5802381-7547UCUK.",
+      "parserVersion": "html-reviewed-translation.v1"
     }
   ]
 }
