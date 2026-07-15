@@ -115,6 +115,8 @@ Codex was used to:
 - Identify the paper's key limitation: contract preservation does not prove upstream claim correctness, so TenderGraph adds domain-specific claim verification targets.
 - Preserve the product decisions that consequential procurement conclusions require evidence and human approval.
 
+Codex accelerated repository inspection, contract implementation, adversarial test generation, public-source verification, browser review, and repeatable build/evaluation work. The team made the product and engineering decisions: the bidder audience and opening/award scope; the public-versus-synthetic truth boundary; the commission-recommendation limitation; human approval for consequential claims; incremental dependency reevaluation; and deterministic fallback as the final authority boundary.
+
 Codex is also a product runtime surface: `plugins/tendergraph` packages the analysis workflow, while `src/cli/codex-run.ts` invokes GPT-5.6 Terra in a read-only sandbox and records the resulting Codex session ID in the audit trace.
 
 Before submission, the entrant will add the primary `/feedback` session ID and retain dated Git history as required by the hackathon rules.
