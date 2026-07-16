@@ -5,15 +5,35 @@
 | Field | Value |
 | --- | --- |
 | Document | Product, technical, evaluation, and hackathon pre-project |
-| Status | Approved implementation baseline |
-| Version | 1.1 |
-| Last updated | July 14, 2026 |
+| Status | Target architecture with an implemented Build Week vertical slice |
+| Version | 1.2 |
+| Last updated | July 15, 2026 |
 | Build Week track | Work & Productivity |
 | Entrant | Individual |
 | Product language | English |
 | Repository model | Public, Apache-2.0 planned |
 
-> TenderGraph turns fragmented tender packages into evidence-backed decisions, coordinates specialist AI agents across the bidder lifecycle, and shows exactly what changed when new evidence arrives.
+> Target vision: TenderGraph turns fragmented tender packages into evidence-backed decisions, coordinates specialist AI agents across the bidder lifecycle, and shows exactly what changed when new evidence arrives.
+
+### Current Build Week scope
+
+This document defines the target product architecture. It is not a claim that every
+component below is implemented in the current submission. The judged vertical slice is:
+
+| Area | Current submission state |
+| --- | --- |
+| Opening and award workbench | Implemented for one frozen public Chile case and synthetic benchmarks |
+| Source-to-claim authority and output harness | Implemented and enforced in application code |
+| GPT-5.6 Terra | Bounded structured composition through authenticated local Codex |
+| Evidence change handling | Validation and visualization of versioned, predeclared delta contracts |
+| Automatic document ingestion and impact discovery | Not implemented |
+| Specialist-agent workflow and lifecycle routes | Target architecture; not implemented |
+| Live CL/EU/UK connectors | Target architecture; current EU/UK proof uses synthetic fixtures |
+| PostgreSQL, object storage, durable workflow, SSE | Target architecture; not implemented |
+
+The authoritative implementation inventory and known limits are maintained in
+`README.md`, `docs/HARNESS_ENGINEERING_PLAN.md`, and
+`logs/architecture-implementation-video-review-2026-07-15.md`.
 
 ## 1. Executive Summary
 
@@ -26,15 +46,15 @@ Procurement teams work across notices, emails, PDFs, spreadsheets, forms, certif
 - What happened at opening and award?
 - Why did we win or lose, and what should change next time?
 
-TenderGraph is an agentic procurement intelligence operating system for supplier-side bid teams. It covers the full lifecycle from opportunity discovery to post-award learning. Its primary product surface is a traceable decision workbench, not a generic document chat.
+The target product is an agentic procurement intelligence operating system for supplier-side bid teams covering the full lifecycle from opportunity discovery to post-award learning. The current submission implements the opening-and-award vertical slice. Its primary product surface is a traceable decision workbench, not a generic document chat.
 
-The system combines a jurisdiction-independent procurement model, source-specific connectors, durable multi-step agent workflows, deterministic validation tools, and an evidence graph. Every material claim must point to a source location. When a new document arrives, TenderGraph identifies the affected claims, reruns only the relevant analysis, and presents a before-and-after explanation.
+The target architecture combines a jurisdiction-independent procurement model, source-specific connectors, durable multi-step agent workflows, deterministic validation tools, and an evidence graph. In the current slice, every surfaced finding is bound to an admitted claim and evidence records; versioned delta fixtures prove validation and presentation of before-and-after impact, while automatic ingestion, dependency discovery, and selective reruns remain roadmap work.
 
-The first public release proves universality through three public procurement ecosystems:
+The current schema demonstrates portability across three procurement shapes, with one public Chile case and synthetic EU/UK fixtures:
 
-1. Chile Mercado Publico for a document-rich, item-level case.
-2. European Union TED for cross-border notice ingestion.
-3. United Kingdom Contracts Finder for OCDS-compatible records.
+1. Chile Mercado Publico for a frozen public evaluation case.
+2. European Union TED-shaped synthetic fixture.
+3. United Kingdom Contracts Finder-shaped synthetic fixture.
 
 ## 2. Product Thesis
 
@@ -726,6 +746,6 @@ Consequential claims require human review. This includes compliance, exclusion, 
 
 Every structured output has a deterministic fallback. Invalid schema, unsupported claims, unknown evidence, scope contamination, internal leakage, missing answer signals, model failure, or timeout prevents the live output from reaching the user.
 
-Build Week uses one deep Chilean opening-and-award flow plus TED and Contracts Finder portability fixtures. The repository benchmark contains 18 fixed scenarios and a one-property fault-injection suite. Contract-preservation metrics remain separate from upstream claim correctness, which requires manual evidence verification.
+Build Week uses one deep Chilean opening-and-award flow plus TED and Contracts Finder portability fixtures. The repository benchmark contains 23 fixed scenarios and a one-property fault-injection suite. Contract-preservation metrics remain separate from upstream claim correctness, which requires manual evidence verification.
 
 The implementation contract, gates, evaluation protocol, and reference attribution are maintained in `docs/HARNESS_ENGINEERING_PLAN.md` and `THIRD_PARTY_NOTICES.md`.

@@ -1,0 +1,50 @@
+{
+  "remediationId": "architecture-video-remediation-2026-07-16",
+  "parentReview": "architecture-implementation-video-review-2026-07-15",
+  "createdAt": "2026-07-16",
+  "video": {
+    "path": "public/tendergraph-build-week-demo.mp4",
+    "sha256": "fdfc61d959786b1685cdf2ad5bd84594a41ffcd39189e3f854e392c23e89dc9c",
+    "durationSeconds": 143.433,
+    "resolution": "1920x1080",
+    "format": "H.264/AAC",
+    "integratedLoudnessLufs": -17.8,
+    "truePeakDbfs": -1.5,
+    "interactionCaptured": true,
+    "sceneCount": 6
+  },
+  "liveBrowserRun": {
+    "contract": "tendergraph-live-browser-capture.v1",
+    "observedRunningState": true,
+    "observedCompletedState": true,
+    "elapsedMs": 9171,
+    "codexSessionId": "019f6923-3056-7a32-b3c6-2ee17797f93d",
+    "gatesPassed": 15,
+    "gatesTotal": 15,
+    "decisionStage": "commission_recommendation",
+    "retainedVideo": "artifacts/submission/live-codex-run.mp4",
+    "retainedVideoSha256": "46a06cf9092a12a2480bf4c3fbc2ce895b7a35da8200de874c150e52eeb39bfd"
+  },
+  "findingStatus": {
+    "ARV-001": "open_external_action",
+    "ARV-002": "resolved",
+    "ARV-003": "resolved",
+    "ARV-004": "resolved",
+    "ARV-005": "resolved",
+    "ARV-006": "resolved",
+    "ARV-007": "resolved",
+    "ARV-008": "resolved",
+    "ARV-009": "accepted_bounded_limit",
+    "ARV-010": "accepted_bounded_limit",
+    "ARV-011": "resolved",
+    "ARV-012": "resolved",
+    "ARV-013": "accepted_bounded_limit",
+    "ARV-014": "resolved",
+    "ARV-015": "resolved"
+  },
+  "finalCodexSmokeSessions": [
+    "019f6931-199d-7070-9b6e-0142bc573fa5",
+    "019f6931-3d99-7df1-86e6-b99ce0fc370a"
+  ],
+  "submissionReadiness": "blocked_only_by_external_publication_identifiers"
+}

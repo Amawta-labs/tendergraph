@@ -13,10 +13,10 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 - [ ] Confirm every team member is eligible in their country/territory and has no disqualifying conflict.
 - [ ] Appoint one eligible team representative for the Devpost entry.
-- [ ] Confirm the repository is original team work and contains no Arquimed code, client data, secrets, or unlicensed assets.
+- [x] Confirm the repository is original team work and contains no Arquimed code, client data, secrets, or unlicensed assets (`0` exact source-file hash matches; placeholder-only secret scan).
 - [x] Record the prior-project boundary in `docs/BUILD_WEEK_PROVENANCE.md`.
 - [x] Attribute the paper, open-source packages, and public ChileCompra material in `THIRD_PARTY_NOTICES.md`.
-- [ ] Recheck every third-party API, dataset, font, icon, and media license before submission.
+- [x] Recheck every third-party API, dataset, font, icon, and media license before submission (`79` packages, `0` unknown licenses).
 
 ## Required project evidence
 
@@ -25,7 +25,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] Dated Git commits distinguish new Build Week work.
 - [x] Runtime Codex session IDs are preserved in `artifacts/evals/codex-smoke.json`.
 - [ ] Run `/feedback` in the primary Codex development thread and record that session ID in README and Devpost.
-- [ ] Keep timestamped Codex logs/session history available if Devpost requests evidence.
+- [x] Keep timestamped Codex session evidence in `artifacts/evals/codex-smoke.json` and `artifacts/submission/live-codex-run.json`.
 
 ## Repository and testing
 
@@ -34,8 +34,8 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] README explains installation, testing, Codex collaboration, product decisions, runtime use of GPT-5.6, and fallback behavior.
 - [x] Judges can test https://openaihack.vercel.app without rebuilding or authentication.
 - [x] Local live-Codex and plugin instructions are documented.
-- [x] Confirm the final hosted URL is accessible without login; recheck it before submission and through the judging period.
-- [ ] Run the final command set on the submitted commit: typecheck, tests, deterministic eval, ablation, Codex smoke, build, and dependency audit.
+- [ ] Confirm the redeployed final hosted URL and video hash are accessible without login; recheck them through the judging period.
+- [x] Run the final command set for the freeze candidate: typecheck, tests, deterministic eval, ablation, Codex smoke, build, and dependency audit.
 
 ## Devpost fields
 
@@ -48,7 +48,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 ## Video
 
-- [x] Render a clear 2:09 demo with English audio at `public/tendergraph-build-week-demo.mp4`.
+- [x] Render a clear 2:23 demo with English audio at `public/tendergraph-build-week-demo.mp4`.
 - [x] Keep the video under three minutes.
 - [x] Show what was built and how Codex and GPT-5.6 were used.
 - [ ] Upload publicly to YouTube and add the URL to Devpost.

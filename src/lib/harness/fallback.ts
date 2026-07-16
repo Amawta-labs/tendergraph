@@ -4,6 +4,30 @@ import type {
   StructuredTenderAnswer,
 } from "./schemas";
 
+function inferDecisionStage(
+  selected: CaseFixture["claims"],
+  plan: AnswerPlan,
+): StructuredTenderAnswer["decisionStage"] {
+  const explicitStages = selected
+    .map((claim) => claim.qualifiers.decisionStage)
+    .filter(Boolean);
+  if (explicitStages.includes("commission_recommendation")) {
+    return "commission_recommendation";
+  }
+  if (plan.intent === "opening") return "opening";
+  if (plan.intent === "compliance") return "document_review";
+  if (selected.some((claim) => /award_recommendation/.test(claim.predicate))) {
+    return "commission_recommendation";
+  }
+  if (selected.some((claim) => /winner|award/.test(claim.predicate))) {
+    return "award_decision";
+  }
+  if (selected.some((claim) => /score|evaluation/.test(claim.predicate))) {
+    return "evaluation";
+  }
+  return "unknown";
+}
+
 export function composeDeterministicFallback(
   fixture: CaseFixture,
   plan: AnswerPlan,
@@ -18,6 +42,12 @@ export function composeDeterministicFallback(
       title: fixture.name,
       summary: "The harness found no runtime-eligible claims for this question.",
       status: "insufficient_evidence",
+      decisionStage:
+        plan.intent === "opening"
+          ? "opening"
+          : plan.intent === "compliance"
+            ? "document_review"
+            : "unknown",
       sections: [],
       gaps: ["No promoted claim satisfies the requested scope and intent."],
       recommendation: "Collect or review additional evidence before deciding.",
@@ -35,6 +65,7 @@ export function composeDeterministicFallback(
     title: `${fixture.name}: verified findings`,
     summary: `${selected.length} promoted claim${selected.length === 1 ? "" : "s"} answer the request. Every statement below is bound to reviewed evidence by the claim contract.`,
     status: fixture.dataStatus === "synthetic" ? "simulated" : "official",
+    decisionStage: inferDecisionStage(selected, plan),
     sections,
     gaps: fixture.claims
       .filter((claim) => claim.status === "pending_review")

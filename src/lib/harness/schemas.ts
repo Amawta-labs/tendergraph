@@ -14,6 +14,16 @@ export const ClaimStatusSchema = z.enum([
   "rejected",
   "superseded",
 ]);
+export const SourceStatusSchema = z.enum([
+  "eligible",
+  "rejected",
+  "superseded",
+]);
+export const SourceRuntimePolicySchema = z.enum([
+  "claim_authority",
+  "context_only",
+  "excluded",
+]);
 
 export const ProcedureScopeSchema = z.object({
   jurisdiction: JurisdictionSchema,
@@ -42,6 +52,10 @@ export const SourceManifestSchema = z.object({
   license: z.string().min(1).nullable(),
   snapshotKey: z.string().min(1),
   retrievalMode: z.enum(["live", "snapshot"]),
+  sourceStatus: SourceStatusSchema,
+  runtimePolicy: SourceRuntimePolicySchema,
+  issuer: z.string().min(1).nullable(),
+  selectionRule: z.string().min(1),
 });
 
 export const EvidenceRecordSchema = z.object({
@@ -117,6 +131,16 @@ export const StructuredTenderAnswerSchema = z.object({
   title: z.string().min(1),
   summary: z.string().min(1),
   status: z.enum(["official", "simulated", "insufficient_evidence"]),
+  decisionStage: z
+    .enum([
+      "opening",
+      "document_review",
+      "evaluation",
+      "commission_recommendation",
+      "award_decision",
+      "unknown",
+    ])
+    .default("unknown"),
   sections: z.array(AnswerSectionSchema),
   gaps: z.array(z.string()),
   recommendation: z.string().min(1),
@@ -126,6 +150,23 @@ export const ValidationGateResultSchema = z.object({
   gate: z.string().min(1),
   passed: z.boolean(),
   code: z.string().min(1).nullable(),
+  details: z.record(z.string(), z.unknown()),
+});
+
+export const TraceStageNameSchema = z.enum([
+  "entity_routing",
+  "source_collection",
+  "claim_selection",
+  "answer_planning",
+  "composition",
+  "output_validation",
+]);
+
+export const TraceStageSchema = z.object({
+  stage: TraceStageNameSchema,
+  status: z.enum(["completed", "fallback", "error"]),
+  sourceState: z.enum(["live", "local", "fallback", "fixture", "error"]).nullable(),
+  artifactIds: z.array(z.string().min(1)),
   details: z.record(z.string(), z.unknown()),
 });
 
@@ -148,6 +189,7 @@ export const HarnessTraceSchema = z.object({
   validationResults: z.array(ValidationGateResultSchema),
   fallbackReason: z.string().min(1).nullable(),
   timings: z.record(z.string(), z.number().nonnegative()),
+  stages: z.array(TraceStageSchema).default([]),
   contractVersion: z.literal("harness.v1"),
 });
 
@@ -227,11 +269,29 @@ export const CodexRunInputSchema = z.object({
   readerContract: z.object({
     summary: z.string().min(1),
     status: z.enum(["official", "simulated", "insufficient_evidence"]),
+    decisionStage: z
+      .enum([
+        "opening",
+        "document_review",
+        "evaluation",
+        "commission_recommendation",
+        "award_decision",
+        "unknown",
+      ])
+      .default("unknown"),
     gaps: z.array(z.string()),
     recommendation: z.string().min(1),
   }),
   promotedClaims: z.array(PromotedClaimSchema),
   evidence: z.array(EvidenceRecordSchema),
+});
+
+export const CodexCandidateRecordSchema = z.object({
+  contractVersion: z.literal("codex-candidate-record.v1"),
+  sha256: z.string().regex(/^[a-f0-9]{64}$/),
+  characterCount: z.number().int().nonnegative(),
+  outputSchemaValid: z.boolean(),
+  rawCandidateRetained: z.literal(false),
 });
 
 export type CaseFixture = z.infer<typeof CaseFixtureSchema>;
@@ -242,6 +302,7 @@ export type PromotedClaim = z.infer<typeof PromotedClaimSchema>;
 export type AnswerPlan = z.infer<typeof AnswerPlanSchema>;
 export type StructuredTenderAnswer = z.infer<typeof StructuredTenderAnswerSchema>;
 export type ValidationGateResult = z.infer<typeof ValidationGateResultSchema>;
+export type TraceStage = z.infer<typeof TraceStageSchema>;
 export type HarnessTrace = z.infer<typeof HarnessTraceSchema>;
 export type CompositionResult = z.infer<typeof CompositionResultSchema>;
 export type EvidenceDeltaEvent = z.infer<typeof EvidenceDeltaEventSchema>;

@@ -1,42 +1,7 @@
 {
-  "title": "Tender award explanation",
-  "summary": "3 promoted claims answer the request. Every statement below is bound to reviewed evidence by the claim contract.",
-  "status": "official",
-  "sections": [
-    {
-      "heading": "Evaluation results",
-      "body": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
-      "claimIds": [
-        "claim-cl-real-scores"
-      ],
-      "evidenceIds": [
-        "ev-cl-real-scores"
-      ]
-    },
-    {
-      "heading": "Award recommendation",
-      "body": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
-      "claimIds": [
-        "claim-cl-real-award-recommendation"
-      ],
-      "evidenceIds": [
-        "ev-cl-real-recommendation",
-        "ev-cl-real-public-selection"
-      ]
-    },
-    {
-      "heading": "Reason for recommendation",
-      "body": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
-      "claimIds": [
-        "claim-cl-real-loss-reason"
-      ],
-      "evidenceIds": [
-        "ev-cl-real-criteria",
-        "ev-cl-real-scores",
-        "ev-cl-real-recommendation"
-      ]
-    }
-  ],
-  "gaps": [],
-  "recommendation": "Use the cited evidence and unresolved review items before taking a consequential procurement decision."
+  "contractVersion": "codex-candidate-record.v1",
+  "sha256": "c74959941ac506ea98add67e31ecec9bb616c71ea9657e19a34ff0ffa8603539",
+  "characterCount": 1195,
+  "outputSchemaValid": true,
+  "rawCandidateRetained": false
 }

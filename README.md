@@ -11,14 +11,14 @@ The model composes answers. It does not decide which sources, claims, policies, 
 ## What runs today
 
 - One hash-verified public Chilean evaluation case plus four synthetic benchmarks covering Chilean corrections, Chilean deep evidence, TED, and UK Contracts Finder structures.
-- Source manifests with hashes, retrieval mode, provenance, and evidence anchors.
+- Source manifests with hashes, eligibility status, runtime policy, selection rule, retrieval mode, provenance, and evidence anchors.
 - Risk-tiered claim admission with human review required for consequential claims.
 - Deterministic answer planning and validation gates outside the prompt.
 - GPT-5.6 Terra structured composition through ChatGPT-authenticated Codex.
 - A distributable Codex plugin and skill for running the evidence audit without an API key.
 - Automatic deterministic fallback when the model is unavailable or violates a contract.
-- Separate reader output and audit trace.
-- A validated incremental evidence diff for corroboration, invalidation, and claim supersession.
+- Separate reader output and a validated six-stage audit trace.
+- A validated, predeclared incremental evidence-delta contract for corroboration, invalidation, and claim supersession.
 - A 23-scenario benchmark and one-property fault-injection tests.
 - A responsive workbench for findings, evidence, review gaps, and gate status.
 
@@ -79,14 +79,14 @@ request + procedure scope
   -> GPT-5.6 Terra structured composition in Codex
   -> schema, grounding, scope, hygiene and trace gates
   -> accepted reader output OR deterministic fallback
-  -> separate audit trace
+  -> separate six-stage audit trace
 ```
 
 Only `eligible` claims may enter an answer plan. Consequential claims additionally require a reviewer and review timestamp. A confidence score never grants runtime authority.
 
-The default public case includes a versioned evidence event: adding the public selection record affects only the award-recommendation claim. A separate synthetic correction benchmark proves that a later resolution can supersede the winner and loss explanation while leaving the award rule unchanged. Open that story directly at `http://localhost:3000/?case=cl-correction-demo`.
+The default public case includes a versioned evidence event declaring that the public selection record affects only the award-recommendation claim; TenderGraph validates that no other claim consumes the added evidence. A separate synthetic correction benchmark validates that a later resolution can supersede the winner and loss explanation while leaving the award rule unchanged. These are predeclared delta contracts, not automatic document ingestion or impact discovery. Open that story directly at `http://localhost:3000/?case=cl-correction-demo`.
 
-See [`docs/HARNESS_ENGINEERING_PLAN.md`](docs/HARNESS_ENGINEERING_PLAN.md) for the engineering contract and [`PREPROJECT_TENDERGRAPH.md`](PREPROJECT_TENDERGRAPH.md) for the product baseline.
+See [`docs/HARNESS_ENGINEERING_PLAN.md`](docs/HARNESS_ENGINEERING_PLAN.md) for the engineering contract, [`docs/PAPER_ADOPTION_AUDIT.md`](docs/PAPER_ADOPTION_AUDIT.md) for the exact paper mapping and experimental limits, and [`PREPROJECT_TENDERGRAPH.md`](PREPROJECT_TENDERGRAPH.md) for the product baseline.
 The boundary between prior domain exploration and new Build Week work is recorded in [`docs/BUILD_WEEK_PROVENANCE.md`](docs/BUILD_WEEK_PROVENANCE.md).
 
 ## API

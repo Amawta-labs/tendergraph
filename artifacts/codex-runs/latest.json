@@ -1,41 +1,40 @@
 {
   "mode": "live",
   "readerOutput": {
-    "title": "Tender award explanation",
+    "title": "TenderGraph procurement answer",
     "summary": "3 promoted claims answer the request. Every statement below is bound to reviewed evidence by the claim contract.",
-    "status": "official",
+    "status": "simulated",
+    "decisionStage": "award_decision",
     "sections": [
       {
-        "heading": "Evaluation results",
-        "body": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
+        "heading": "Award rule",
+        "body": "The benchmark awards Lot 1 to the admissible offer with the highest corrected total score.",
         "claimIds": [
-          "claim-cl-real-scores"
+          "claim-cl-correction-rule"
         ],
         "evidenceIds": [
-          "ev-cl-real-scores"
+          "ev-cl-correction-criterion"
         ]
       },
       {
-        "heading": "Award recommendation",
-        "body": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
+        "heading": "Corrected winner",
+        "body": "The corrective benchmark resolution supersedes the original decision and names Andes Clinical Supply as winner of Lot 1 with 94.1 corrected points.",
         "claimIds": [
-          "claim-cl-real-award-recommendation"
+          "claim-cl-correction-winner"
         ],
         "evidenceIds": [
-          "ev-cl-real-recommendation",
-          "ev-cl-real-public-selection"
+          "ev-cl-correction-new-winner"
         ]
       },
       {
-        "heading": "Reason for recommendation",
-        "body": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
+        "heading": "Corrected score comparison",
+        "body": "DemoMed Ltd. is not awarded in the corrected benchmark because its 91.8 corrected points are below Andes Clinical Supply's 94.1 points after the warranty-score formula was fixed.",
         "claimIds": [
-          "claim-cl-real-loss-reason"
+          "claim-cl-correction-loss"
         ],
         "evidenceIds": [
-          "ev-cl-real-criteria",
-          "ev-cl-real-scores",
-          "ev-cl-real-recommendation"
+          "ev-cl-correction-new-winner",
+          "ev-cl-correction-new-loss"
         ]
       }
     ],
@@ -43,34 +42,32 @@
     "recommendation": "Use the cited evidence and unresolved review items before taking a consequential procurement decision."
   },
   "trace": {
-    "traceId": "60fed172-0b15-40b0-bf32-4faa0700a7e0",
-    "requestId": "ef23d7fe-ad4b-4b62-87eb-3f90258c2d65",
-    "createdAt": "2026-07-15T04:30:07.318Z",
+    "traceId": "216a29f2-279e-454c-b566-9fe8b3e7de94",
+    "requestId": "d36dcbdd-f7c6-4a06-a73d-7dbba846b2fa",
+    "createdAt": "2026-07-16T04:31:11.130Z",
     "resolvedScope": {
       "jurisdiction": "CL",
-      "procedureId": "5802381-7547UCUK",
-      "lotId": null
+      "procedureId": "CL-CORRECTION-001",
+      "lotId": "LOT-1"
     },
     "sourceManifestIds": [
-      "manifest-cl-real-evaluation",
-      "manifest-cl-real-detail"
+      "manifest-cl-correction-original",
+      "manifest-cl-correction-resolution"
     ],
     "evidenceIds": [
-      "ev-cl-real-scores",
-      "ev-cl-real-recommendation",
-      "ev-cl-real-public-selection",
-      "ev-cl-real-criteria",
-      "ev-cl-real-scores",
-      "ev-cl-real-recommendation"
+      "ev-cl-correction-criterion",
+      "ev-cl-correction-new-winner",
+      "ev-cl-correction-new-winner",
+      "ev-cl-correction-new-loss"
     ],
     "selectedClaimIds": [
-      "claim-cl-real-scores",
-      "claim-cl-real-award-recommendation",
-      "claim-cl-real-loss-reason"
+      "claim-cl-correction-rule",
+      "claim-cl-correction-winner",
+      "claim-cl-correction-loss"
     ],
     "model": "gpt-5.6-terra",
     "compositionSurface": "codex",
-    "codexSessionId": "019f6409-ebd8-78b3-9e5c-bd4c5822e440",
+    "codexSessionId": "019f6931-3d99-7df1-86e6-b99ce0fc370a",
     "compositionMode": "live",
     "validationResults": [
       {
@@ -87,9 +84,9 @@
         "code": null,
         "details": {
           "outputClaimIds": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ]
         }
       },
@@ -99,14 +96,14 @@
         "code": null,
         "details": {
           "expected": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ],
           "actual": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ]
         }
       },
@@ -128,12 +125,10 @@
         "code": null,
         "details": {
           "outputEvidenceIds": [
-            "ev-cl-real-scores",
-            "ev-cl-real-recommendation",
-            "ev-cl-real-public-selection",
-            "ev-cl-real-criteria",
-            "ev-cl-real-scores",
-            "ev-cl-real-recommendation"
+            "ev-cl-correction-criterion",
+            "ev-cl-correction-new-winner",
+            "ev-cl-correction-new-winner",
+            "ev-cl-correction-new-loss"
           ]
         }
       },
@@ -144,7 +139,8 @@
         "details": {
           "sourceLinksResolve": true,
           "snapshotHashesResolve": true,
-          "evidenceHashesResolve": true
+          "evidenceHashesResolve": true,
+          "usedSourcesAreEligible": true
         }
       },
       {
@@ -159,14 +155,14 @@
         "code": null,
         "details": {
           "expected": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ],
           "actual": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ]
         }
       },
@@ -175,8 +171,10 @@
         "passed": true,
         "code": null,
         "details": {
-          "expected": "official",
-          "actual": "official"
+          "expected": "simulated",
+          "actual": "simulated",
+          "expectedDecisionStage": "award_decision",
+          "actualDecisionStage": "award_decision"
         }
       },
       {
@@ -195,29 +193,151 @@
         "gate": "output_hygiene",
         "passed": true,
         "code": null,
-        "details": {}
-      },
-      {
-        "gate": "trace_completeness",
-        "passed": true,
-        "code": null,
-        "details": {}
+        "details": {
+          "containsInternalLeakage": false,
+          "decisionLanguageIsBounded": true
+        }
       },
       {
         "gate": "latency_budget",
         "passed": true,
         "code": null,
         "details": {
-          "elapsedMs": 7832,
+          "elapsedMs": 8760,
           "limitMs": 140000
+        }
+      },
+      {
+        "gate": "trace_completeness",
+        "passed": true,
+        "code": null,
+        "details": {
+          "schemaIssues": [],
+          "expectedStageOrder": [
+            "entity_routing",
+            "source_collection",
+            "claim_selection",
+            "answer_planning",
+            "composition",
+            "output_validation"
+          ],
+          "actualStageOrder": [
+            "entity_routing",
+            "source_collection",
+            "claim_selection",
+            "answer_planning",
+            "composition",
+            "output_validation"
+          ],
+          "stageArtifactsComplete": true,
+          "routeMatches": true
         }
       }
     ],
     "fallbackReason": null,
     "timings": {
-      "compositionMs": 7832,
-      "totalMs": 7832
+      "compositionMs": 8760,
+      "totalMs": 8760
     },
+    "stages": [
+      {
+        "stage": "entity_routing",
+        "status": "completed",
+        "sourceState": null,
+        "artifactIds": [
+          "procedure:CL-CORRECTION-001",
+          "lot:LOT-1"
+        ],
+        "details": {
+          "jurisdiction": "CL",
+          "procedureId": "CL-CORRECTION-001",
+          "lotId": "LOT-1",
+          "routeMethod": "explicit_fixture_scope"
+        }
+      },
+      {
+        "stage": "source_collection",
+        "status": "completed",
+        "sourceState": "fixture",
+        "artifactIds": [
+          "manifest-cl-correction-original",
+          "manifest-cl-correction-resolution"
+        ],
+        "details": {
+          "eligibleSources": 2,
+          "totalSources": 2
+        }
+      },
+      {
+        "stage": "claim_selection",
+        "status": "completed",
+        "sourceState": null,
+        "artifactIds": [
+          "claim-cl-correction-rule",
+          "claim-cl-correction-winner",
+          "claim-cl-correction-loss"
+        ],
+        "details": {
+          "selectedClaims": 3,
+          "intent": "award_explanation"
+        }
+      },
+      {
+        "stage": "answer_planning",
+        "status": "completed",
+        "sourceState": null,
+        "artifactIds": [
+          "d36dcbdd-f7c6-4a06-a73d-7dbba846b2fa",
+          "structured_tender_answer.v1"
+        ],
+        "details": {
+          "requiredSignals": [
+            "winner",
+            "evidence",
+            "uncertainty"
+          ],
+          "prohibitedAssertions": 9
+        }
+      },
+      {
+        "stage": "composition",
+        "status": "completed",
+        "sourceState": "live",
+        "artifactIds": [
+          "codex"
+        ],
+        "details": {
+          "compositionMode": "live",
+          "compositionSurface": "codex"
+        }
+      },
+      {
+        "stage": "output_validation",
+        "status": "completed",
+        "sourceState": null,
+        "artifactIds": [
+          "output_schema",
+          "claim_admission",
+          "claim_uniqueness",
+          "claim_text_integrity",
+          "claim_evidence_pairing",
+          "evidence_grounding",
+          "source_integrity",
+          "scope_isolation",
+          "answer_completeness",
+          "status_provenance",
+          "narrative_integrity",
+          "reader_audit_separation",
+          "output_hygiene",
+          "latency_budget"
+        ],
+        "details": {
+          "passed": 14,
+          "failed": 0,
+          "failureCodes": []
+        }
+      }
+    ],
     "contractVersion": "harness.v1"
   }
 }

@@ -1,0 +1,148 @@
+{
+  "reviewId": "architecture-implementation-video-review-2026-07-15",
+  "createdAt": "2026-07-15",
+  "scope": [
+    "target_architecture",
+    "current_implementation",
+    "submission_copy",
+    "rendered_video"
+  ],
+  "reviewers": [
+    "root",
+    "cumplimiento",
+    "frontier_product",
+    "paper_rigor"
+  ],
+  "video": {
+    "path": "public/tendergraph-build-week-demo.mp4",
+    "sha256": "94d49260310b081e92f5995f22b014a9993f89e29b2d93492e8b681c4e588383",
+    "durationSeconds": 128.97,
+    "resolution": "1920x1080",
+    "format": "H.264/AAC",
+    "interactionCaptured": false,
+    "sceneCount": 6
+  },
+  "summary": {
+    "harnessArchitecture": "implemented",
+    "procurementProductArchitecture": "partial",
+    "incrementalReevaluation": "predeclared_contract_only",
+    "liveCodex": "implemented_local_not_demonstrated_in_video",
+    "submissionReadiness": "blocked"
+  },
+  "findings": [
+    {
+      "id": "ARV-001",
+      "severity": "blocker",
+      "title": "Submission identifiers remain unresolved",
+      "evidence": ["docs/DEVPOST_SUBMISSION.md:8", "docs/DEVPOST_SUBMISSION.md:10", "docs/DEVPOST_SUBMISSION.md:12"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-002",
+      "severity": "critical",
+      "title": "Video does not demonstrate a live Codex run",
+      "evidence": ["scripts/render-submission-video.sh:27", "scripts/render-submission-video.sh:93", "docs/VIDEO_SCRIPT.md:28"],
+      "videoInterval": "00:40.98-01:09.33",
+      "status": "open"
+    },
+    {
+      "id": "ARV-003",
+      "severity": "high",
+      "title": "Automatic incremental reevaluation is overclaimed",
+      "evidence": ["PREPROJECT_TENDERGRAPH.md:152", "src/lib/harness/evidence-delta.ts:15"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-004",
+      "severity": "high",
+      "title": "Video falsely says findings are copied exactly from evidence",
+      "evidence": ["docs/VIDEO_SCRIPT.md:24", "src/lib/harness/gates.ts:120"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-005",
+      "severity": "high",
+      "title": "Target architecture is written as current behavior",
+      "evidence": ["PREPROJECT_TENDERGRAPH.md:124", "PREPROJECT_TENDERGRAPH.md:313", "PREPROJECT_TENDERGRAPH.md:372"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-006",
+      "severity": "high",
+      "title": "GPT-5.6 current role is narrower than architecture states",
+      "evidence": ["PREPROJECT_TENDERGRAPH.md:434", "src/cli/codex-run.ts:61"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-007",
+      "severity": "high",
+      "title": "Hosted and local Codex execution are visually conflated",
+      "evidence": ["scripts/render-submission-video.sh:10", "README.md:53"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-008",
+      "severity": "high",
+      "title": "Trace durability is overgeneralized",
+      "evidence": ["docs/VIDEO_SCRIPT.md:48", "src/lib/harness/store.ts:13"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-009",
+      "severity": "medium",
+      "title": "Evidence inspector does not deep-link an exact rendered anchor",
+      "evidence": ["src/components/workbench.tsx:46"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-010",
+      "severity": "medium",
+      "title": "Trace stages are synthesized after execution",
+      "evidence": ["src/lib/harness/trace.ts:26"],
+      "status": "accepted_limit"
+    },
+    {
+      "id": "ARV-011",
+      "severity": "medium",
+      "title": "Official status conflates source provenance with legal decision stage",
+      "evidence": ["src/lib/harness/fallback.ts:34"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-012",
+      "severity": "medium",
+      "title": "Evaluation metrics need narrower labels",
+      "evidence": ["evals/ablation.ts:44", "artifacts/evals/codex-smoke.json:5"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-013",
+      "severity": "medium",
+      "title": "Architecture acceptance metrics are largely unmeasured",
+      "evidence": ["PREPROJECT_TENDERGRAPH.md:462"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-014",
+      "severity": "low",
+      "title": "Video timing documentation does not match render",
+      "evidence": ["docs/VIDEO_SCRIPT.md:42"],
+      "status": "open"
+    },
+    {
+      "id": "ARV-015",
+      "severity": "low",
+      "title": "Pre-project scenario count is stale",
+      "evidence": ["PREPROJECT_TENDERGRAPH.md:729"],
+      "status": "open"
+    }
+  ],
+  "verification": {
+    "typecheck": "passed",
+    "tests": { "passed": 30, "total": 30 },
+    "deterministicScenarios": { "passed": 23, "total": 23 },
+    "ablation": { "harnessViolationsAdmitted": 0, "schemaOnlyViolationsAdmitted": 8, "faults": 8 },
+    "build": "passed",
+    "committedCodexSmoke": { "passed": 2, "total": 2, "gatesPerRun": 15 }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "contract": "tendergraph-codex-smoke.v1",
-  "createdAt": "2026-07-15T04:26:50.681Z",
+  "createdAt": "2026-07-16T04:31:11.145Z",
   "model": "gpt-5.6-terra",
   "expectedRuns": 2,
   "passed": 2,
@@ -9,27 +9,27 @@
     {
       "scenarioId": "public-award",
       "passed": true,
-      "runId": "32dff6ff-a4e0-4156-9d1a-f968bda97ea7",
-      "traceId": "f5da1aa2-06ae-4501-9df0-c51d831882b4",
-      "codexSessionId": "019f6406-cb20-7e43-acec-2a22ff8a2b6c",
+      "runId": "c77f79e5-20ae-4832-b80a-f99017bcad68",
+      "traceId": "0fd08955-bf87-44e7-a5b6-a2ec1cfcbf9e",
+      "codexSessionId": "019f6931-199d-7070-9b6e-0142bc573fa5",
       "model": "gpt-5.6-terra",
       "mode": "live",
       "gatesPassed": 15,
       "gatesTotal": 15,
-      "elapsedMs": 8109,
+      "elapsedMs": 9213,
       "failures": []
     },
     {
       "scenarioId": "corrected-award",
       "passed": true,
-      "runId": "c0822db4-09df-49b9-a7ef-0682fa0ed466",
-      "traceId": "aa34d4fd-d0d0-4b1a-b511-6ae2be58d906",
-      "codexSessionId": "019f6406-ea94-7121-8cac-40f43b6dd5ee",
+      "runId": "50b01a70-a00f-4bc7-8432-7692c3b1286f",
+      "traceId": "216a29f2-279e-454c-b566-9fe8b3e7de94",
+      "codexSessionId": "019f6931-3d99-7df1-86e6-b99ce0fc370a",
       "model": "gpt-5.6-terra",
       "mode": "live",
       "gatesPassed": 15,
       "gatesTotal": 15,
-      "elapsedMs": 8400,
+      "elapsedMs": 9042,
       "failures": []
     }
   ]

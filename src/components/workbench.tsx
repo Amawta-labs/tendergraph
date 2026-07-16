@@ -113,6 +113,12 @@ export function Workbench({
   const coverage = Math.round(
     (evidenceUsed / Math.max(1, fixture.evidence.length)) * 100,
   );
+  const provenanceLabel =
+    result.readerOutput.status === "insufficient_evidence"
+      ? "insufficient evidence"
+      : fixture.dataStatus === "public_snapshot"
+        ? "public snapshot"
+        : "simulated";
   const activeDelta = evidenceDeltas.find(
     (delta) => delta.event.procedureId === fixture.scope.procedureId,
   ) ?? null;
@@ -252,7 +258,7 @@ export function Workbench({
           </div>
           <button className="run-button" disabled={running || question.length < 3} onClick={runAudit}>
             {running ? <LoaderCircle className="spin" size={17} /> : <Play size={17} />}
-            Run audit
+            {running ? "Running audit" : "Run audit"}
           </button>
         </section>
         {error && <div className="error-banner">{error}</div>}
@@ -317,7 +323,15 @@ export function Workbench({
           <section className="findings-panel" id="findings">
             <div className="section-heading">
               <div><div className="eyebrow">Reader output</div><h2>{result.readerOutput.title}</h2></div>
-              <span className={`answer-status ${result.readerOutput.status}`}>{result.readerOutput.status.replace("_", " ")}</span>
+              <span
+                className={`answer-status ${
+                  fixture.dataStatus === "public_snapshot"
+                    ? "public_snapshot"
+                    : result.readerOutput.status
+                }`}
+              >
+                {provenanceLabel} · {result.readerOutput.decisionStage.replaceAll("_", " ")}
+              </span>
             </div>
             <p className="summary">{result.readerOutput.summary}</p>
             <div className="findings-list">
@@ -357,11 +371,25 @@ export function Workbench({
               </div>
             ))}
           </div>
+          {result.trace.stages.length > 0 && (
+            <div className="trace-stages" aria-label="Runtime trace stages">
+              {result.trace.stages.map((stage, index) => (
+                <div className={`trace-stage ${stage.status}`} key={stage.stage}>
+                  <span>{index + 1}</span>
+                  <strong>{stage.stage.replaceAll("_", " ")}</strong>
+                  <small>{stage.sourceState ?? stage.status}</small>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="trace-meta">
             <span>Scope <code>{result.trace.resolvedScope.procedureId}/{result.trace.resolvedScope.lotId}</code></span>
             <span>Contract <code>{result.trace.contractVersion}</code></span>
             <span>Mode <code>{result.trace.compositionMode}</code></span>
             <span>Surface <code>{result.trace.compositionSurface}</code></span>
+            {result.trace.codexSessionId && (
+              <span>Codex session <code>{result.trace.codexSessionId}</code></span>
+            )}
           </div>
         </section>
       </main>

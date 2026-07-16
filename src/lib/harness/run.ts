@@ -11,6 +11,7 @@ import {
 import { composeWithOpenAI } from "./openai-composer";
 import { buildAnswerPlan } from "./policy";
 import { saveTrace } from "./store";
+import { buildTraceStages } from "./trace";
 import type {
   CaseFixture,
   CompositionResult,
@@ -74,6 +75,14 @@ export async function runHarness(
     throw new Error(`No safe composition is available: ${failures}`);
   }
 
+  validationResults.push(
+    validateLatency(
+      Math.round(performance.now() - startedAt),
+      compositionMode === "live" ? 20_000 : 500,
+    ),
+  );
+  const compositionSurface: HarnessTrace["compositionSurface"] =
+    compositionMode === "live" ? "openai_responses_api" : "deterministic";
   const trace: HarnessTrace = {
     traceId: randomUUID(),
     requestId: plan.requestId,
@@ -86,8 +95,7 @@ export async function runHarness(
       compositionMode === "live"
         ? options.model ?? process.env.OPENAI_MODEL ?? "gpt-5.6"
         : null,
-    compositionSurface:
-      compositionMode === "live" ? "openai_responses_api" : "deterministic",
+    compositionSurface,
     codexSessionId: null,
     compositionMode,
     validationResults,
@@ -96,15 +104,16 @@ export async function runHarness(
       compositionMs: Math.round(performance.now() - composeStartedAt),
       totalMs: Math.round(performance.now() - startedAt),
     },
+    stages: buildTraceStages({
+      fixture,
+      plan,
+      compositionMode,
+      compositionSurface,
+      validationResults,
+    }),
     contractVersion: "harness.v1",
   };
   trace.validationResults.push(validateTrace(trace));
-  trace.validationResults.push(
-    validateLatency(
-      trace.timings.totalMs,
-      compositionMode === "live" ? 20_000 : 500,
-    ),
-  );
   await saveTrace(trace);
 
   return { mode: compositionMode, readerOutput, trace };

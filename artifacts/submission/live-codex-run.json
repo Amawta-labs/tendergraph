@@ -1,0 +1,19 @@
+{
+  "contract": "tendergraph-live-browser-evidence.v1",
+  "capturedAt": "2026-07-16T04:15:50.634Z",
+  "url": "http://localhost:3000",
+  "model": "gpt-5.6-terra",
+  "codexSessionId": "019f6923-3056-7a32-b3c6-2ee17797f93d",
+  "traceId": "9ab1d859-5980-4f3f-a3eb-d8d92a569420",
+  "elapsedMs": 9171,
+  "gatesPassed": 15,
+  "gatesTotal": 15,
+  "observedRunningState": true,
+  "observedCompletedState": true,
+  "frames": 35,
+  "intervalMs": 400,
+  "video": {
+    "path": "live-codex-run.mp4",
+    "sha256": "46a06cf9092a12a2480bf4c3fbc2ce895b7a35da8200de874c150e52eeb39bfd"
+  }
+}

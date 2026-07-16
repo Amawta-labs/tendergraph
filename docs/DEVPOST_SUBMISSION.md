@@ -8,20 +8,21 @@
 - **Repository:** `TODO_AFTER_GITHUB_REAUTH`
 - **Hosted demo:** https://openaihack.vercel.app
 - **Video:** `TODO_PUBLIC_YOUTUBE_URL`
-- **Prepared video asset:** https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
+- **Prepared local video asset:** `public/tendergraph-build-week-demo.mp4`
+- **Hosted video asset:** redeploy required before using `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4`
 - **Primary Codex /feedback session:** `TODO_PRIMARY_PROJECT_THREAD_FEEDBACK_ID`
 
 ## What TenderGraph does
 
-TenderGraph helps bidder and procurement teams reconstruct opening and award decisions from source documents without turning model prose into authority. It compiles source manifests, exact evidence anchors, reviewed claims, policy decisions, and a reader-facing answer into one auditable run.
+TenderGraph helps bidder and procurement teams reconstruct opening and award decisions from source documents without turning model prose into authority. It compiles source manifests, addressable evidence records, reviewed claims, policy decisions, and a reader-facing answer into one auditable run.
 
 The default case is a hash-verified public Chilean evaluation. TenderGraph identifies the commission's award recommendation, compares evaluated scores, explains why the other suppliers were not recommended, and preserves the source limitation that the snapshot is not proof of a signed contract.
 
-The differentiating workflow is incremental reevaluation. When new evidence arrives, TenderGraph computes the affected claim set instead of silently regenerating the entire answer. A public event demonstrates corroboration of one claim. A separate, visibly synthetic correction benchmark demonstrates two explicit supersessions: the winner changes, the loss explanation reverses, and the award rule remains unchanged.
+The differentiating workflow is a validated incremental evidence-delta contract. Versioned events declare changed evidence and affected claim versions; TenderGraph rejects incomplete or inconsistent dependency declarations, computes the unchanged complement, and presents the exact before/after diff. A public event demonstrates corroboration of one claim. A separate, visibly synthetic correction benchmark demonstrates two explicit supersessions: the winner changes, the loss explanation reverses, and the award rule remains unchanged. Automatic document ingestion and impact discovery are not part of this submission.
 
 ## How it works
 
-1. Typed source manifests bind every artifact to a jurisdiction, procedure, lot, retrieval timestamp, canonical URL, and content hash.
+1. Typed source manifests bind every artifact to a jurisdiction, procedure, lot, retrieval timestamp, canonical URL, content hash, eligibility status, and runtime-use policy.
 2. Exact evidence records retain document locators, extracted text, parser version, and evidence hashes.
 3. Claims are admitted by code-owned policy. Consequential claims require a named human reviewer and timestamp.
 4. Codex invokes GPT-5.6 Terra to compose a structured answer from only the selected claims and evidence.
@@ -33,14 +34,14 @@ The differentiating workflow is incremental reevaluation. When new evidence arri
 - A working Next.js procurement workbench with a public evaluation case and synthetic portability/correction benchmarks.
 - A ChatGPT-authenticated Codex runtime path that does not require an API key.
 - A distributable TenderGraph Codex plugin and `$tendergraph-analyze` skill.
-- Immutable local audit traces retrievable across processes.
+- Immutable six-stage local audit traces retrievable across local processes; hosted durable storage is a production boundary.
 - Claim invalidation, supersession, and exact before/after evidence dependency diffs.
 - 30 unit/adversarial tests, 23 deterministic evaluation scenarios, an 8-fault enforcement ablation, and a 2-run live Codex smoke evaluation.
 
 ## Evaluation evidence
 
 - Unit and adversarial suite: `30/30`
-- Deterministic golden scenarios: `23/23`
+- Deterministic contract scenarios: `23/23`
 - Enforcement ablation: harness admitted `0/8`; schema-only control admitted `8/8`
 - Live Codex smoke: `2/2`, each with `15/15` validation gates
 - Dependency audit: `0` known npm vulnerabilities
@@ -59,7 +60,7 @@ At runtime, GPT-5.6 Terra performs only structured composition. It cannot select
 ### Hosted demo
 
 1. Open https://openaihack.vercel.app.
-2. Inspect the public Chile case, its exact evidence anchors, and the 15 validation gates.
+2. Inspect the public Chile case, its addressable evidence records, and the 15 validation gates.
 3. Open https://openaihack.vercel.app/?case=cl-correction-demo to inspect the expanded supersession diff.
 4. The hosted environment may use the deterministic composer because ChatGPT-authenticated Codex sessions are local credentials and are not copied into Vercel.
 
@@ -86,4 +87,4 @@ Invoke `$tendergraph-analyze` in Codex.
 
 ## Limitations
 
-TenderGraph does not claim autonomous procurement decision-making, legal compliance, or universal live connector coverage. The public case is a frozen snapshot; the correction, EU, UK, and deep Chile fixtures are explicitly synthetic. The hosted deployment cannot inherit a developer's local ChatGPT authentication, so live Codex testing uses the documented local or plugin path.
+TenderGraph does not claim autonomous procurement decision-making, legal compliance, universal live connector coverage, automatic document ingestion, or automatic impact discovery. The public case is a frozen snapshot; the correction, EU, UK, and deep Chile fixtures are explicitly synthetic. The hosted deployment cannot inherit a developer's local ChatGPT authentication, so live Codex testing uses the documented local or plugin path. Trace durability is local in this release; the hosted demo uses ephemeral storage.

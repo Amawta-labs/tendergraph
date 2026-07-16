@@ -20,7 +20,11 @@
     "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
     "license": "TED data reuse terms apply",
     "snapshotKey": "fixtures/golden-cases/eu/notice.xml",
-    "retrievalMode": "snapshot"
+    "retrievalMode": "snapshot",
+    "sourceStatus": "eligible",
+    "runtimePolicy": "claim_authority",
+    "issuer": "European Contracting Authority (demo)",
+    "selectionRule": "Synthetic TED-shaped notice selected only for portability-contract testing."
   }],
   "evidence": [{
     "id": "ev-eu-winner",

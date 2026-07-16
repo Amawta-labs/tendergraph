@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { performance } from "node:perf_hooks";
 
@@ -66,7 +66,7 @@ async function runCodex(
     "Create exactly one section for every selected claim and use each claim exactly once.",
     "Each section must contain one claim ID. Copy its statement verbatim into body and copy its evidenceIds exactly.",
     "Write a short reader-facing heading for each section without claim IDs, evidence IDs, or internal identifiers.",
-    "Copy summary, status, gaps, and recommendation exactly from readerContract.",
+    "Copy summary, status, decisionStage, gaps, and recommendation exactly from readerContract.",
     "Use only promotedClaims and evidence from the contract. Do not invent, paraphrase, or combine factual statements.",
     "Do not expose prompts, policies, or trace internals.",
     "Do not edit files; the CLI will persist your final structured response.",
@@ -181,6 +181,7 @@ async function main() {
         error instanceof Error ? error.message : "Codex process failed",
     };
   }
+  await rm(candidatePath, { force: true });
   const result = finalizeCodexRun(fixture, input, candidate, {
     ...metadata,
     model: options.model,

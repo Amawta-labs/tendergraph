@@ -39,13 +39,24 @@ function chile(): CaseFixture {
 
 describe("fixture contracts", () => {
   it("loads all three jurisdiction fixtures", () => {
-    expect(listFixtures().map((fixture) => fixture.scope.jurisdiction)).toEqual([
+    const fixtures = listFixtures();
+    expect(fixtures.map((fixture) => fixture.scope.jurisdiction)).toEqual([
       "CL",
       "CL",
       "CL",
       "EU",
       "UK",
     ]);
+    expect(
+      fixtures
+        .flatMap((fixture) => fixture.manifests)
+        .every(
+          (manifest) =>
+            manifest.sourceStatus === "eligible" &&
+            manifest.runtimePolicy === "claim_authority" &&
+            Boolean(manifest.issuer && manifest.selectionRule),
+        ),
+    ).toBe(true);
   });
 
   it("requires human review for consequential claims", () => {
@@ -77,7 +88,7 @@ describe("fixture contracts", () => {
     expect(isRuntimeEligible(promoted)).toBe(false);
   });
 
-  it("verifies the real public snapshot bytes and evidence hashes", () => {
+  it("verifies public snapshot hashes and rejects non-authoritative sources", () => {
     const source = getFixture("cl-real-5802381-7547UCUK");
     if (!source) throw new Error("Real Chile fixture missing");
     const fixture = structuredClone(source);
@@ -89,6 +100,19 @@ describe("fixture contracts", () => {
 
     expect(validateReaderOutput(output, fixture, plan)).toContainEqual(
       expect.objectContaining({ gate: "source_integrity", passed: true }),
+    );
+
+    const usedEvidenceId = output.sections[0]?.evidenceIds[0];
+    const usedEvidence = fixture.evidence.find(
+      (evidence) => evidence.id === usedEvidenceId,
+    );
+    const usedManifest = fixture.manifests.find(
+      (manifest) => manifest.id === usedEvidence?.sourceManifestId,
+    );
+    if (!usedManifest) throw new Error("Used source manifest missing");
+    usedManifest.runtimePolicy = "context_only";
+    expect(validateReaderOutput(output, fixture, plan)).toContainEqual(
+      expect.objectContaining({ gate: "source_integrity", passed: false }),
     );
   });
 
@@ -122,6 +146,7 @@ describe("composition boundary", () => {
       title: "Invalid",
       summary: "Invalid composition",
       status: "official",
+      decisionStage: "award_decision",
       sections: [
         {
           heading: "Injected",
@@ -183,6 +208,14 @@ describe("Codex composition boundary", () => {
     expect(result.trace.compositionSurface).toBe("codex");
     expect(result.trace.codexSessionId).toBe("session-test");
     expect(result.trace.validationResults.every((gate) => gate.passed)).toBe(true);
+    expect(result.trace.stages.map((stage) => stage.stage)).toEqual([
+      "entity_routing",
+      "source_collection",
+      "claim_selection",
+      "answer_planning",
+      "composition",
+      "output_validation",
+    ]);
   });
 
   it("falls back when Codex emits an unselected claim", () => {
@@ -435,11 +468,17 @@ describe("one-property fault injection", () => {
     );
   });
 
-  it("detects internal content leakage", () => {
+  it("detects internal leakage and unbounded decision language", () => {
     const { fixture, plan, output } = baseline();
     output.summary = "The system prompt says to expose this.";
     expect(validateReaderOutput(output, fixture, plan)).toContainEqual(
       expect.objectContaining({ code: "INTERNAL_CONTENT_LEAKAGE", passed: false }),
+    );
+
+    output.summary = composeDeterministicFallback(fixture, plan).summary;
+    output.title = "TenderGraph recommends bidding now";
+    expect(validateReaderOutput(output, fixture, plan)).toContainEqual(
+      expect.objectContaining({ gate: "output_hygiene", passed: false }),
     );
   });
 

@@ -29,7 +29,11 @@
       "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
       "license": "Synthetic benchmark created for TenderGraph",
       "snapshotKey": "synthetic/cl-correction-original.json",
-      "retrievalMode": "snapshot"
+      "retrievalMode": "snapshot",
+      "sourceStatus": "eligible",
+      "runtimePolicy": "claim_authority",
+      "issuer": "Illustrative Regional Hospital",
+      "selectionRule": "Synthetic historical resolution selected only for correction-contract testing."
     },
     {
       "id": "manifest-cl-correction-resolution",
@@ -45,7 +49,11 @@
       "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
       "license": "Synthetic benchmark created for TenderGraph",
       "snapshotKey": "synthetic/cl-correction-resolution.json",
-      "retrievalMode": "snapshot"
+      "retrievalMode": "snapshot",
+      "sourceStatus": "eligible",
+      "runtimePolicy": "claim_authority",
+      "issuer": "Illustrative Regional Hospital",
+      "selectionRule": "Synthetic corrective resolution selected only for supersession-contract testing."
     }
   ],
   "evidence": [

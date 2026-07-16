@@ -8,18 +8,53 @@ WORK_DIR="${WORK_DIR:-/tmp/tendergraph-submission-video}"
 PIPER_BIN="${PIPER_BIN:-/tmp/tendergraph-video-tools/piper/piper}"
 VOICE_MODEL="${VOICE_MODEL:-/tmp/tendergraph-video-tools/en_US-lessac-medium.onnx}"
 DEMO_URL="${DEMO_URL:-https://openaihack.vercel.app}"
+LIVE_CAPTURE_DIR="${LIVE_CAPTURE_DIR:-}"
+LIVE_CODEX_VIDEO="${LIVE_CODEX_VIDEO:-$OUTPUT_DIR/live-codex-run.mp4}"
+LIVE_CODEX_MANIFEST="${LIVE_CODEX_MANIFEST:-$OUTPUT_DIR/live-codex-run.json}"
 
 if [[ ! -x "$PIPER_BIN" || ! -f "$VOICE_MODEL" ]]; then
   echo "Piper and its voice model are required. Set PIPER_BIN and VOICE_MODEL." >&2
   exit 1
 fi
 
-for command in firefox ffmpeg ffprobe magick; do
+for command in firefox ffmpeg ffprobe magick node; do
   command -v "$command" >/dev/null || {
     echo "Missing required command: $command" >&2
     exit 1
   }
 done
+
+mkdir -p "$OUTPUT_DIR"
+
+if [[ ! -f "$LIVE_CODEX_VIDEO" ]]; then
+  if [[ -z "$LIVE_CAPTURE_DIR" || ! -f "$LIVE_CAPTURE_DIR/capture.json" ]]; then
+    echo "A verified live browser capture is required. Set LIVE_CAPTURE_DIR or LIVE_CODEX_VIDEO." >&2
+    exit 1
+  fi
+  capture_complete="$(node -e 'const c=require(process.argv[1]); process.stdout.write(String(c.completed && c.sawRunningState))' "$LIVE_CAPTURE_DIR/capture.json")"
+  capture_interval="$(node -e 'const c=require(process.argv[1]); process.stdout.write(String(c.intervalMs))' "$LIVE_CAPTURE_DIR/capture.json")"
+  if [[ "$capture_complete" != "true" ]]; then
+    echo "Live capture did not prove both running and completed states." >&2
+    exit 1
+  fi
+  capture_rate="$(awk -v value="$capture_interval" 'BEGIN { printf "%.6f", 1000 / value }')"
+  ffmpeg -hide_banner -loglevel error -y \
+    -framerate "$capture_rate" -i "$LIVE_CAPTURE_DIR/frame-%05d.png" \
+    -vf 'fps=30,scale=1920:1080:flags=lanczos,format=yuv420p' \
+    -c:v libx264 -preset medium -crf 20 \
+    "$LIVE_CODEX_VIDEO"
+fi
+
+if [[ -z "${BROWSER_CODEX_SESSION:-}" ]]; then
+  if [[ ! -f "$LIVE_CODEX_MANIFEST" ]]; then
+    echo "A live browser manifest is required. Set LIVE_CODEX_MANIFEST or BROWSER_CODEX_SESSION." >&2
+    exit 1
+  fi
+  BROWSER_CODEX_SESSION="$(node -e 'const r=require(process.argv[1]); process.stdout.write(r.codexSessionId)' "$LIVE_CODEX_MANIFEST")"
+fi
+smoke_sessions="$(node -e 'const r=require(process.argv[1]); process.stdout.write(r.runs.map(x => x.codexSessionId).join("\n"))' "$ROOT_DIR/artifacts/evals/codex-smoke.json")"
+smoke_session_one="$(printf '%s\n' "$smoke_sessions" | sed -n '1p')"
+smoke_session_two="$(printf '%s\n' "$smoke_sessions" | sed -n '2p')"
 
 rm -rf "$WORK_DIR"
 mkdir -p "$WORK_DIR" "$OUTPUT_DIR"
@@ -74,20 +109,21 @@ magick -size 1920x1080 xc:'#f4f7f5' \
   -annotate +475+375 '30/30' -annotate +925+375 '23/23' -annotate +1372+375 '2/2' \
   -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 24 -fill '#66736e' \
   -annotate +475+440 'contract tests' \
-  -annotate +925+440 'golden scenarios' \
-  -annotate +1372+440 'live Codex runs' \
+  -annotate +925+440 'contract scenarios' \
+  -annotate +1372+440 'live smoke runs' \
   -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 34 -fill '#17211e' \
   -annotate +410+610 'Enforcement ablation' \
   -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 28 -fill '#66736e' \
   -annotate +410+666 'Harness admitted 0 of 8 injected faults' \
   -annotate +410+712 'Schema-only control admitted 8 of 8' \
   -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 34 -fill '#17211e' \
-  -annotate +410+810 'Live runtime evidence' \
+  -annotate +410+795 'Live runtime evidence' \
   -font /usr/share/fonts/noto/NotoSansMono-Regular.ttf -pointsize 20 -fill '#236b53' \
-  -annotate +410+866 'public:     019f6406-cb20-7e43-acec-2a22ff8a2b6c' \
-  -annotate +410+910 'correction: 019f6406-ea94-7121-8cac-40f43b6dd5ee' \
+  -annotate +410+845 "browser:    $BROWSER_CODEX_SESSION" \
+  -annotate +410+885 "public:     $smoke_session_one" \
+  -annotate +410+925 "correction: $smoke_session_two" \
   -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 22 -fill '#66736e' \
-  -annotate +410+1000 'Immutable local traces  |  0 known npm vulnerabilities' \
+  -annotate +410+1000 'Validated trace schema  |  recoverable local trace ledgers' \
   "$WORK_DIR/proof.png"
 
 declare -a IMAGES=(
@@ -101,11 +137,11 @@ declare -a IMAGES=(
 
 declare -a NARRATION=(
   "Procurement teams do not need another tender chatbot. They need to know who was recommended, why competitors lost, which document proves each statement, and what changes when a new resolution arrives. TenderGraph is an auditable procurement decision compiler built with Codex and GPT five point six."
-  "This is a hash-verified public Chilean evaluation. TenderGraph reports the commission recommendation and preserves the boundary that this is not proof of a signed contract. Every sentence is an admitted claim copied exactly from reviewed evidence. The reader view stays clean while the evidence panel retains page, section, parser version, source URL, and content hash."
-  "The workbench invokes a ChatGPT-authenticated Codex session with GPT five point six Terra; it does not require an API key. GPT composes only from the selected claim contract. Fifteen code-owned gates reject invented text, evidence swaps, missing claims, scope contamination, false source status, leakage, and incomplete traces. If Codex fails, TenderGraph returns a deterministic safe answer and records the fallback."
-  "The core workflow is controlled reevaluation, not generic question answering. This visibly synthetic benchmark receives a corrective resolution. TenderGraph identifies four affected claim versions: the original winner and loss reason are superseded by corrected claims. The award rule remains unchanged."
+  "This is a hash-verified public Chilean evaluation. TenderGraph reports the commission recommendation and preserves the boundary that this is not proof of a signed contract. Every factual finding is an admitted claim bound to reviewed evidence, and each answer section reproduces the admitted claim text verbatim. The reader view stays clean while the evidence panel retains page, section, parser version, source URL, and content hash."
+  "The workbench invokes a ChatGPT-authenticated Codex session with GPT five point six Terra; it does not require an API key. Here is the real click, running state, completed answer, fifteen passed gates, and full Codex session identifier. GPT composes only from the selected claim contract. Code-owned gates reject invented text, evidence swaps, missing claims, scope contamination, false source status, leakage, and incomplete traces."
+  "The core workflow is controlled reevaluation, not generic question answering. This visibly synthetic benchmark contains a versioned corrective-resolution contract. TenderGraph validates four declared affected claim versions: the original winner and loss reason are superseded by corrected claims. The award rule remains unchanged. Automatic impact discovery is the next product boundary."
   "The diff shows the exact before and after statements and evidence anchors instead of silently regenerating everything. New evidence can corroborate one claim, invalidate a claim, or create an explicit supersession. Unrelated conclusions remain stable and auditable."
-  "The repository includes thirty adversarial and contract tests, twenty-three golden scenarios, and an enforcement ablation where the harness blocks all eight injected faults. Two live Codex smoke runs passed fifteen of fifteen gates. Codex accelerated implementation, source verification, testing, and browser review. We retained the product, governance, and truth-boundary decisions."
+  "The repository includes thirty adversarial and contract tests, twenty-three deterministic contract scenarios, and an enforcement ablation where the harness blocks all eight injected faults while the schema-only control admits all eight. Two live Codex smoke runs and this browser run passed fifteen of fifteen gates. Codex accelerated implementation, source verification, testing, and browser review. We retained the product, governance, and truth-boundary decisions."
 )
 
 segment_files=()
@@ -118,13 +154,23 @@ for index in "${!NARRATION[@]}"; do
   duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$audio")"
   padded_duration="$(awk -v value="$duration" 'BEGIN { printf "%.3f", value + 0.6 }')"
   frames="$(awk -v value="$padded_duration" 'BEGIN { printf "%d", (value * 30) + 1 }')"
-  ffmpeg -hide_banner -loglevel error -y \
-    -loop 1 -i "${IMAGES[$index]}" -i "$audio" \
-    -filter_complex \
-      "[0:v]scale=1920:1080,zoompan=z='min(zoom+0.00005,1.025)':d=$frames:s=1920x1080:fps=30,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=11:TP=-1.5,apad=pad_dur=0.6[a]" \
-    -map '[v]' -map '[a]' -t "$padded_duration" \
-    -c:v libx264 -preset medium -crf 21 -c:a aac -b:a 160k \
-    "$segment"
+  if [[ "$index" -eq 2 ]]; then
+    ffmpeg -hide_banner -loglevel error -y \
+      -i "$LIVE_CODEX_VIDEO" -i "$audio" \
+      -filter_complex \
+        "[0:v]scale=1920:1080:flags=lanczos,fps=30,tpad=stop_mode=clone:stop_duration=180,trim=duration=$padded_duration,setpts=PTS-STARTPTS,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=11:TP=-1.5,apad=pad_dur=0.6[a]" \
+      -map '[v]' -map '[a]' -t "$padded_duration" \
+      -c:v libx264 -preset medium -crf 21 -c:a aac -b:a 160k \
+      "$segment"
+  else
+    ffmpeg -hide_banner -loglevel error -y \
+      -loop 1 -i "${IMAGES[$index]}" -i "$audio" \
+      -filter_complex \
+        "[0:v]scale=1920:1080,zoompan=z='min(zoom+0.00005,1.025)':d=$frames:s=1920x1080:fps=30,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=11:TP=-1.5,apad=pad_dur=0.6[a]" \
+      -map '[v]' -map '[a]' -t "$padded_duration" \
+      -c:v libx264 -preset medium -crf 21 -c:a aac -b:a 160k \
+      "$segment"
+  fi
   segment_files+=("$segment")
 done
 
@@ -139,6 +185,7 @@ mkdir -p "$(dirname "$final_video")"
 ffmpeg -hide_banner -loglevel error -y \
   -f concat -safe 0 -i "$concat_file" \
   -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p \
+  -af 'volume=-1.2dB,alimiter=limit=0.84:level=false' \
   -c:a aac -b:a 160k -ar 48000 \
   -metadata title='TenderGraph - OpenAI Build Week Demo' \
   "$final_video"

@@ -3,13 +3,17 @@
   "title": "StructuredTenderAnswer",
   "type": "object",
   "additionalProperties": false,
-  "required": ["title", "summary", "status", "sections", "gaps", "recommendation"],
+  "required": ["title", "summary", "status", "decisionStage", "sections", "gaps", "recommendation"],
   "properties": {
     "title": { "type": "string", "minLength": 1 },
     "summary": { "type": "string", "minLength": 1 },
     "status": {
       "type": "string",
       "enum": ["official", "simulated", "insufficient_evidence"]
+    },
+    "decisionStage": {
+      "type": "string",
+      "enum": ["opening", "document_review", "evaluation", "commission_recommendation", "award_decision", "unknown"]
     },
     "sections": {
       "type": "array",

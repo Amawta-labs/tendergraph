@@ -28,10 +28,13 @@ Prompts to Contracts: Harness Engineering for Auditable Enterprise LLM Agents*
 
 - A verified GPT-5.6 Terra composition run is preserved in
   `artifacts/codex-runs/latest.json`.
-- Verified public-case runtime session: `019f6406-cb20-7e43-acec-2a22ff8a2b6c`.
-- Verified correction-case runtime session: `019f6406-ea94-7121-8cac-40f43b6dd5ee`.
+- Final verified public-case runtime session: `019f6931-199d-7070-9b6e-0142bc573fa5`.
+- Final verified correction-case runtime session: `019f6931-3d99-7df1-86e6-b99ce0fc370a`.
+- Recorded interactive browser session: `019f6923-3056-7a32-b3c6-2ee17797f93d`.
 - The machine-readable smoke report is preserved at
   `artifacts/evals/codex-smoke.json`.
+- The browser evidence manifest is preserved at
+  `artifacts/submission/live-codex-run.json`.
 - The Devpost `/feedback` field must use the primary Codex project thread where
   most core functionality was built. It must be captured and recorded before
   submission; the runtime session above is not a substitute.

@@ -21,7 +21,11 @@
       "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "license": "Public procurement record; verify source-specific reuse terms",
       "snapshotKey": "fixtures/golden-cases/cl/opening.txt",
-      "retrievalMode": "snapshot"
+      "retrievalMode": "snapshot",
+      "sourceStatus": "eligible",
+      "runtimePolicy": "claim_authority",
+      "issuer": "Regional Health Service (demo)",
+      "selectionRule": "Synthetic opening record selected only for deterministic contract testing."
     },
     {
       "id": "manifest-cl-evaluation",
@@ -37,7 +41,11 @@
       "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       "license": "Public procurement record; verify source-specific reuse terms",
       "snapshotKey": "fixtures/golden-cases/cl/evaluation.txt",
-      "retrievalMode": "snapshot"
+      "retrievalMode": "snapshot",
+      "sourceStatus": "eligible",
+      "runtimePolicy": "claim_authority",
+      "issuer": "Regional Health Service (demo)",
+      "selectionRule": "Synthetic evaluation report selected only for deterministic contract testing."
     },
     {
       "id": "manifest-cl-award",
@@ -53,7 +61,11 @@
       "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
       "license": "Public procurement record; verify source-specific reuse terms",
       "snapshotKey": "fixtures/golden-cases/cl/award.txt",
-      "retrievalMode": "snapshot"
+      "retrievalMode": "snapshot",
+      "sourceStatus": "eligible",
+      "runtimePolicy": "claim_authority",
+      "issuer": "Regional Health Service (demo)",
+      "selectionRule": "Synthetic award resolution selected only for deterministic contract testing."
     }
   ],
   "evidence": [

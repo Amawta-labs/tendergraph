@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -7,6 +7,7 @@ import { allGatesPassed, validateLatency, validateReaderOutput, validateTrace } 
 import { buildAnswerPlan } from "./policy";
 import {
   CodexRunInputSchema,
+  CodexCandidateRecordSchema,
   CompositionResultSchema,
   StructuredTenderAnswerSchema,
   type CaseFixture,
@@ -16,6 +17,7 @@ import {
   type StructuredTenderAnswer,
 } from "./schemas";
 import { saveTrace } from "./store";
+import { buildTraceStages } from "./trace";
 
 export interface CodexCompositionMetadata {
   model: string;
@@ -51,6 +53,7 @@ export function prepareCodexRun(
     readerContract: {
       summary: canonicalOutput.summary,
       status: canonicalOutput.status,
+      decisionStage: canonicalOutput.decisionStage,
       gaps: canonicalOutput.gaps,
       recommendation: canonicalOutput.recommendation,
     },
@@ -107,6 +110,7 @@ export function finalizeCodexRun(
     );
   }
 
+  validationResults.push(validateLatency(metadata.elapsedMs, 140_000));
   const trace: HarnessTrace = {
     traceId: randomUUID(),
     requestId: input.answerPlan.requestId,
@@ -125,10 +129,16 @@ export function finalizeCodexRun(
       compositionMs: metadata.elapsedMs,
       totalMs: metadata.elapsedMs,
     },
+    stages: buildTraceStages({
+      fixture,
+      plan: input.answerPlan,
+      compositionMode,
+      compositionSurface,
+      validationResults,
+    }),
     contractVersion: "harness.v1",
   };
   trace.validationResults.push(validateTrace(trace));
-  trace.validationResults.push(validateLatency(metadata.elapsedMs, 140_000));
   return CompositionResultSchema.parse({ mode: compositionMode, readerOutput, trace });
 }
 
@@ -155,11 +165,19 @@ export async function publishCodexArtifacts(
   const outputDir = path.join(rootDir, "artifacts", "codex-runs");
   await mkdir(outputDir, { recursive: true });
   await saveTrace(result.trace, rootDir);
+  const serializedCandidate = JSON.stringify(candidate) ?? "null";
+  const candidateRecord = CodexCandidateRecordSchema.parse({
+    contractVersion: "codex-candidate-record.v1",
+    sha256: createHash("sha256").update(serializedCandidate).digest("hex"),
+    characterCount: serializedCandidate.length,
+    outputSchemaValid: StructuredTenderAnswerSchema.safeParse(candidate).success,
+    rawCandidateRetained: false,
+  });
   await Promise.all([
     writeFile(path.join(outputDir, "latest-input.json"), JSON.stringify(input, null, 2)),
     writeFile(
       path.join(outputDir, "latest-candidate.json"),
-      JSON.stringify(candidate, null, 2),
+      JSON.stringify(candidateRecord, null, 2),
     ),
     writeFile(path.join(outputDir, "latest.json"), JSON.stringify(result, null, 2)),
   ]);

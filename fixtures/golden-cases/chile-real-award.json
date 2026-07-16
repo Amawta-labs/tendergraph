@@ -29,7 +29,11 @@
       "sha256": "8f66f0ddf76f48c645920976948e2ff43aded7f74f56f1756145712128a43124",
       "license": "Open and reusable public procurement information; see https://www.chilecompra.cl/datos-abiertos/",
       "snapshotKey": "fixtures/public-snapshots/cl-5802381-7547UCUK/evaluation-report.pdf",
-      "retrievalMode": "snapshot"
+      "retrievalMode": "snapshot",
+      "sourceStatus": "eligible",
+      "runtimePolicy": "claim_authority",
+      "issuer": "University of Chile - IDIEM",
+      "selectionRule": "Frozen public evaluation report selected for the bounded award-recommendation case."
     },
     {
       "id": "manifest-cl-real-detail",
@@ -45,7 +49,11 @@
       "sha256": "f0f8216bdae1622428aede760119d0c9a7e312570f5baa64812f2e12766f8c89",
       "license": "Open and reusable public procurement information; see https://www.chilecompra.cl/datos-abiertos/",
       "snapshotKey": "fixtures/public-snapshots/cl-5802381-7547UCUK/public-detail.html",
-      "retrievalMode": "snapshot"
+      "retrievalMode": "snapshot",
+      "sourceStatus": "eligible",
+      "runtimePolicy": "claim_authority",
+      "issuer": "University of Chile - IDIEM",
+      "selectionRule": "Frozen public procedure detail selected to corroborate the bounded recommendation claim."
     }
   ],
   "evidence": [
