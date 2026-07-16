@@ -40,7 +40,7 @@ The differentiating workflow is a validated incremental evidence-delta contract.
 
 ## Evaluation evidence
 
-- Unit and adversarial suite: `30/30`
+- Unit and adversarial suite: `32/32`
 - Deterministic contract scenarios: `23/23`
 - Enforcement ablation: harness admitted `0/8`; schema-only control admitted `8/8`
 - Live Codex smoke: `2/2`, each with `15/15` validation gates

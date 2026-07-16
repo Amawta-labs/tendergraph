@@ -30,11 +30,11 @@ Prompts to Contracts: Harness Engineering for Auditable Enterprise LLM Agents*
   `artifacts/codex-runs/latest.json`.
 - Final verified public-case runtime session: `019f6931-199d-7070-9b6e-0142bc573fa5`.
 - Final verified correction-case runtime session: `019f6931-3d99-7df1-86e6-b99ce0fc370a`.
-- Recorded interactive browser session: `019f6923-3056-7a32-b3c6-2ee17797f93d`.
+- Recorded anonymized interactive browser session: `019f698f-55a0-7801-8461-dbb0fa9c2c13`.
 - The machine-readable smoke report is preserved at
   `artifacts/evals/codex-smoke.json`.
 - The browser evidence manifest is preserved at
-  `artifacts/submission/live-codex-run.json`.
+  `artifacts/submission/live-codex-run-anonymized.json`.
 - The Devpost `/feedback` field must use the primary Codex project thread where
   most core functionality was built. It must be captured and recorded before
   submission; the runtime session above is not a substitute.

@@ -27,12 +27,14 @@ import type {
   EvidenceDeltaResult,
   SourceManifest,
 } from "@/lib/harness/schemas";
+import { redactSubmissionText } from "@/lib/submission-redaction";
 
 interface WorkbenchProps {
   fixtures: CaseFixture[];
   initialFixtureId: string;
   initialResult: CompositionResult;
   evidenceDeltas: EvidenceDeltaResult[];
+  publicPresentation: boolean;
 }
 
 const questions: Record<string, string> = {
@@ -46,9 +48,11 @@ const questions: Record<string, string> = {
 function EvidenceDetail({
   evidence,
   manifest,
+  displayText,
 }: {
   evidence: EvidenceRecord | undefined;
   manifest: SourceManifest | undefined;
+  displayText: (text: string) => string;
 }) {
   if (!evidence) {
     return (
@@ -62,7 +66,7 @@ function EvidenceDetail({
     <div className="evidence-detail">
       <div className="eyebrow">Evidence record</div>
       <code>{evidence.id}</code>
-      <blockquote>{evidence.extractedText}</blockquote>
+      <blockquote>{displayText(evidence.extractedText)}</blockquote>
       <dl>
         <div><dt>Page</dt><dd>{evidence.locator.page ?? "API"}</dd></div>
         <div><dt>Section</dt><dd>{evidence.locator.section ?? "Not provided"}</dd></div>
@@ -83,6 +87,7 @@ export function Workbench({
   initialFixtureId,
   initialResult,
   evidenceDeltas,
+  publicPresentation,
 }: WorkbenchProps) {
   const [fixtureId, setFixtureId] = useState(initialFixtureId);
   const [question, setQuestion] = useState(questions[initialFixtureId]);
@@ -126,6 +131,9 @@ export function Workbench({
     (item) => item.dataStatus === "public_snapshot",
   ).length;
   const syntheticFixtureCount = fixtures.length - publicFixtureCount;
+  const displayText = publicPresentation
+    ? redactSubmissionText
+    : (text: string) => text;
 
   function changeFixture(nextId: string) {
     const nextQuestion = questions[nextId];
@@ -207,7 +215,7 @@ export function Workbench({
         <header className="topbar">
           <div>
             <div className="eyebrow">Opening + award intelligence</div>
-            <h1>{fixture.name}</h1>
+            <h1>{displayText(fixture.name)}</h1>
           </div>
           <div className="header-status"><span className="status-dot" />Harness operational</div>
         </header>
@@ -235,6 +243,9 @@ export function Workbench({
                 : "Illustrative benchmark."}
             </strong>{" "}
             {fixture.sourceNote}
+            {publicPresentation && fixture.dataStatus === "public_snapshot" && (
+              <> Display names are anonymized; hashes refer to the frozen source evidence.</>
+            )}
           </span>
         </div>
 
@@ -275,8 +286,8 @@ export function Workbench({
               <div className="delta-icon"><GitCompareArrows size={19} /></div>
               <div>
                 <div className="eyebrow">Incremental reevaluation</div>
-                <h2>{activeDelta.event.title}</h2>
-                <p>{activeDelta.event.description}</p>
+                <h2>{displayText(activeDelta.event.title)}</h2>
+                <p>{displayText(activeDelta.event.description)}</p>
               </div>
               <div className="delta-metrics">
                 <span><strong>{activeDelta.affectedClaimIds.length}</strong> claim affected</span>
@@ -303,14 +314,14 @@ export function Workbench({
                     <div className="delta-row" key={`${previousClaimId}-${change.claimId}`}>
                       <div>
                         <span>Before · {change.beforeEvidenceIds.length} anchor{change.beforeEvidenceIds.length === 1 ? "" : "s"}</span>
-                        <strong>{previousClaim?.statement ?? "Prior claim unavailable"}</strong>
+                        <strong>{displayText(previousClaim?.statement ?? "Prior claim unavailable")}</strong>
                       </div>
                       <ChevronRight size={17} />
                       <div>
                         <span>After · {change.afterEvidenceIds.length} anchor{change.afterEvidenceIds.length === 1 ? "" : "s"}</span>
-                        <strong>{currentClaim?.statement ?? "Current claim unavailable"}</strong>
+                        <strong>{displayText(currentClaim?.statement ?? "Current claim unavailable")}</strong>
                       </div>
-                      <p><b>{change.changeType.replaceAll("_", " ")}</b> · {change.explanation}</p>
+                      <p><b>{change.changeType.replaceAll("_", " ")}</b> · {displayText(change.explanation)}</p>
                     </div>
                   );
                 })}
@@ -322,7 +333,7 @@ export function Workbench({
         <div className="workspace-grid">
           <section className="findings-panel" id="findings">
             <div className="section-heading">
-              <div><div className="eyebrow">Reader output</div><h2>{result.readerOutput.title}</h2></div>
+              <div><div className="eyebrow">Reader output</div><h2>{displayText(result.readerOutput.title)}</h2></div>
               <span
                 className={`answer-status ${
                   fixture.dataStatus === "public_snapshot"
@@ -333,7 +344,7 @@ export function Workbench({
                 {provenanceLabel} · {result.readerOutput.decisionStage.replaceAll("_", " ")}
               </span>
             </div>
-            <p className="summary">{result.readerOutput.summary}</p>
+            <p className="summary">{displayText(result.readerOutput.summary)}</p>
             <div className="findings-list">
               {result.readerOutput.sections.map((section) => (
                 <button
@@ -342,7 +353,7 @@ export function Workbench({
                   onClick={() => setSelectedEvidenceId(section.evidenceIds[0])}
                 >
                   <CheckCircle2 size={18} />
-                  <span><strong>{section.heading}</strong><small>{section.body}</small></span>
+                  <span><strong>{displayText(section.heading)}</strong><small>{displayText(section.body)}</small></span>
                   <ChevronRight size={17} />
                 </button>
               ))}
@@ -350,14 +361,18 @@ export function Workbench({
             {result.readerOutput.gaps.length > 0 && (
               <div className="review-queue">
                 <div className="eyebrow">Human review queue</div>
-                {result.readerOutput.gaps.map((gap) => <p key={gap}>{gap}</p>)}
+                {result.readerOutput.gaps.map((gap) => <p key={gap}>{displayText(gap)}</p>)}
               </div>
             )}
           </section>
 
           <aside className="evidence-panel" id="evidence">
             <div className="panel-title"><FileSearch size={18} /><h2>Evidence inspector</h2></div>
-            <EvidenceDetail evidence={selectedEvidence} manifest={selectedManifest} />
+            <EvidenceDetail
+              evidence={selectedEvidence}
+              manifest={selectedManifest}
+              displayText={displayText}
+            />
           </aside>
         </div>
 

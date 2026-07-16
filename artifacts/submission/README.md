@@ -4,27 +4,32 @@
 
 - File: `../../public/tendergraph-build-week-demo.mp4`
 - Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4` (verified against the SHA-256 below)
-- Duration: 143.433 seconds
+- Duration: 148.083 seconds
 - Video: H.264, 1920x1080
 - Audio: AAC, mono, 48 kHz
-- Integrated loudness: -17.8 LUFS
-- True peak: -1.5 dBFS
-- SHA-256: `fdfc61d959786b1685cdf2ad5bd84594a41ffcd39189e3f854e392c23e89dc9c`
+- Integrated loudness: -17.9 LUFS
+- True peak: -1.9 dBFS
+- SHA-256: `a80fdee4d8e3852057ae7a2365b42c2df605089f7a54e9a16d898f507a407feb`
 
-The video contains six narrated chapters: product/problem, public evidence chain,
-Codex runtime and validation gates, correction benchmark, supersession diff, and
-evaluation evidence. The runtime chapter contains a real authenticated localhost
-click, running state, completed answer, 15/15 gates, and full Codex Session ID. It
-contains no music or third-party brand footage.
+The video contains seven narrated chapters: product/problem, public evidence
+chain, Codex runtime and validation gates, correction benchmark, supersession
+diff, verification metrics, and Codex collaboration evidence. The runtime
+chapter contains a real authenticated localhost click, running state, completed
+answer, 15/15 gates, and full Codex Session ID. The public presentation replaces
+buyer and supplier display names with stable aliases while preserving scope,
+scores, evidence anchors, and hashes. It contains no music or third-party brand
+footage.
 
-The verified live browser segment is retained as `live-codex-run.mp4` with
-SHA-256 `46a06cf9092a12a2480bf4c3fbc2ce895b7a35da8200de874c150e52eeb39bfd`.
+The verified live browser segment is retained as
+`live-codex-run-anonymized.mp4` with SHA-256
+`c3f9b316ec89aeaa20316e2aac69488c6897f56dfb5d275e893474585bea86a8`.
 
 ## Still images
 
 - `public-workbench.png`: public Chile evaluation workbench.
 - `correction-diff.png`: visibly synthetic correction benchmark.
 - `verification-evidence.png`: test, evaluation, and Codex session evidence.
+- `codex-collaboration.png`: dated commits and retained Codex Session IDs.
 
 ## Reproduction
 

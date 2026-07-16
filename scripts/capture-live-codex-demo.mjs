@@ -16,6 +16,7 @@ function parseArgs(argv) {
     outputDir: path.resolve(value("--output-dir", "/tmp/tendergraph-live-capture")),
     intervalMs: Number(value("--interval-ms", "250")),
     timeoutMs: Number(value("--timeout-ms", "140000")),
+    settleMs: Number(value("--settle-ms", "1500")),
   };
 }
 
@@ -156,16 +157,39 @@ async function main() {
       client,
       "return new Promise(resolve => { if (document.readyState === 'complete') return resolve(true); addEventListener('load', () => resolve(true), { once: true }); });",
     );
+    const hydrationDeadline = Date.now() + 20000;
+    let hydrated = false;
+    while (Date.now() < hydrationDeadline && !hydrated) {
+      hydrated = await execute(client, `
+        const button = document.querySelector('.run-button');
+        return Boolean(
+          button && Object.keys(button).some(key => key.startsWith('__reactProps'))
+        );
+      `);
+      if (!hydrated) await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+    if (!hydrated) throw new Error("Workbench did not hydrate before capture");
+    await new Promise((resolve) => setTimeout(resolve, options.settleMs));
     await capture(client, options.outputDir, frameIndex++);
-    const clicked = await execute(client, `
-      const button = document.querySelector('.run-button');
-      if (!button) return false;
-      button.click();
-      return true;
-    `);
-    if (!clicked) throw new Error("Run audit button was not found");
-
     let sawRunningState = false;
+    for (let attempt = 0; attempt < 3 && !sawRunningState; attempt += 1) {
+      const clicked = await execute(client, `
+        const button = document.querySelector('.run-button');
+        if (!button) return false;
+        button.click();
+        return true;
+      `);
+      if (!clicked) throw new Error("Run audit button was not found");
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      sawRunningState = await execute(
+        client,
+        "return Boolean(document.querySelector('.run-button')?.disabled);",
+      );
+    }
+    if (!sawRunningState) {
+      throw new Error("Run audit button did not enter the running state");
+    }
+
     let completed = false;
     let finishedState = null;
     while (Date.now() - startedAt < options.timeoutMs) {

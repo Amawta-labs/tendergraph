@@ -1,6 +1,8 @@
 # Three-Minute Demo Script
 
-Rendered runtime: **2:23**. Narration and on-screen labels are in English. The video uses no music.
+Rendered runtime: **2:29**. Narration and on-screen labels are in English. The video uses no music.
+The public-procurement scenes use stable supplier aliases in the presentation
+layer while retaining the procedure ID, scores, evidence anchors, and hashes.
 
 The repository includes a reproducible narrated render at
 `public/tendergraph-build-week-demo.mp4`. Regenerate it with
@@ -9,7 +11,8 @@ to a local Piper installation and English voice model.
 
 ## 0:00-0:18 — Problem and product
 
-**Screen:** Public Chile case, full workbench.
+**Screen:** Public Chile case, full workbench, with buyer and supplier display
+names anonymized for the submission video.
 
 **Narration:**
 
@@ -47,19 +50,29 @@ to a local Piper installation and English voice model.
 
 "The diff shows the exact before and after statements and evidence anchors instead of silently regenerating everything. New evidence can corroborate one claim, invalidate a claim, or create an explicit supersession. Unrelated conclusions remain stable and auditable."
 
-## 1:55-2:23 — Verification and Codex collaboration
+## 1:55-2:09 — Verification metrics
 
-**Screen:** Generated verification slide backed by test, ablation, and live Codex artifacts.
+**Screen:** Generated verification slide backed by tests, ablation, and live Codex artifacts.
 
 **Narration:**
 
-"The repository includes 30 adversarial and contract tests, 23 deterministic contract scenarios, and an enforcement ablation where the harness blocks all eight injected faults while the schema-only control admits all eight. Two live Codex smoke runs and this browser run passed 15 of 15 gates. Codex accelerated implementation, source verification, testing, and browser review. We retained the product, governance, and truth-boundary decisions."
+"The repository includes 32 adversarial and contract tests, 23 deterministic contract scenarios, and an enforcement ablation where the harness blocks all eight injected faults while the schema-only control admits all eight."
+
+## 2:09-2:29 — Codex collaboration evidence
+
+**Screen:** Five dated Build Week commits and the retained browser and smoke-run
+Codex Session IDs.
+
+**Narration:**
+
+"The dated repository history distinguishes the Build Week implementation. Two live Codex smoke runs and this browser run passed 15 of 15 gates. Codex accelerated implementation, source verification, testing, and browser review. We retained the product, governance, and truth-boundary decisions."
 
 ## Recording checklist
 
 - Keep the final video under 3:00; judges are not required to watch beyond that point.
 - Record at 1440x900 or 1920x1080 with browser zoom that keeps evidence and gates legible.
 - Use the public case and the visibly synthetic correction case; do not imply that synthetic entities are real.
+- Use `?submission=public` for public-facing captures so real buyer and supplier display names are replaced with stable aliases.
 - Show one live Codex run, but pre-warm dependencies and have the verified artifact ready if network latency becomes excessive.
 - Include clear audio and upload as a publicly visible YouTube video.
 - Do not use third-party logos, music, or copyrighted footage without permission.

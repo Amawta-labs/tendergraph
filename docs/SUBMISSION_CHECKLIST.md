@@ -25,7 +25,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] Dated Git commits distinguish new Build Week work.
 - [x] Runtime Codex session IDs are preserved in `artifacts/evals/codex-smoke.json`.
 - [ ] Run `/feedback` in the primary Codex development thread and record that session ID in README and Devpost.
-- [x] Keep timestamped Codex session evidence in `artifacts/evals/codex-smoke.json` and `artifacts/submission/live-codex-run.json`.
+- [x] Keep timestamped Codex session evidence in `artifacts/evals/codex-smoke.json` and `artifacts/submission/live-codex-run-anonymized.json`.
 
 ## Repository and testing
 
@@ -34,7 +34,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] README explains installation, testing, Codex collaboration, product decisions, runtime use of GPT-5.6, and fallback behavior.
 - [x] Judges can test https://openaihack.vercel.app without rebuilding or authentication.
 - [x] Local live-Codex and plugin instructions are documented.
-- [x] Confirm the redeployed final hosted URL and video hash are accessible without login; recheck them through the judging period.
+- [x] Redeploy the final video and confirm its hosted hash is accessible without login; recheck it through the judging period.
 - [x] Run the final command set for the freeze candidate: typecheck, tests, deterministic eval, ablation, Codex smoke, build, and dependency audit.
 
 ## Devpost fields
@@ -48,9 +48,11 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 ## Video
 
-- [x] Render a clear 2:23 demo with English audio at `public/tendergraph-build-week-demo.mp4`.
+- [x] Render a clear 2:29 demo with English audio at `public/tendergraph-build-week-demo.mp4`.
 - [x] Keep the video under three minutes.
 - [x] Show what was built and how Codex and GPT-5.6 were used.
+- [x] Anonymize real buyer and supplier display names while preserving scores, scope, evidence anchors, and hashes.
+- [x] Show dated Build Week commits and retained Codex Session IDs in the closing chapter.
 - [ ] Upload publicly to YouTube and add the URL to Devpost.
 - [x] Use no music or unlicensed third-party footage.
 - [x] Use English narration throughout.

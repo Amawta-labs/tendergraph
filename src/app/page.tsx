@@ -10,7 +10,7 @@ import { runHarness } from "@/lib/harness/run";
 export const dynamic = "force-dynamic";
 
 interface HomeProps {
-  searchParams: Promise<{ case?: string }>;
+  searchParams: Promise<{ case?: string; submission?: string }>;
 }
 
 export default async function Home({ searchParams }: HomeProps) {
@@ -39,6 +39,7 @@ export default async function Home({ searchParams }: HomeProps) {
       initialFixtureId={fixture.id}
       initialResult={initialResult}
       evidenceDeltas={listEvidenceDeltas()}
+      publicPresentation={params.submission === "public"}
     />
   );
 }

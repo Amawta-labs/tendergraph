@@ -32,14 +32,17 @@ cp \
   "$ROOT_DIR/artifacts/submission/public-workbench.png" \
   "$ROOT_DIR/artifacts/submission/correction-diff.png" \
   "$ROOT_DIR/artifacts/submission/verification-evidence.png" \
-  "$ROOT_DIR/artifacts/submission/live-codex-run.mp4" \
+  "$ROOT_DIR/artifacts/submission/codex-collaboration.png" \
+  "$ROOT_DIR/artifacts/submission/live-codex-run-anonymized.mp4" \
   "$PACKAGE_DIR/media/"
 cp \
   "$ROOT_DIR/artifacts/evals/codex-smoke.json" \
-  "$ROOT_DIR/artifacts/submission/live-codex-run.json" \
+  "$ROOT_DIR/artifacts/submission/live-codex-run-anonymized.json" \
   "$ROOT_DIR/logs/submission-freeze-2026-07-16.json" \
   "$ROOT_DIR/logs/architecture-video-remediation-2026-07-16.json" \
   "$ROOT_DIR/logs/architecture-video-remediation-2026-07-16.md" \
+  "$ROOT_DIR/logs/video-official-rules-remediation-2026-07-16.json" \
+  "$ROOT_DIR/logs/video-official-rules-remediation-2026-07-16.md" \
   "$PACKAGE_DIR/evidence/"
 cp "$ROOT_DIR/artifacts/compliance/dependency-licenses.json" "$PACKAGE_DIR/compliance/"
 

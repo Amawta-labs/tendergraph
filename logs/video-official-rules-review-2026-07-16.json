@@ -1,0 +1,53 @@
+{
+  "contract": "tendergraph-video-rules-review.v1",
+  "reviewedAt": "2026-07-16",
+  "video": {
+    "path": "public/tendergraph-build-week-demo.mp4",
+    "sha256": "fdfc61d959786b1685cdf2ad5bd84594a41ffcd39189e3f854e392c23e89dc9c",
+    "durationSeconds": 143.433,
+    "resolution": "1920x1080",
+    "frameRate": 30,
+    "audio": {
+      "codec": "AAC",
+      "channels": 1,
+      "sampleRateHz": 48000,
+      "integratedLoudnessLufs": -17.8,
+      "truePeakDbfs": -1.5
+    }
+  },
+  "verdict": {
+    "file": "pass_with_trademark_review",
+    "submission": "fail_until_public_youtube_url_exists"
+  },
+  "requirements": {
+    "underThreeMinutes": "pass",
+    "clearDemoWithAudio": "pass",
+    "explainsWhatWasBuilt": "pass",
+    "explainsCodexUse": "pass",
+    "explainsGpt56Use": "pass",
+    "showsWorkingProject": "pass",
+    "publicYouTube": "fail_external",
+    "noUnauthorizedMusicOrFootage": "pass",
+    "englishMaterials": "pass"
+  },
+  "findings": [
+    {
+      "id": "VRR-001",
+      "severity": "blocker",
+      "title": "Public YouTube URL is mandatory",
+      "status": "open_external"
+    },
+    {
+      "id": "VRR-002",
+      "severity": "review",
+      "title": "Public evidence displays factual third-party trade names",
+      "status": "entrant_decision_required"
+    },
+    {
+      "id": "VRR-003",
+      "severity": "opportunity",
+      "title": "Final proof slide is static for approximately 28 seconds",
+      "status": "optional"
+    }
+  ]
+}

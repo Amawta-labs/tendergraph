@@ -1,0 +1,54 @@
+{
+  "contract": "tendergraph-video-rules-remediation.v1",
+  "date": "2026-07-16",
+  "video": {
+    "path": "public/tendergraph-build-week-demo.mp4",
+    "sha256": "a80fdee4d8e3852057ae7a2365b42c2df605089f7a54e9a16d898f507a407feb",
+    "durationSeconds": 148.083,
+    "video": "H.264 1920x1080 30fps",
+    "audio": "AAC mono 48kHz",
+    "integratedLoudnessLufs": -17.9,
+    "truePeakDbfs": -1.9
+  },
+  "liveBrowserEvidence": {
+    "manifest": "artifacts/submission/live-codex-run-anonymized.json",
+    "sessionId": "019f698f-55a0-7801-8461-dbb0fa9c2c13",
+    "traceId": "fdefdc91-dc8c-49c6-90a1-d19aaef047f3",
+    "gatesPassed": 15,
+    "gatesTotal": 15,
+    "observedRunningState": true,
+    "observedCompletedState": true
+  },
+  "findings": [
+    {
+      "id": "VRR-002",
+      "status": "resolved",
+      "resolution": "Public submission scenes use stable buyer and supplier aliases without mutating underlying evidence or validation contracts."
+    },
+    {
+      "id": "VRR-003",
+      "status": "resolved",
+      "resolution": "The close is split between verification metrics and dated Git plus Codex session evidence."
+    },
+    {
+      "id": "VRR-001",
+      "status": "open_external",
+      "resolution": "The exact MP4 is deployed and hash-matched. Publish it as Public on YouTube, verify signed-out playback, and add its URL to Devpost."
+    }
+  ],
+  "verification": {
+    "typecheck": "passed",
+    "tests": { "passed": 32, "total": 32 },
+    "visualReview": "passed",
+    "duration": "passed",
+    "audio": "passed",
+    "productionBuild": "passed",
+    "deployment": {
+      "canonicalUrl": "https://openaihack.vercel.app",
+      "immutableUrl": "https://openaihack-iv46gogcf-amawta.vercel.app",
+      "canonicalStatus": 200,
+      "immutableStatus": 200,
+      "hostedVideoHashMatched": true
+    }
+  }
+}

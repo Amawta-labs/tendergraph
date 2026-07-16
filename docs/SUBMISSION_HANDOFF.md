@@ -6,10 +6,13 @@ before its confirmation exists.
 
 ## Verified freeze
 
-- Application freeze evidence commit: `cca2dcc` (`main`)
+- Prior application freeze evidence commit: `cca2dcc` (`main`)
 - Production: https://openaihack.vercel.app
+- Immutable deployment: https://openaihack-iv46gogcf-amawta.vercel.app
+- Anonymized presentation: https://openaihack.vercel.app/?submission=public
 - Video: https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
-- Video SHA-256: `fdfc61d959786b1685cdf2ad5bd84594a41ffcd39189e3f854e392c23e89dc9c`
+- Video SHA-256: `a80fdee4d8e3852057ae7a2365b42c2df605089f7a54e9a16d898f507a407feb`
+- Video remediation evidence: `logs/video-official-rules-remediation-2026-07-16.md`
 - Primary project thread Session ID: `019f615b-8a9a-7be1-bc50-65059c70d511`
 - `/feedback` state: **not submitted yet**; run `/feedback` in that primary thread before using the ID in Devpost.
 
