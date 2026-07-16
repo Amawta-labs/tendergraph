@@ -54,4 +54,4 @@
 1. Publish or share the repository with the judging accounts and replace the repository TODO.
 2. Upload this exact MP4 publicly to YouTube and replace the video TODO.
 3. Run `/feedback` in the primary project thread and replace its TODO.
-4. Tag the final tested commit and ensure the hosted asset matches the hash recorded above.
+4. Tag the final submitted commit. The hosted asset already matches the hash recorded above.

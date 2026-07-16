@@ -9,7 +9,7 @@
 - **Hosted demo:** https://openaihack.vercel.app
 - **Video:** `TODO_PUBLIC_YOUTUBE_URL`
 - **Prepared local video asset:** `public/tendergraph-build-week-demo.mp4`
-- **Hosted video asset:** redeploy required before using `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4`
+- **Hosted video asset:** https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
 - **Primary Codex /feedback session:** `TODO_PRIMARY_PROJECT_THREAD_FEEDBACK_ID`
 
 ## What TenderGraph does

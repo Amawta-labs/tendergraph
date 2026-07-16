@@ -4,7 +4,7 @@
 
 - Video: `public/tendergraph-build-week-demo.mp4`
 - Local submission asset: `public/tendergraph-build-week-demo.mp4`
-- Hosted transfer URL: redeploy before using `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4`
+- Hosted transfer URL: https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
 - Thumbnail: `artifacts/submission/verification-evidence.png`
 - Duration: 2:23
 - Language: English

@@ -34,7 +34,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] README explains installation, testing, Codex collaboration, product decisions, runtime use of GPT-5.6, and fallback behavior.
 - [x] Judges can test https://openaihack.vercel.app without rebuilding or authentication.
 - [x] Local live-Codex and plugin instructions are documented.
-- [ ] Confirm the redeployed final hosted URL and video hash are accessible without login; recheck them through the judging period.
+- [x] Confirm the redeployed final hosted URL and video hash are accessible without login; recheck them through the judging period.
 - [x] Run the final command set for the freeze candidate: typecheck, tests, deterministic eval, ablation, Codex smoke, build, and dependency audit.
 
 ## Devpost fields

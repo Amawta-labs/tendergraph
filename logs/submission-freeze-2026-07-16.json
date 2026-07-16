@@ -43,9 +43,17 @@
     "integratedLoudnessLufs": -17.8,
     "truePeakDbfs": -1.5
   },
+  "deployment": {
+    "provider": "vercel",
+    "productionUrl": "https://openaihack.vercel.app",
+    "immutableDeploymentUrl": "https://openaihack-gd0acturg-amawta.vercel.app",
+    "appHttpStatus": 200,
+    "correctionHttpStatus": 200,
+    "hostedVideoSha256": "fdfc61d959786b1685cdf2ad5bd84594a41ffcd39189e3f854e392c23e89dc9c",
+    "localVideoHashMatched": true
+  },
   "remainingExternalActions": [
     "github_reauthentication_and_push",
-    "vercel_redeploy_and_hash_check",
     "public_youtube_upload",
     "primary_project_thread_feedback",
     "devpost_form_submission"
