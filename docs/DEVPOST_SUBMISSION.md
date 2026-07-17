@@ -4,7 +4,7 @@
 
 - **Project:** TenderGraph
 - **Track:** Work & Productivity
-- **Tagline:** An auditable procurement decision compiler that shows what changed, why it changed, and which evidence supports every claim.
+- **Tagline:** Decision intelligence for tender markets: who won, why, and what changed; compiled from evidence, not guessed by AI.
 - **Repository:** https://github.com/Amawta-labs/tendergraph
 - **Hosted demo:** https://openaihack.vercel.app
 - **Video:** `TODO_PUBLIC_YOUTUBE_URL`
@@ -14,11 +14,29 @@
 
 ## What TenderGraph does
 
-TenderGraph helps bidder and procurement teams reconstruct opening and award decisions from source documents without turning model prose into authority. It compiles source manifests, addressable evidence records, reviewed claims, policy decisions, and a reader-facing answer into one auditable run.
+**TenderGraph is the decision-change control plane for the multi-trillion-dollar tender economy.** It helps bidder and procurement teams reconstruct opening and award decisions from source documents without turning model prose into authority. It compiles source manifests, addressable evidence records, reviewed claims, policy decisions, and a reader-facing answer into one auditable run.
+
+The market is material and the problem is structural. Public procurement represented [12.7% of OECD GDP and 29.9% of total government expenditure in 2023](https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/size-of-public-procurement_6979cd47.html), while the [World Bank estimated USD 11 trillion in global public procurement](https://blogs.worldbank.org/en/developmenttalk/how-large-public-procurement) in 2018. OECD research identifies [complex procedures, administrative burden, and extensive documentation](https://www.oecd.org/en/publications/smes-in-public-procurement_9789264307476-en.html) as persistent barriers for suppliers. TenderGraph addresses the intelligence gap after discovery: who was recommended, why competitors lost, which evidence proves it, and what changed later.
 
 The default case is a hash-verified public Chilean evaluation. TenderGraph identifies the commission's award recommendation, compares evaluated scores, explains why the other suppliers were not recommended, and preserves the source limitation that the snapshot is not proof of a signed contract.
 
 The differentiating workflow is a validated incremental evidence-delta contract. Versioned events declare changed evidence and affected claim versions; TenderGraph rejects incomplete or inconsistent dependency declarations, computes the unchanged complement, and presents the exact before/after diff. A public event demonstrates corroboration of one claim. A separate, visibly synthetic correction benchmark demonstrates two explicit supersessions: the winner changes, the loss explanation reverses, and the award rule remains unchanged. Automatic document ingestion and impact discovery are not part of this submission.
+
+## Why this is frontier
+
+An older-model application could summarize a PDF. TenderGraph's unit of work is a controlled decision-state transition across versioned sources, evidence, reviewed claims, GPT-5.6/Codex composition, code-owned admission gates, and an audit trace.
+
+[OpenAI's agent guidance](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/) identifies complex decisions, difficult-to-maintain rules, and heavy unstructured data as workflows where agents add value, while emphasizing guardrails and human intervention. TenderGraph concentrates model freedom in semantic synthesis and removes model authority where errors create exposure. New evidence can corroborate, invalidate, or supersede a claim; unrelated conclusions remain explicit and stable.
+
+The recent paper [*From Prompts to Contracts*](https://arxiv.org/abs/2607.08028) reports that code-owned guarantees are load-bearing and are not reproduced by prompt instructions alone. TenderGraph adopts that authority architecture and extends it with procurement scope, human-reviewed consequential claims, evidence-delta events, claim supersession, and exact before/after decision diffs.
+
+The claim is not that GPT-5.6 is infallible or that older models cannot generate similar prose. The frontier contribution is a system in which advanced reasoning can operate without becoming the source of truth.
+
+## Commercial wedge
+
+The initial buyer is a bidder's commercial intelligence, proposal, or public sector sales team. Post-opening and post-award reconstruction provides an observable first workflow: compress a fragmented award file into an inspectable decision record, preserve evidence for debriefs and challenges, and turn losses into reusable institutional knowledge.
+
+Expansion paths include continuous opening and award monitoring, licensed jurisdiction connectors, organization-specific review policy, portfolio-level competitor intelligence, and private RFPs. The defensible asset is the accumulated decision graph: source contracts, claim-evidence histories, correction events, and organization-specific review decisions. The current Build Week submission proves the control layer and one deep public case; it does not claim universal ingestion or automatic impact discovery.
 
 ## How it works
 
@@ -49,11 +67,11 @@ The differentiating workflow is a validated incremental evidence-delta contract.
 
 ## How we used Codex and GPT-5.6
 
-Codex was both the development collaborator and a product runtime surface. It inspected the existing domain plan and the paper, implemented the typed contracts and workbench, generated and challenged tests, ran builds and browser checks, retrieved a public procurement snapshot, and helped turn review findings into bounded engineering commits.
+Codex was both the development collaborator and a product runtime surface. It did not merely autocomplete code: it inspected and separated prior domain work, mapped a new research paper into application contracts, implemented the typed harness and workbench, generated and challenged adversarial tests, retrieved and hash-checked a public procurement snapshot, ran browser and deployment verification, reviewed submission media, and turned findings into bounded engineering commits.
 
 The team retained the key product and governance decisions: focus on bidder-facing opening and award intelligence; distinguish public facts from synthetic benchmarks; require human approval for consequential claims; preserve the difference between an evaluation recommendation and a signed contract; treat changed evidence as a dependency update rather than a full-answer rewrite; and keep deterministic fallback as the final authority boundary.
 
-At runtime, GPT-5.6 Terra performs only structured composition. It cannot select authoritative sources, promote claims, rewrite evidence, decide source status, or bypass validation. Invalid model output is discarded by code.
+At runtime, GPT-5.6 Terra performs only structured composition. It cannot select authoritative sources, promote claims, rewrite evidence, decide source status, or bypass validation. Invalid model output is discarded by code. The same workflow is packaged as a reusable Codex Skill that returns the model, Session ID, audit trace, gate results, and retained artifact. Dated commits and retained sessions make both development and runtime execution inspectable.
 
 ## Testing instructions
 

@@ -44,7 +44,9 @@ video is public and playable while signed out, then replace
 
 1. Select **Work & Productivity**.
 2. Use `docs/DEVPOST_FORM_COPY.md` for field-by-field paste-ready answers and
-   `docs/DEVPOST_SUBMISSION.md` for the complete verified narrative.
+   `docs/DEVPOST_SUBMISSION.md` for the complete verified narrative. Use
+   `docs/COMMERCIAL_FRONTIER_NARRATIVE.md` when checking the market,
+   differentiation, commercial wedge, and source links.
 3. Add the Vercel and YouTube URLs plus the confirmed `/feedback` Session ID; the public GitHub URL is already recorded.
 4. Upload the four gallery images in the order and with the captions listed in
    `docs/DEVPOST_FORM_COPY.md`.
