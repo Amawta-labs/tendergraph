@@ -19,23 +19,11 @@ before its confirmation exists.
 
 ## GitHub publication
 
-Authenticate the account that should own the submission repository:
-
-```bash
-gh auth login -h github.com
-gh auth status
-```
-
-Then create and push the public Apache-2.0 repository:
-
-```bash
-gh repo create tendergraph --public --source . --remote origin --push \
-  --description "Auditable procurement intelligence with Codex and GPT-5.6"
-```
-
-Replace `TODO_AFTER_GITHUB_REAUTH` in `docs/DEVPOST_SUBMISSION.md` with the
-resulting repository URL. If the repository must be private, share it with both
-judging accounts named in the Official Rules instead.
+- Repository: https://github.com/Amawta-labs/tendergraph
+- Visibility: **Public**
+- Default branch: `main`
+- License detected by GitHub: **Apache-2.0**
+- Verified remote commit at publication: `5ebe9ecf6522b8fe3557c3ace07899a71a40167b`
 
 ## YouTube publication
 
@@ -60,7 +48,7 @@ Complete the feedback flow and confirm that it identifies Session ID
 
 1. Select **Work & Productivity**.
 2. Paste the English copy and testing instructions from `docs/DEVPOST_SUBMISSION.md`.
-3. Add the public GitHub, Vercel, and YouTube URLs plus the confirmed `/feedback` Session ID.
+3. Add the Vercel and YouTube URLs plus the confirmed `/feedback` Session ID; the public GitHub URL is already recorded.
 4. Confirm entrant eligibility, team members, and the authorized representative.
 5. Submit before July 21, 2026 at 5:00 PM Pacific Time and preserve the confirmation.
 

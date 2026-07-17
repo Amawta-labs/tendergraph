@@ -33,7 +33,7 @@
 
 | Paper experiment | Current TenderGraph evidence | Claim boundary |
 | --- | --- | --- |
-| Fixed scenarios | 23 deterministic scenarios plus 30 unit/adversarial tests | Contract preservation only; not factual-accuracy proof |
+| Fixed scenarios | 23 deterministic scenarios plus 32 unit/adversarial tests | Contract preservation only; not factual-accuracy proof |
 | Fault injection | Eight controlled mutations; harness admits `0/8`, schema-only admits `8/8` | Enforcement sensitivity against schema-only admission |
 | Live composition boundary | Two Codex/GPT-5.6 Terra smoke runs | Proves the Codex boundary works; not model substitution |
 | RQ2 model substitution | Not replicated | Do not claim multi-model robustness or the paper's 270-run result |

@@ -65,14 +65,20 @@
     "buildWeekGitProvenance": "achieved",
     "deployment": "achieved",
     "videoAndDocumentation": "achieved",
-    "githubRepository": "ready_to_publish",
+    "githubRepository": "achieved",
     "feedbackEvidence": "pending_interactive_action",
     "youtubePublication": "pending_account_action",
     "devpostSubmission": "pending_account_action"
   },
   "remainingPlaceholders": [
-    "TODO_AFTER_GITHUB_REAUTH",
     "TODO_PUBLIC_YOUTUBE_URL",
     "TODO_PRIMARY_PROJECT_THREAD_FEEDBACK_ID"
-  ]
+  ],
+  "github": {
+    "url": "https://github.com/Amawta-labs/tendergraph",
+    "visibility": "PUBLIC",
+    "defaultBranch": "main",
+    "license": "Apache-2.0",
+    "verifiedRemoteCommit": "5ebe9ecf6522b8fe3557c3ace07899a71a40167b"
+  }
 }

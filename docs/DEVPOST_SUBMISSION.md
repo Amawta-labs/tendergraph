@@ -5,7 +5,7 @@
 - **Project:** TenderGraph
 - **Track:** Work & Productivity
 - **Tagline:** An auditable procurement decision compiler that shows what changed, why it changed, and which evidence supports every claim.
-- **Repository:** `TODO_AFTER_GITHUB_REAUTH`
+- **Repository:** https://github.com/Amawta-labs/tendergraph
 - **Hosted demo:** https://openaihack.vercel.app
 - **Video:** `TODO_PUBLIC_YOUTUBE_URL`
 - **Prepared local video asset:** `public/tendergraph-build-week-demo.mp4`

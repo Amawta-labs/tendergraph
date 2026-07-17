@@ -29,8 +29,8 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 ## Repository and testing
 
-- [ ] Reauthenticate GitHub, create the repository, add the remote, and push `main`.
-- [ ] Make the repository public with the Apache-2.0 license, or share the private repository with `testing@devpost.com` and `build-week-event@openai.com`.
+- [x] Reauthenticate GitHub, create the repository, add the remote, and push `main`.
+- [x] Make the repository public with the Apache-2.0 license, or share the private repository with `testing@devpost.com` and `build-week-event@openai.com`.
 - [x] README explains installation, testing, Codex collaboration, product decisions, runtime use of GPT-5.6, and fallback behavior.
 - [x] Judges can test https://openaihack.vercel.app without rebuilding or authentication.
 - [x] Local live-Codex and plugin instructions are documented.
