@@ -24,9 +24,9 @@
 | Demo video | Achieved locally and deployed | 148.083 seconds, H.264 1920x1080, AAC audio, English narration, anonymized public display names, live running/completed transition, Codex/GPT-5.6 explanation, dated commits, and Session IDs |
 | README and Devpost copy | Achieved locally | Setup, testing, Codex collaboration, GPT-5.6 boundary, limitations, hosted testing, plugin path, track, description, and upload package are documented |
 | Public GitHub repository | Achieved | `https://github.com/Amawta-labs/tendergraph` is Public, uses `main`, reports Apache-2.0, and contained remote commit `5ebe9ecf...` at verification |
-| `/feedback` evidence | Pending interactive action | Official Codex manual documents `/feedback` as an interactive composer command that opens a dialog and returns a shareable Session ID; the primary thread is `019f615b-8a9a-7be1-bc50-65059c70d511` |
+| `/feedback` evidence | Achieved | `feedback/upload` completed with logs and returned the primary thread `019f615b-8a9a-7be1-bc50-65059c70d511`; receipt preserved in `artifacts/submission/codex-feedback.json` |
 | Public YouTube video | Pending account action | Final exact MP4 and upload metadata are ready; public upload and signed-out playback confirmation are not yet recorded |
-| Devpost submission | Pending account action | Draft fields and testing instructions are ready; repository URL, YouTube URL, confirmed `/feedback` ID, entrant details, and final submission confirmation remain |
+| Devpost submission | Pending account action | Draft fields and testing instructions include the repository and confirmed `/feedback` ID; YouTube URL, entrant details, and final submission confirmation remain |
 
 ## Current Verification
 
@@ -42,6 +42,5 @@
 
 ## Remaining Sequence
 
-1. In this primary Codex thread, run `/feedback`, include the session, complete the dialog, and record the returned Session ID.
-2. Upload the exact final MP4 to YouTube as Public, verify playback signed out, and record the URL.
-3. Replace the two remaining submission placeholders, verify entrant/team fields, submit Devpost, preserve confirmation, tag the submitted commit, and regenerate the final handoff archive.
+1. Upload the exact final MP4 to YouTube as Public, verify playback signed out, and record the URL.
+2. Replace the remaining YouTube placeholder, verify entrant/team fields, submit Devpost, preserve confirmation, tag the submitted commit, and regenerate the final handoff archive.

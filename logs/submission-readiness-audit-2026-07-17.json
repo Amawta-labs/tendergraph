@@ -66,14 +66,19 @@
     "deployment": "achieved",
     "videoAndDocumentation": "achieved",
     "githubRepository": "achieved",
-    "feedbackEvidence": "pending_interactive_action",
+    "feedbackEvidence": "achieved",
     "youtubePublication": "pending_account_action",
     "devpostSubmission": "pending_account_action"
   },
   "remainingPlaceholders": [
-    "TODO_PUBLIC_YOUTUBE_URL",
-    "TODO_PRIMARY_PROJECT_THREAD_FEEDBACK_ID"
+    "TODO_PUBLIC_YOUTUBE_URL"
   ],
+  "feedback": {
+    "method": "feedback/upload",
+    "includeLogs": true,
+    "threadId": "019f615b-8a9a-7be1-bc50-65059c70d511",
+    "receipt": "artifacts/submission/codex-feedback.json"
+  },
   "github": {
     "url": "https://github.com/Amawta-labs/tendergraph",
     "visibility": "PUBLIC",

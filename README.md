@@ -127,7 +127,10 @@ Codex accelerated repository inspection, contract implementation, adversarial te
 
 Codex is also a product runtime surface: `plugins/tendergraph` packages the analysis workflow, while `src/cli/codex-run.ts` invokes GPT-5.6 Terra in a read-only sandbox and records the resulting Codex session ID in the audit trace.
 
-Before submission, the entrant will add the primary `/feedback` session ID and retain dated Git history as required by the hackathon rules.
+The required Codex feedback upload was completed with logs for the primary
+project thread. Its confirmed Session ID is
+`019f615b-8a9a-7be1-bc50-65059c70d511`; the receipt is preserved at
+`artifacts/submission/codex-feedback.json`.
 
 ## Originality and attribution
 

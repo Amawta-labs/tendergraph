@@ -37,6 +37,7 @@ cp \
   "$PACKAGE_DIR/media/"
 cp \
   "$ROOT_DIR/artifacts/evals/codex-smoke.json" \
+  "$ROOT_DIR/artifacts/submission/codex-feedback.json" \
   "$ROOT_DIR/artifacts/submission/live-codex-run-anonymized.json" \
   "$ROOT_DIR/logs/submission-freeze-2026-07-16.json" \
   "$ROOT_DIR/logs/architecture-video-remediation-2026-07-16.json" \

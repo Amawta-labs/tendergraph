@@ -1,0 +1,14 @@
+{
+  "contract": "tendergraph-codex-feedback-evidence.v1",
+  "submittedAt": "2026-07-17T16:02:22Z",
+  "method": "feedback/upload",
+  "classification": "other",
+  "includeLogs": true,
+  "extraLogFiles": [],
+  "project": "TenderGraph",
+  "event": "OpenAI Build Week",
+  "threadId": "019f615b-8a9a-7be1-bc50-65059c70d511",
+  "response": {
+    "threadId": "019f615b-8a9a-7be1-bc50-65059c70d511"
+  }
+}

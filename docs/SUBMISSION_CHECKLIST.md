@@ -24,7 +24,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] Project fits **Work & Productivity**.
 - [x] Dated Git commits distinguish new Build Week work.
 - [x] Runtime Codex session IDs are preserved in `artifacts/evals/codex-smoke.json`.
-- [ ] Run `/feedback` in the primary Codex development thread and record that session ID in README and Devpost.
+- [x] Run `/feedback` in the primary Codex development thread and record that session ID in README and Devpost.
 - [x] Keep timestamped Codex session evidence in `artifacts/evals/codex-smoke.json` and `artifacts/submission/live-codex-run-anonymized.json`.
 
 ## Repository and testing

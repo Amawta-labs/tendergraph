@@ -15,7 +15,8 @@ before its confirmation exists.
 - Video remediation evidence: `logs/video-official-rules-remediation-2026-07-16.md`
 - Submission readiness audit: `logs/submission-readiness-audit-2026-07-17.md`
 - Primary project thread Session ID: `019f615b-8a9a-7be1-bc50-65059c70d511`
-- `/feedback` state: **not submitted yet**; run `/feedback` in that primary thread before using the ID in Devpost.
+- `/feedback` state: **submitted with logs**; receipt preserved at
+  `artifacts/submission/codex-feedback.json`.
 
 ## GitHub publication
 
@@ -34,15 +35,10 @@ video is public and playable while signed out, then replace
 
 ## Codex feedback
 
-In the primary project thread, enter:
-
-```text
-/feedback
-```
-
-Complete the feedback flow and confirm that it identifies Session ID
-`019f615b-8a9a-7be1-bc50-65059c70d511`. Only then replace
-`TODO_PRIMARY_PROJECT_THREAD_FEEDBACK_ID` in `docs/DEVPOST_SUBMISSION.md`.
+- Status: **Complete**
+- Confirmed Session ID: `019f615b-8a9a-7be1-bc50-65059c70d511`
+- Logs included: **Yes**
+- Receipt: `artifacts/submission/codex-feedback.json`
 
 ## Devpost
 

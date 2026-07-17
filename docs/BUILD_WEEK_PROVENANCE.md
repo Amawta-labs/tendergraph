@@ -35,9 +35,10 @@ Prompts to Contracts: Harness Engineering for Auditable Enterprise LLM Agents*
   `artifacts/evals/codex-smoke.json`.
 - The browser evidence manifest is preserved at
   `artifacts/submission/live-codex-run-anonymized.json`.
-- The Devpost `/feedback` field must use the primary Codex project thread where
-  most core functionality was built. It must be captured and recorded before
-  submission; the runtime session above is not a substitute.
+- The Devpost `/feedback` upload was completed with logs for the primary project
+  thread `019f615b-8a9a-7be1-bc50-65059c70d511`. The response and submission
+  metadata are preserved in `artifacts/submission/codex-feedback.json`; runtime
+  sessions above remain separate evidence.
 
 ## Change discipline
 
