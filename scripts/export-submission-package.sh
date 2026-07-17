@@ -43,6 +43,8 @@ cp \
   "$ROOT_DIR/logs/architecture-video-remediation-2026-07-16.md" \
   "$ROOT_DIR/logs/video-official-rules-remediation-2026-07-16.json" \
   "$ROOT_DIR/logs/video-official-rules-remediation-2026-07-16.md" \
+  "$ROOT_DIR/logs/submission-readiness-audit-2026-07-17.json" \
+  "$ROOT_DIR/logs/submission-readiness-audit-2026-07-17.md" \
   "$PACKAGE_DIR/evidence/"
 cp "$ROOT_DIR/artifacts/compliance/dependency-licenses.json" "$PACKAGE_DIR/compliance/"
 

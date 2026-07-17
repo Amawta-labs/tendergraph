@@ -36,7 +36,7 @@ The differentiating workflow is a validated incremental evidence-delta contract.
 - A distributable TenderGraph Codex plugin and `$tendergraph-analyze` skill.
 - Immutable six-stage local audit traces retrievable across local processes; hosted durable storage is a production boundary.
 - Claim invalidation, supersession, and exact before/after evidence dependency diffs.
-- 30 unit/adversarial tests, 23 deterministic evaluation scenarios, an 8-fault enforcement ablation, and a 2-run live Codex smoke evaluation.
+- 32 unit/adversarial tests, 23 deterministic evaluation scenarios, an 8-fault enforcement ablation, and a 2-run live Codex smoke evaluation.
 
 ## Evaluation evidence
 

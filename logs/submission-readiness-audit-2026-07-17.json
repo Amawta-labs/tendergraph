@@ -1,0 +1,78 @@
+{
+  "contract": "tendergraph-submission-readiness-audit.v1",
+  "auditedAt": "2026-07-17T15:11:13Z",
+  "sourceCommit": "c18c52d7892f8bade8c72b4f5807308ff05a4d60",
+  "overallStatus": "product_evidence_complete_account_actions_pending",
+  "verification": {
+    "typecheck": "passed",
+    "tests": {
+      "passed": 32,
+      "total": 32
+    },
+    "deterministicScenarios": {
+      "passed": 23,
+      "total": 23,
+      "maxRuntimeMs": 3
+    },
+    "ablation": {
+      "faults": 8,
+      "harnessViolationsAdmitted": 0,
+      "schemaOnlyViolationsAdmitted": 8
+    },
+    "dependencyAudit": {
+      "knownVulnerabilities": 0,
+      "packagesWithLicenseInventory": 79,
+      "unknownLicenses": 0
+    },
+    "publicCase": {
+      "id": "cl-real-5802381-7547UCUK",
+      "manifests": 2,
+      "evidenceRecords": 6,
+      "claims": 6,
+      "humanReviewedConsequentialClaims": 2,
+      "snapshotHashesMatched": true
+    },
+    "liveCodex": {
+      "model": "gpt-5.6-terra",
+      "smokeRuns": 2,
+      "browserRuns": 1,
+      "gatesPerRun": 15,
+      "browserSessionId": "019f698f-55a0-7801-8461-dbb0fa9c2c13"
+    },
+    "priorProjectBoundary": {
+      "arquimedSourceFiles": 92,
+      "exactHashMatches": 0
+    },
+    "deployment": {
+      "canonicalUrl": "https://openaihack.vercel.app",
+      "immutableUrl": "https://openaihack-iv46gogcf-amawta.vercel.app",
+      "build": "passed",
+      "canonicalStatus": 200,
+      "immutableStatus": 200
+    },
+    "video": {
+      "path": "public/tendergraph-build-week-demo.mp4",
+      "durationSeconds": 148.083,
+      "sha256": "a80fdee4d8e3852057ae7a2365b42c2df605089f7a54e9a16d898f507a407feb",
+      "hostedHashMatched": true
+    }
+  },
+  "requirements": {
+    "claimEvidenceOutputAuthority": "achieved",
+    "realPublicAwardCase": "achieved",
+    "incrementalReevaluation": "achieved",
+    "codexGpt56Runtime": "achieved",
+    "buildWeekGitProvenance": "achieved",
+    "deployment": "achieved",
+    "videoAndDocumentation": "achieved",
+    "githubRepository": "ready_to_publish",
+    "feedbackEvidence": "pending_interactive_action",
+    "youtubePublication": "pending_account_action",
+    "devpostSubmission": "pending_account_action"
+  },
+  "remainingPlaceholders": [
+    "TODO_AFTER_GITHUB_REAUTH",
+    "TODO_PUBLIC_YOUTUBE_URL",
+    "TODO_PRIMARY_PROJECT_THREAD_FEEDBACK_ID"
+  ]
+}
