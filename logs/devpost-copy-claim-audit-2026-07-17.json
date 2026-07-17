@@ -1,0 +1,92 @@
+{
+  "contract": "tendergraph-devpost-copy-claim-audit.v1",
+  "auditedAt": "2026-07-17T16:12:00Z",
+  "sourceCommit": "c768b30fa63cc54b0d867a1533352ac388cad04b",
+  "copy": "docs/DEVPOST_FORM_COPY.md",
+  "status": "verified_with_external_publication_pending",
+  "claims": [
+    {
+      "claim": "hash-verified public Chilean evaluation",
+      "status": "verified",
+      "evidence": [
+        "fixtures/golden-cases/chile-real-award.json",
+        "fixtures/public-snapshots/cl-5802381-7547UCUK/snapshot-manifest.json",
+        "src/lib/harness/gates.ts",
+        "logs/submission-readiness-audit-2026-07-17.json"
+      ],
+      "limit": "The snapshot proves an evaluation commission recommendation, not a signed final contract."
+    },
+    {
+      "claim": "GPT-5.6 Terra through ChatGPT-authenticated Codex",
+      "status": "verified",
+      "evidence": [
+        "artifacts/evals/codex-smoke.json",
+        "src/cli/codex-run.ts",
+        "README.md"
+      ],
+      "limit": "The hosted deployment may use deterministic composition because local ChatGPT credentials are not copied to Vercel."
+    },
+    {
+      "claim": "2/2 live Codex smoke runs with 15/15 gates",
+      "status": "verified",
+      "evidence": [
+        "artifacts/evals/codex-smoke.json"
+      ],
+      "limit": "This proves the live bounded composition path for two representative scenarios, not universal model quality."
+    },
+    {
+      "claim": "32/32 unit and adversarial tests",
+      "status": "verified",
+      "evidence": [
+        "logs/submission-readiness-audit-2026-07-17.json",
+        "tests/harness.test.ts",
+        "tests/submission-redaction.test.ts"
+      ],
+      "limit": "The count describes the repository test suite at the audited source state."
+    },
+    {
+      "claim": "23/23 deterministic contract scenarios",
+      "status": "verified",
+      "evidence": [
+        "logs/submission-readiness-audit-2026-07-17.json",
+        "evals/scenarios.json",
+        "evals/run.ts"
+      ],
+      "limit": "These are fixed contract scenarios, not a statistical benchmark of procurement coverage."
+    },
+    {
+      "claim": "harness admitted 0/8 injected faults; schema-only control admitted 8/8",
+      "status": "verified",
+      "evidence": [
+        "logs/submission-readiness-audit-2026-07-17.json",
+        "evals/ablation.ts"
+      ],
+      "limit": "This is an enforcement-sensitivity experiment, not a claim that all possible faults are covered."
+    },
+    {
+      "claim": "incremental claim supersession and unchanged complement",
+      "status": "verified",
+      "evidence": [
+        "fixtures/golden-cases/chile-correction.json",
+        "tests/harness.test.ts",
+        "artifacts/submission/correction-diff.png"
+      ],
+      "limit": "The correction benchmark is explicitly synthetic and automatic impact discovery is not implemented."
+    },
+    {
+      "claim": "public Apache-2.0 repository and hosted demo",
+      "status": "verified",
+      "evidence": [
+        "https://github.com/Amawta-labs/tendergraph",
+        "https://openaihack.vercel.app",
+        "LICENSE"
+      ],
+      "limit": "YouTube publication and Devpost submission remain external account actions."
+    }
+  ],
+  "pending": [
+    "Replace TODO_PUBLIC_YOUTUBE_URL after public upload and signed-out playback verification.",
+    "Confirm entrant, team, and representative fields.",
+    "Submit Devpost and preserve its confirmation URL or receipt."
+  ]
+}
