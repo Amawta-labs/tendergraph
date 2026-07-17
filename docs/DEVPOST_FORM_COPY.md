@@ -37,6 +37,38 @@ https://github.com/Amawta-labs/tendergraph
 
 Codex, GPT-5.6, Next.js, React, TypeScript, Zod, Vitest, Playwright, Vercel
 
+## Media gallery
+
+Upload these 1920x1080 images in this order.
+
+### 1. Public workbench
+
+- File: `artifacts/submission/public-workbench.png`
+- Title: Auditable public procurement workbench
+- Caption: A hash-verified public evaluation with reviewed claims, exact
+  evidence anchors, incremental impact, and 15 code-owned validation gates.
+
+### 2. Evidence diff
+
+- File: `artifacts/submission/correction-diff.png`
+- Title: Exact claim supersession after corrective evidence
+- Caption: A visibly synthetic correction benchmark shows which claims were
+  replaced, which evidence changed, and which award rule remained unchanged.
+
+### 3. Verification evidence
+
+- File: `artifacts/submission/verification-evidence.png`
+- Title: Verified, not asserted
+- Caption: 32/32 contract tests, 23/23 deterministic scenarios, 2/2 live Codex
+  runs, and an ablation in which the harness rejected all eight injected faults.
+
+### 4. Codex collaboration
+
+- File: `artifacts/submission/codex-collaboration.png`
+- Title: Inspectable Codex collaboration
+- Caption: Dated implementation history and retained runtime Session IDs make
+  both the development workflow and live Codex execution inspectable.
+
 ## Project story
 
 ### Inspiration

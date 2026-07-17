@@ -46,8 +46,10 @@ video is public and playable while signed out, then replace
 2. Use `docs/DEVPOST_FORM_COPY.md` for field-by-field paste-ready answers and
    `docs/DEVPOST_SUBMISSION.md` for the complete verified narrative.
 3. Add the Vercel and YouTube URLs plus the confirmed `/feedback` Session ID; the public GitHub URL is already recorded.
-4. Confirm entrant eligibility, team members, and the authorized representative.
-5. Submit before July 21, 2026 at 5:00 PM Pacific Time and preserve the confirmation.
+4. Upload the four gallery images in the order and with the captions listed in
+   `docs/DEVPOST_FORM_COPY.md`.
+5. Confirm entrant eligibility, team members, and the authorized representative.
+6. Submit before July 21, 2026 at 5:00 PM Pacific Time and preserve the confirmation.
 
 ## Offline export
 
