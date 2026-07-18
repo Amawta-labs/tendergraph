@@ -41,6 +41,7 @@
       ]
     },
     "browserPdfAnchors": 8,
+    "serverlessPdfPolyfill": "@napi-rs/canvas@1.0.2",
     "dependencyPackages": 131,
     "unknownLicenses": 0,
     "knownVulnerabilities": 0,

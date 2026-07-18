@@ -122,6 +122,9 @@ describe("extensible document ingestion", () => {
     expect(result.evidence.every((record) => record.locator.page !== null)).toBe(
       true,
     );
+    expect(typeof globalThis.DOMMatrix).toBe("function");
+    expect(typeof globalThis.Path2D).toBe("function");
+    expect(typeof globalThis.ImageData).toBe("function");
   });
 
   it("registers images as needing OCR instead of pretending extraction succeeded", async () => {

@@ -1,7 +1,7 @@
 {
   "contract": "tendergraph-dependency-license-inventory.v1",
   "source": "npm query * --json",
-  "packageLockSha256": "a5853145a7f2dabc2e2f26074877628a66d2eed1f67520db4f94b2574d14c674",
+  "packageLockSha256": "17c7c89a40d11a540b84ec7b25c03df89421227ab13d6c5575e9424c72735d51",
   "packageCount": 131,
   "unknownLicenseCount": 0,
   "packages": [

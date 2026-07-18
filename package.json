@@ -20,6 +20,7 @@
     "tendergraph:impact": "tsx src/cli/codex-impact.ts"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^1.0.2",
     "cheerio": "^1.2.0",
     "lucide-react": "^0.468.0",
     "mammoth": "^1.12.0",

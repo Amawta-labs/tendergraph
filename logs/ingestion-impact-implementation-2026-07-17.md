@@ -37,6 +37,10 @@ claim authority without a separate human decision.
 - Production build: pass.
 - Browser PDF upload: 8 page-addressable evidence anchors, parser
   `pdfjs-dist`, stable file hash, `eligible_for_review`.
+- Serverless PDF verification initially exposed missing DOM geometry globals.
+  The final implementation imports the PDF.js-supported `@napi-rs/canvas`
+  polyfills explicitly and externalizes both server packages for Next.js
+  tracing.
 - Desktop and 390 px mobile browser review: pass; no product console error or
   incoherent overlap.
 - Final live public corroboration impact run: 6/6 gates, exact reference

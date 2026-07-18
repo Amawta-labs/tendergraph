@@ -129,6 +129,10 @@ function chunkText(
 }
 
 async function parsePdf(bytes: Uint8Array): Promise<ParsedDocument> {
+  const canvas = await import("@napi-rs/canvas");
+  globalThis.DOMMatrix ??= canvas.DOMMatrix as unknown as typeof DOMMatrix;
+  globalThis.Path2D ??= canvas.Path2D as unknown as typeof Path2D;
+  globalThis.ImageData ??= canvas.ImageData as unknown as typeof ImageData;
   const { getDocument } = await import("pdfjs-dist/legacy/build/pdf.mjs");
   const loadingTask = getDocument({
     data: new Uint8Array(bytes),

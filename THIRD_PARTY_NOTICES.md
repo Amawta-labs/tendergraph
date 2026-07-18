@@ -28,7 +28,8 @@ Runtime and development dependencies retain their respective upstream licenses.
 Their authoritative license texts are available in each installed package and
 package registry record. Material dependencies include Next.js, React,
 OpenAI's JavaScript SDK, Zod, Lucide, PDF.js (Apache-2.0), Mammoth
-(BSD-2-Clause), Cheerio (MIT), TypeScript, and Vitest. The locked dependency
+(BSD-2-Clause), Cheerio (MIT), `@napi-rs/canvas` (MIT), TypeScript, and Vitest.
+The locked dependency
 inventory is preserved at `artifacts/compliance/dependency-licenses.json` and
 can be regenerated with `npm run compliance:licenses`.
 
