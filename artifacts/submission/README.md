@@ -4,22 +4,22 @@
 
 - File: `../../public/tendergraph-build-week-chat-first-demo.mp4`
 - Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4`
-- Hosted hash verified against the local file on 2026-07-18
-- Duration: 161.600 seconds
+- Hosted hash verification: pending deployment of this dynamic cut
+- Duration: 137.267 seconds
 - Video: H.264, 1920x1080, 30 fps
 - Audio: AAC, mono, 48 kHz
-- Integrated loudness: -17.6 LUFS
-- True peak: -1.5 dBFS
-- SHA-256: `89b9b3430f88c210fbf6ce9b16cbe8652ea6dc23bddab4f83d3945ec013dd0eb`
+- Integrated loudness: -19.1 LUFS
+- True peak: -2.8 dBFS
+- SHA-256: `d559ccb1a44091b8a4779bc03e33af25359039665516f03069710209fb7fc954`
 
 The eight narrated chapters cover the problem, evidence-bound answers, a live
 Codex/GPT-5.6 composition, document ingestion, automatic impact discovery, a
 corrective-resolution benchmark, verified enforcement, and the judging
 criteria. The capture contains three fresh authenticated Codex runs:
 
-- Composition: `019f739d-808a-78d1-aceb-344baf1e16f7`
-- Public impact: `019f739d-b33a-7382-a906-f0750884a549`
-- Correction impact: `019f739d-dda3-7133-bfa7-9be5805e97f9`
+- Composition: `019f73bb-ecaa-7f41-b2e9-0561fff2df38`
+- Public impact: `019f73bc-407f-7ad1-8ce5-7c67611da649`
+- Correction impact: `019f73bc-9b0c-7fb0-b6ee-81f3e3eec8d4`
 
 The public presentation replaces buyer and supplier display names with stable
 aliases while preserving scope, scores, evidence anchors, hashes, and
@@ -43,8 +43,9 @@ video contains no music or third-party brand footage.
 Start the authenticated local workbench, then run:
 
 ```bash
-DEMO_URL=http://127.0.0.1:3001/?submission=public \
-  node scripts/capture-live-codex-demo.mjs
+node scripts/capture-live-codex-demo.mjs \
+  --url http://localhost:3001 \
+  --output-dir /tmp/tendergraph-chat-first-capture-v3
 
 CAPTURE_DIR=/tmp/tendergraph-chat-first-capture \
 PIPER_PYTHON=/path/to/piper-python \
@@ -53,5 +54,6 @@ VOICE_MODEL=/path/to/en_US-lessac-medium.onnx \
 ```
 
 The capturer rejects missing live Codex composition, Session IDs, validation
-gates, or expected impact proposals. The renderer rejects a non-anonymized
-capture, missing audio, and a runtime of 180 seconds or longer.
+gates, or expected impact proposals. Its v3 contract also retains six active
+chapter ranges. The renderer rejects a non-anonymized capture, frozen-frame
+padding, missing audio, and a runtime of 180 seconds or longer.

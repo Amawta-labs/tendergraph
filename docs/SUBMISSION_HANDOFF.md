@@ -12,8 +12,9 @@ before its confirmation exists.
 - Immutable deployment: https://openaihack-9v9smulcf-amawta.vercel.app
 - Anonymized presentation: https://openaihack.vercel.app/?submission=public
 - Video: https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
-- Local and hosted video SHA-256, verified on 2026-07-18:
-  `89b9b3430f88c210fbf6ce9b16cbe8652ea6dc23bddab4f83d3945ec013dd0eb`
+- Local video SHA-256:
+  `d559ccb1a44091b8a4779bc03e33af25359039665516f03069710209fb7fc954`
+- Hosted hash verification: pending deployment of the dynamic cut.
 - Production runtime verification:
   `logs/production-runtime-verification-2026-07-17.md`
 - Final requirement-by-requirement audit:

@@ -12,7 +12,7 @@ function parseArgs(argv) {
     return index >= 0 ? argv[index + 1] : fallback;
   };
   return {
-    url: value("--url", "http://127.0.0.1:3000"),
+    url: value("--url", "http://localhost:3000"),
     outputDir: path.resolve(
       value("--output-dir", "/tmp/tendergraph-chat-first-capture"),
     ),
@@ -64,30 +64,83 @@ async function main() {
     markers[name] = Date.now() - startedAt;
   };
 
+  const beat = (milliseconds = 1300) => sleep(milliseconds);
+
+  async function scrollInspector(position) {
+    await page.locator(".inspector-body").evaluate((element, nextPosition) => {
+      const top =
+        nextPosition === "bottom"
+          ? element.scrollHeight
+          : nextPosition === "middle"
+            ? element.scrollHeight / 2
+            : 0;
+      element.scrollTo({ top, behavior: "smooth" });
+    }, position);
+    await beat(1700);
+  }
+
   try {
     await page.goto(`${options.url}/?submission=public`, {
       waitUntil: "networkidle",
     });
     await page.locator(".send-button").waitFor();
-    await sleep(1200);
+    await beat(1200);
     mark("publicReady");
+    mark("problemSceneStart");
     await screenshot(page, options.outputDir, "public-chat-first");
 
+    await page.locator(".claim-row").nth(0).click();
+    await beat();
+    await page.getByRole("button", { name: "Next evidence" }).click();
+    await beat();
     await page.locator(".claim-row").nth(1).click();
-    await sleep(900);
+    await beat();
     mark("evidenceOpened");
+    await page.locator(".claim-row").nth(2).click();
+    await beat();
+    await page.getByRole("tab", { name: "Changes" }).click();
+    await beat();
+    await page.getByRole("tab", { name: "Evidence" }).click();
+    await beat();
+    mark("problemSceneEnd");
+
+    mark("evidenceSceneStart");
+    await page.getByRole("button", { name: "Next evidence" }).click();
+    await beat();
+    await page.getByRole("button", { name: "Next evidence" }).click();
+    await beat();
+    await page.getByRole("button", { name: "Next evidence" }).click();
+    await beat();
+    await page.getByRole("button", { name: "Next evidence" }).click();
+    await beat();
+    await page.getByRole("button", { name: "Previous evidence" }).click();
+    await beat();
+    await page.getByRole("button", { name: "Previous evidence" }).click();
+    await beat();
+    await page.locator(".claim-row").nth(1).click();
+    await beat();
     await screenshot(page, options.outputDir, "public-evidence");
+    mark("evidenceSceneEnd");
 
     await page
       .locator("select[aria-label='Analysis runtime']")
       .selectOption("codex");
+    await beat(700);
+    mark("codexSceneStart");
     mark("codexRunStarted");
+    const composer = page.getByRole("textbox", {
+      name: "Ask about this tender",
+    });
+    if ((await composer.inputValue()).trim().length < 3) {
+      throw new Error("The composer has no runnable procurement question");
+    }
     const codexResponsePromise = page.waitForResponse(
       (response) =>
         response.url().includes("/api/codex-run") &&
         response.request().method() === "POST",
+      { timeout: 60000 },
     );
-    await page.locator(".send-button").click();
+    await composer.press("Enter");
     await page.waitForFunction(
       () =>
         document.querySelector(".send-button")?.hasAttribute("disabled") ??
@@ -104,23 +157,31 @@ async function main() {
         ),
     );
     mark("codexRunCompleted");
-    await sleep(900);
+    await beat(1300);
     await page.getByRole("tab", { name: "Trace" }).click();
     await page.locator(".trace-session code").waitFor();
-    await sleep(900);
+    await beat(1300);
     mark("traceOpened");
     await screenshot(page, options.outputDir, "codex-trace");
+    await scrollInspector("bottom");
+    await scrollInspector("top");
+    mark("codexSceneEnd");
 
+    mark("ingestionSceneStart");
     await page.locator(".attach-button input").setInputFiles(options.pdfPath);
-    await sleep(700);
+    await beat(1400);
     mark("documentAttached");
     await page.getByRole("button", { name: "Extract evidence" }).click();
     await page.getByRole("button", { name: "Analyze impact" }).waitFor();
     await page.getByRole("tab", { name: "Evidence" }).click();
     await page.locator(".file-event").waitFor();
-    await sleep(900);
+    await beat(1200);
     mark("documentExtracted");
     await screenshot(page, options.outputDir, "document-ingestion");
+    await page.getByRole("button", { name: "Next evidence" }).click();
+    await beat();
+    await page.getByRole("button", { name: "Next evidence" }).click();
+    await beat();
 
     mark("publicImpactStarted");
     const [publicImpactResponse] = await Promise.all([
@@ -135,20 +196,32 @@ async function main() {
     const publicImpact = await publicImpactResponse.json();
     await page.locator(".impact-message").waitFor();
     await page.getByRole("tab", { name: "Changes" }).click();
-    await sleep(900);
+    await beat(1300);
     mark("publicImpactCompleted");
     await screenshot(page, options.outputDir, "public-impact");
+    await scrollInspector("bottom");
+    await page.getByRole("button", { name: "Inspect evidence" }).first().click();
+    await beat();
+    await page.getByRole("tab", { name: "Changes" }).click();
+    await beat();
+    mark("ingestionSceneEnd");
 
+    mark("correctionSceneStart");
     await page.goto(
       `${options.url}/?case=cl-correction-demo&submission=public`,
       { waitUntil: "networkidle" },
     );
     await page.locator(".send-button").waitFor();
-    await sleep(1000);
+    await beat(1200);
     mark("correctionReady");
     await page.getByRole("tab", { name: "Changes" }).click();
-    await sleep(700);
+    await beat(1200);
     await screenshot(page, options.outputDir, "correction-diff");
+    await scrollInspector("middle");
+    await page.getByRole("button", { name: "Inspect evidence" }).first().click();
+    await beat();
+    await page.getByRole("tab", { name: "Changes" }).click();
+    await beat();
 
     mark("correctionImpactStarted");
     const [correctionImpactResponse] = await Promise.all([
@@ -163,9 +236,28 @@ async function main() {
     const correctionImpact = await correctionImpactResponse.json();
     await page.locator(".impact-message").waitFor();
     await page.getByRole("tab", { name: "Changes" }).click();
-    await sleep(1100);
+    await beat(1300);
     mark("correctionImpactCompleted");
     await screenshot(page, options.outputDir, "correction-impact");
+    mark("correctionSceneEnd");
+
+    mark("graphSceneStart");
+    await page.getByRole("button", { name: "Inspect evidence" }).first().click();
+    await beat();
+    await page.getByRole("button", { name: "Next evidence" }).click();
+    await beat();
+    await page.getByRole("tab", { name: "Changes" }).click();
+    await beat();
+    await scrollInspector("bottom");
+    const inspectButtons = page.getByRole("button", { name: "Inspect evidence" });
+    if ((await inspectButtons.count()) > 1) {
+      await inspectButtons.nth(1).click();
+      await beat();
+      await page.getByRole("tab", { name: "Changes" }).click();
+      await beat();
+    }
+    await scrollInspector("top");
+    mark("graphSceneEnd");
 
     if (codexResult.trace?.compositionSurface !== "codex") {
       throw new Error("Composition did not complete through Codex");
@@ -200,7 +292,7 @@ async function main() {
     await copyFile(recordedPath, finalVideo);
 
     const manifest = {
-      contract: "tendergraph-chat-first-capture.v2",
+      contract: "tendergraph-chat-first-capture.v3",
       capturedAt: new Date().toISOString(),
       url: `${options.url}/?submission=public`,
       presentation: "public_anonymized",

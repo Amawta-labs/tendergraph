@@ -5,7 +5,7 @@
 - Video: `public/tendergraph-build-week-chat-first-demo.mp4`
 - Hosted transfer URL: https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
 - Thumbnail: `artifacts/submission/chat-first-verification.png`
-- Duration: 2:41.600
+- Duration: 2:17.267
 - Resolution: 1920x1080
 - Language: English
 
@@ -45,13 +45,13 @@ AI-assisted; the video contains no music or third-party brand footage.
 
 Chapters:
 00:00 The procurement decision problem
-00:21 Evidence-bound answers
-00:41 Live Codex and GPT-5.6 runtime
-01:02 Document ingestion and impact discovery
-01:27 Corrective resolution
-01:44 The decision graph
-02:03 Verified enforcement
-02:23 Why TenderGraph can win
+00:20 Evidence-bound answers
+00:37 Live Codex and GPT-5.6 runtime
+00:57 Document ingestion and impact discovery
+01:16 Corrective resolution
+01:31 The decision graph
+01:47 Verified enforcement
+02:01 Why TenderGraph can win
 
 ## Upload settings
 

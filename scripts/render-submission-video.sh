@@ -43,7 +43,7 @@ done
 
 capture_contract="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.contract)' "$CAPTURE_MANIFEST")"
 capture_presentation="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.presentation)' "$CAPTURE_MANIFEST")"
-if [[ "$capture_contract" != "tendergraph-chat-first-capture.v2" ]]; then
+if [[ "$capture_contract" != "tendergraph-chat-first-capture.v3" ]]; then
   echo "Unexpected capture contract: $capture_contract" >&2
   exit 1
 fi
@@ -147,58 +147,69 @@ magick -size 1920x1080 xc:'#f5f7f6' \
   "$WORK_DIR/closing.png"
 
 declare -a NARRATION=(
-  "Public procurement decisions are scattered across notices, evaluation tables, supplier files, and later amendments. Teams still reconstruct who was recommended, why others lost, and what changed. TenderGraph turns that fragmented record into an auditable decision state, built with Codex and GPT five point six."
-  "Most AI products stop at summarization. Here, every answer is assembled from promoted claims bound to exact evidence. The chat stays usable while the inspector exposes source, page, quoted text, parser, authority, URL, and content hash. A commission recommendation is never misrepresented as a signed contract."
-  "Now I run the question through a ChatGPT-authenticated Codex session, with no API key. GPT five point six composes only from the admitted claim contract. The trace retains the model and full session identifier, while fifteen code-owned gates reject invention, evidence swaps, scope contamination, leakage, and incomplete output."
-  "Next I attach the official PDF. TenderGraph extracts eight hashed evidence anchors without granting them authority. Codex then compares a later public selection record with every active claim and finds one material corroboration. Six independent gates validate scope, the complete claim partition, evidence identity, action semantics, and shadow authority. Nothing changes until human review."
-  "The harder test is a later corrective resolution. TenderGraph identifies two supersessions: the original winner and loss explanation are replaced, while the award rule remains unchanged. The result matches the versioned reference exactly and still cannot promote itself into official truth."
-  "This is not generic retrieval augmented generation. TenderGraph maintains a decision graph across source versions, evidence dependencies, reviewed claims, and explicit supersession. The same contracts already run across Chilean, European, and United Kingdom tender structures and common procurement document formats."
-  "The repository proves the enforcement layer: forty-four contract and adversarial tests, twenty-three golden scenarios, fifteen composition gates, six impact gates, and zero of eight injected faults admitted. The new capture retains three fresh Codex session identifiers for composition and impact discovery."
-  "Codex accelerated implementation, source verification, testing, and this complete product redesign. The idea is deliberately different: not a chatbot that summarizes a tender, but an auditable procurement decision compiler that shows what changed, why it changed, and which evidence earns trust."
+  "Procurement decisions are scattered across notices, evaluation tables, supplier files, and later amendments. Teams must reconstruct who was recommended, why others lost, and what changed. TenderGraph compiles that fragmented record into an auditable decision state with Codex and GPT five point six."
+  "This goes beyond summarization. Every answer is assembled from promoted claims bound to exact evidence. The inspector exposes source, page, quotation, parser, authority, URL, and hash, while preserving a critical boundary: a commission recommendation is not a signed contract."
+  "Here the question runs through a ChatGPT-authenticated Codex session without an API key. GPT five point six composes only from admitted claims. The trace retains the model and Session ID; fifteen code-owned gates reject invention, evidence swaps, scope contamination, leakage, and incomplete output."
+  "I attach the official PDF. TenderGraph extracts eight hashed anchors without granting authority. Codex compares a later public selection record with every active claim and finds one corroboration. Six independent gates validate scope, evidence, action semantics, and shadow authority. Nothing changes before human review."
+  "A later corrective resolution is harder. TenderGraph finds two supersessions: the original winner and loss explanation change, while the award rule stays stable. The result matches the versioned reference and cannot promote itself into official truth."
+  "This is a decision graph, not generic RAG: versioned sources, evidence dependencies, reviewed claims, and explicit supersession. The same contracts already run across Chilean, European, and UK tender structures and common procurement formats."
+  "The enforcement is measured: forty-four tests, twenty-three golden scenarios, fifteen composition gates, six impact gates, and zero of eight injected faults admitted. This capture retains three fresh Codex Session IDs."
+  "Codex accelerated implementation, verification, testing, and this redesign. TenderGraph is deliberately different: not a chatbot that summarizes a tender, but an auditable decision compiler showing what changed, why, and which evidence earns trust."
 )
 
 declare -a SCENE_KIND=(
-  "still"
-  "still"
   "clip"
   "clip"
   "clip"
-  "still"
+  "clip"
+  "clip"
+  "clip"
   "still"
   "still"
 )
 
 declare -a SCENE_SOURCE=(
-  "$CAPTURE_DIR/public-chat-first.png"
-  "$CAPTURE_DIR/public-evidence.png"
   "$CAPTURE_VIDEO"
   "$CAPTURE_VIDEO"
   "$CAPTURE_VIDEO"
-  "$CAPTURE_DIR/correction-impact.png"
+  "$CAPTURE_VIDEO"
+  "$CAPTURE_VIDEO"
+  "$CAPTURE_VIDEO"
   "$WORK_DIR/proof.png"
   "$WORK_DIR/closing.png"
 )
 
 declare -a CLIP_START=(
-  "0"
-  "0"
-  "$(marker codexRunStarted)"
-  "$(marker documentAttached)"
-  "$(marker correctionReady)"
-  "0"
+  "$(marker problemSceneStart)"
+  "$(marker evidenceSceneStart)"
+  "$(marker codexSceneStart)"
+  "$(marker ingestionSceneStart)"
+  "$(marker correctionSceneStart)"
+  "$(marker graphSceneStart)"
   "0"
   "0"
 )
 
 declare -a CLIP_END=(
+  "$(marker problemSceneEnd)"
+  "$(marker evidenceSceneEnd)"
+  "$(marker codexSceneEnd)"
+  "$(marker ingestionSceneEnd)"
+  "$(marker correctionSceneEnd)"
+  "$(marker graphSceneEnd)"
   "0"
   "0"
-  "$(marker documentAttached)"
-  "$(marker correctionReady)"
-  "$(marker captureCompleted)"
-  "0"
-  "0"
-  "0"
+)
+
+declare -a SCENE_FRAME_FILTER=(
+  "scale=1920:1080:flags=lanczos"
+  "crop=1632:918:288:min(t*10\\,162),scale=1920:1080:flags=lanczos"
+  "crop=1632:918:288:if(lt(t\\,11)\\,162\\,max(162-(t-11)*24\\,0)),scale=1920:1080:flags=lanczos"
+  "crop=1632:918:288:max(162-t*8\\,0),scale=1920:1080:flags=lanczos"
+  "crop=1632:918:288:min(t*10\\,162),scale=1920:1080:flags=lanczos"
+  "crop=1632:918:288:min(t*10\\,162),scale=1920:1080:flags=lanczos"
+  ""
+  ""
 )
 
 segment_files=()
@@ -219,10 +230,12 @@ for index in "${!NARRATION[@]}"; do
     start="${CLIP_START[$index]}"
     end="${CLIP_END[$index]}"
     clip_duration="$(awk -v start="$start" -v end="$end" 'BEGIN { printf "%.3f", end - start }')"
+    playback_scale="$(awk -v source="$clip_duration" -v target="$padded_duration" \
+      'BEGIN { if (source <= 0) exit 2; printf "%.6f", target / source }')"
     ffmpeg -hide_banner -loglevel error -y \
       -ss "$start" -t "$clip_duration" -i "${SCENE_SOURCE[$index]}" -i "$audio" \
       -filter_complex \
-        "[0:v]scale=1920:1080:flags=lanczos,fps=30,tpad=stop_mode=clone:stop_duration=180,trim=duration=$padded_duration,setpts=PTS-STARTPTS,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=8:TP=-1.5,apad=pad_dur=0.55[a]" \
+        "[0:v]fps=30,setpts=$playback_scale*(PTS-STARTPTS),${SCENE_FRAME_FILTER[$index]},trim=duration=$padded_duration,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=8:TP=-1.5,apad=pad_dur=0.55[a]" \
       -map '[v]' -map '[a]' -t "$padded_duration" \
       -c:v libx264 -preset medium -crf 20 -c:a aac -b:a 160k \
       "$segment"
@@ -230,7 +243,7 @@ for index in "${!NARRATION[@]}"; do
     ffmpeg -hide_banner -loglevel error -y \
       -loop 1 -i "${SCENE_SOURCE[$index]}" -i "$audio" \
       -filter_complex \
-        "[0:v]scale=1920:1080,zoompan=z='min(zoom+0.00004,1.018)':d=$frames:s=1920x1080:fps=30,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=8:TP=-1.5,apad=pad_dur=0.55[a]" \
+        "[0:v]scale=1920:1080,zoompan=z='min(zoom+0.00012,1.045)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=$frames:s=1920x1080:fps=30,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=8:TP=-1.5,apad=pad_dur=0.55[a]" \
       -map '[v]' -map '[a]' -t "$padded_duration" \
       -c:v libx264 -preset medium -crf 20 -c:a aac -b:a 160k \
       "$segment"
@@ -247,7 +260,7 @@ done
 ffmpeg -hide_banner -loglevel error -y \
   -f concat -safe 0 -i "$concat_file" \
   -c:v libx264 -preset medium -crf 19 -pix_fmt yuv420p \
-  -af 'volume=-1.0dB,alimiter=limit=0.84:level=false' \
+  -af 'volume=-2.4dB,alimiter=limit=0.78:level=false' \
   -c:a aac -b:a 160k -ar 48000 \
   -movflags +faststart \
   -metadata title='TenderGraph - Auditable Procurement Decision Compiler' \

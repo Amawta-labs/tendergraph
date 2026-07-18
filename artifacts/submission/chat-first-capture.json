@@ -1,42 +1,54 @@
 {
-  "contract": "tendergraph-chat-first-capture.v2",
-  "capturedAt": "2026-07-18T05:06:01.558Z",
-  "url": "http://127.0.0.1:3001/?submission=public",
+  "contract": "tendergraph-chat-first-capture.v3",
+  "capturedAt": "2026-07-18T05:39:49.424Z",
+  "url": "http://localhost:3001/?submission=public",
   "presentation": "public_anonymized",
   "viewport": {
     "width": 1920,
     "height": 1080
   },
   "markers": {
-    "publicReady": 1928,
-    "evidenceOpened": 2971,
-    "codexRunStarted": 3063,
-    "codexRunCompleted": 12081,
-    "traceOpened": 13936,
-    "documentAttached": 14759,
-    "documentExtracted": 15963,
-    "publicImpactStarted": 16049,
-    "publicImpactCompleted": 24358,
-    "correctionReady": 26078,
-    "correctionImpactStarted": 26908,
-    "correctionImpactCompleted": 35139,
-    "captureCompleted": 35224
+    "publicReady": 2268,
+    "problemSceneStart": 2268,
+    "evidenceOpened": 6376,
+    "problemSceneEnd": 10411,
+    "evidenceSceneStart": 10411,
+    "evidenceSceneEnd": 19859,
+    "codexSceneStart": 20566,
+    "codexRunStarted": 20566,
+    "codexRunCompleted": 29663,
+    "traceOpened": 32324,
+    "codexSceneEnd": 35821,
+    "ingestionSceneStart": 35821,
+    "documentAttached": 37263,
+    "documentExtracted": 39348,
+    "publicImpactStarted": 42144,
+    "publicImpactCompleted": 53264,
+    "ingestionSceneEnd": 57758,
+    "correctionSceneStart": 57758,
+    "correctionReady": 59618,
+    "correctionImpactStarted": 65358,
+    "correctionImpactCompleted": 76112,
+    "correctionSceneEnd": 76195,
+    "graphSceneStart": 76195,
+    "graphSceneEnd": 86363,
+    "captureCompleted": 86363
   },
   "composition": {
     "model": "gpt-5.6-terra",
-    "codexSessionId": "019f739d-808a-78d1-aceb-344baf1e16f7",
-    "traceId": "c009d94f-eb4e-4e7f-8bc2-08e8b3dc63a1",
+    "codexSessionId": "019f73bb-ecaa-7f41-b2e9-0561fff2df38",
+    "traceId": "016ac3d7-6874-429e-a015-66d93535083b",
     "gatesPassed": 15,
     "gatesTotal": 15
   },
   "publicImpact": {
-    "codexSessionId": "019f739d-b33a-7382-a906-f0750884a549",
+    "codexSessionId": "019f73bc-407f-7ad1-8ce5-7c67611da649",
     "gatesPassed": 6,
     "gatesTotal": 6,
     "proposals": 1
   },
   "correctionImpact": {
-    "codexSessionId": "019f739d-dda3-7133-bfa7-9be5805e97f9",
+    "codexSessionId": "019f73bc-9b0c-7fb0-b6ee-81f3e3eec8d4",
     "gatesPassed": 6,
     "gatesTotal": 6,
     "proposals": 2,
@@ -44,6 +56,6 @@
   },
   "video": {
     "path": "chat-first-system.webm",
-    "sha256": "1cb90533d4d0bcab09d985d11b1cca38be89e6ebe3081c1af61c3d54fa730846"
+    "sha256": "c50b6702983d1779591ed918d9818cc94fe438e63f99f3f05319cf4c93148b02"
   }
 }
