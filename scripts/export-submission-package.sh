@@ -54,14 +54,18 @@ cp \
   "$ROOT_DIR/logs/devpost-copy-claim-audit-2026-07-17.md" \
   "$ROOT_DIR/logs/ingestion-impact-implementation-2026-07-17.json" \
   "$ROOT_DIR/logs/ingestion-impact-implementation-2026-07-17.md" \
+  "$ROOT_DIR/logs/production-runtime-verification-2026-07-17.json" \
+  "$ROOT_DIR/logs/production-runtime-verification-2026-07-17.md" \
   "$PACKAGE_DIR/evidence/"
 cp "$ROOT_DIR/artifacts/compliance/dependency-licenses.json" "$PACKAGE_DIR/compliance/"
 
 git -C "$ROOT_DIR" bundle create "$PACKAGE_DIR/tendergraph-repository.bundle" main
+git bundle verify "$PACKAGE_DIR/tendergraph-repository.bundle" >/dev/null
 
 (
   cd "$PACKAGE_DIR"
   find . -type f ! -name MANIFEST.sha256 -print0 | sort -z | xargs -0 sha256sum > MANIFEST.sha256
+  sha256sum -c MANIFEST.sha256 >/dev/null
 )
 
 mkdir -p "$(dirname "$OUTPUT")"
