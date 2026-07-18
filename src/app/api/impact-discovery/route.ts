@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { spawn } from "node:child_process";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { NextResponse } from "next/server";
@@ -40,7 +41,12 @@ async function executeImpactDiscovery(
   document: z.infer<typeof DocumentIngestionResultSchema> | null,
 ) {
   const rootDir = process.cwd();
-  const inputDirectory = path.join(rootDir, ".tendergraph", "api-inputs");
+  const runtimeDirectory = path.join(
+    tmpdir(),
+    "tendergraph-impact",
+    randomUUID(),
+  );
+  const inputDirectory = path.join(runtimeDirectory, "api-inputs");
   const inputPath = path.join(inputDirectory, `impact-${randomUUID()}.json`);
   const args = [
     "run",
@@ -71,7 +77,10 @@ async function executeImpactDiscovery(
     const stdout = await new Promise<string>((resolve, reject) => {
       const child = spawn("npm", args, {
         cwd: rootDir,
-        env: process.env,
+        env: {
+          ...process.env,
+          TENDERGRAPH_RUNTIME_DIR: runtimeDirectory,
+        },
         detached: process.platform !== "win32",
       });
       child.stdin.end();
@@ -143,13 +152,13 @@ async function executeImpactDiscovery(
     return ImpactDiscoveryResultSchema.parse(
       JSON.parse(
         await readFile(
-          path.join(rootDir, ".tendergraph", "impact-runs", runId, "result.json"),
+          path.join(runtimeDirectory, "impact-runs", runId, "result.json"),
           "utf8",
         ),
       ),
     );
   } finally {
-    if (document) await rm(inputPath, { force: true });
+    await rm(runtimeDirectory, { force: true, recursive: true });
   }
 }
 

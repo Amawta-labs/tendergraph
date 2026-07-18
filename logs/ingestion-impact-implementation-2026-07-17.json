@@ -43,6 +43,7 @@
     "browserPdfAnchors": 8,
     "serverlessPdfPolyfill": "@napi-rs/canvas@1.0.2",
     "serverlessPdfWorkerTrace": "pdfjs-dist/legacy/build/pdf.worker.mjs",
+    "serverlessImpactRuntimeDirectory": "request-scoped system tmpdir",
     "dependencyPackages": 131,
     "unknownLicenses": 0,
     "knownVulnerabilities": 0,

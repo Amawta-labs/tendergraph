@@ -218,11 +218,14 @@ async function loadInput(
 
 async function main() {
   const rootDir = process.cwd();
+  const runtimeDir =
+    process.env.TENDERGRAPH_RUNTIME_DIR ??
+    path.join(rootDir, ".tendergraph");
   const options = parseArgs(process.argv.slice(2));
   const { input, referenceEvent } = await loadInput(rootDir, options);
   const fixture = getFixture(input.fixture.id);
   if (!fixture) throw new Error(`Unknown fixture: ${input.fixture.id}`);
-  const runDir = path.join(rootDir, ".tendergraph", "impact-runs", input.runId);
+  const runDir = path.join(runtimeDir, "impact-runs", input.runId);
   const inputPath = path.join(runDir, "input.json");
   const candidatePath = path.join(runDir, "candidate.json");
   const resultPath = path.join(runDir, "result.json");
@@ -266,7 +269,9 @@ async function main() {
     referenceEvent,
   );
   await writeFile(resultPath, JSON.stringify(result, null, 2));
-  const artifactDir = path.join(rootDir, "artifacts", "impact-runs");
+  const artifactDir = process.env.TENDERGRAPH_RUNTIME_DIR
+    ? path.join(runtimeDir, "artifacts", "impact-runs")
+    : path.join(rootDir, "artifacts", "impact-runs");
   await mkdir(artifactDir, { recursive: true });
   const serializedCandidate = JSON.stringify(candidate) ?? "null";
   await Promise.all([

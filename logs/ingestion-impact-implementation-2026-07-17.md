@@ -43,6 +43,9 @@ claim authority without a separate human decision.
   tracing.
 - A subsequent production probe exposed PDF.js's dynamic fake-worker import.
   The `/api/ingest` file trace now explicitly includes `pdf.worker.mjs`.
+- Impact API process inputs and results use a request-scoped system temporary
+  directory. The CLI's existing repository artifact paths remain the default
+  outside serverless execution.
 - Desktop and 390 px mobile browser review: pass; no product console error or
   incoherent overlap.
 - Final live public corroboration impact run: 6/6 gates, exact reference
