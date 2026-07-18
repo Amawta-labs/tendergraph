@@ -24,7 +24,9 @@ The model composes answers. It does not decide which sources, claims, policies, 
 - Extensible in-memory ingestion for PDF, DOCX, HTML, JSON, CSV, Markdown, and text, with file hashes, addressable evidence chunks, parser identity, and explicit OCR/unsupported states.
 - GPT-5.6/Codex impact discovery that classifies every active claim against new evidence in shadow mode; six code-owned gates and mandatory human review prevent automatic authority changes.
 - A 23-scenario benchmark, one-property fault-injection tests, and a two-scenario live impact benchmark.
-- A responsive workbench for findings, evidence, review gaps, ingestion, impact proposals, and gate status.
+- A responsive, chat-first workbench with a tender sidebar, structured
+  conversation, contextual evidence/change/trace inspector, document ingestion,
+  impact proposals, and explicit runtime state.
 
 The default case is a frozen public Mercado Público evaluation report. TenderGraph preserves its decision-stage limitation: the source contains a commission recommendation, not proof of a signed final contract. The remaining portability fixtures are synthetic and visibly labelled.
 
@@ -44,6 +46,29 @@ npm run dev
 Open `http://localhost:3000`.
 
 The Codex command uses `codex login` and Build Week Codex credits. It does not read or require `OPENAI_API_KEY`. It writes the admitted result to `artifacts/codex-runs/latest.json`; the workbench loads that result on its next request.
+
+The workbench exposes three honest runtime choices:
+
+- `Codex` invokes the local ChatGPT-authenticated Codex bridge. On hosted
+  deployments, where that local login is unavailable, the interface says so and
+  preserves the validated fallback.
+- `OpenAI API` invokes the server-side Responses API adapter when
+  `OPENAI_API_KEY` is configured. Without it, `auto` mode returns the explicit
+  validated fallback.
+- `Safe fallback` runs the credential-free deterministic composer directly.
+
+To enable the optional API path locally, create `.env.local` without committing
+it:
+
+```bash
+OPENAI_API_KEY=your_api_key
+OPENAI_MODEL=gpt-5.6
+```
+
+The key is read only by server-side application code. It is never passed as a
+client prop and must not use a `NEXT_PUBLIC_` prefix. For Vercel, add
+`OPENAI_API_KEY` as a Sensitive Environment Variable for the desired
+environment and redeploy; environment changes do not alter prior deployments.
 
 Install the repository plugin in Codex with:
 

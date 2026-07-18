@@ -40,6 +40,11 @@ export default async function Home({ searchParams }: HomeProps) {
       initialResult={initialResult}
       evidenceDeltas={listEvidenceDeltas()}
       publicPresentation={params.submission === "public"}
+      runtimeCapabilities={{
+        apiConfigured: Boolean(process.env.OPENAI_API_KEY),
+        apiModel: process.env.OPENAI_MODEL ?? "gpt-5.6",
+        hosted: Boolean(process.env.VERCEL),
+      }}
     />
   );
 }

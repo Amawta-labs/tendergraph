@@ -1,38 +1,58 @@
 "use client";
 
 import {
-  Activity,
-  BookOpenCheck,
+  AlertTriangle,
+  ArrowRight,
+  BarChart3,
+  Bot,
+  Check,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
-  CircleAlert,
-  Database,
+  CircleMinus,
+  Copy,
   ExternalLink,
-  FileSearch,
-  FilePlus2,
-  FileUp,
+  FileCheck2,
+  FileText,
   GitBranch,
-  GitCompareArrows,
-  Globe2,
+  History,
+  Inbox,
   LoaderCircle,
   LockKeyhole,
-  Play,
-  Search,
-  ScanSearch,
+  Menu,
+  Paperclip,
+  PanelRight,
+  Plus,
+  Send,
+  Settings,
   ShieldCheck,
+  Sparkles,
+  Trophy,
+  Upload,
+  UserRound,
+  X,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import type {
   CaseFixture,
   CompositionResult,
   DocumentIngestionResult,
-  EvidenceRecord,
   EvidenceDeltaResult,
+  EvidenceRecord,
   ImpactDiscoveryResult,
   SourceManifest,
 } from "@/lib/harness/schemas";
 import { redactSubmissionText } from "@/lib/submission-redaction";
+
+type RuntimeMode = "codex" | "api" | "fallback";
+type InspectorTab = "evidence" | "changes" | "trace";
+
+interface RuntimeCapabilities {
+  apiConfigured: boolean;
+  apiModel: string;
+  hosted: boolean;
+}
 
 interface WorkbenchProps {
   fixtures: CaseFixture[];
@@ -40,51 +60,53 @@ interface WorkbenchProps {
   initialResult: CompositionResult;
   evidenceDeltas: EvidenceDeltaResult[];
   publicPresentation: boolean;
+  runtimeCapabilities: RuntimeCapabilities;
 }
 
 const questions: Record<string, string> = {
-  "cl-real-5802381-7547UCUK": "Who was recommended for award and why?",
-  "cl-correction-demo": "Who won after the correction and why?",
-  "cl-deep-demo": "Who won Lot 1 and why?",
+  "cl-real-5802381-7547UCUK": "Who was recommended for award, and why?",
+  "cl-correction-demo": "Who won after the correction, and why?",
+  "cl-deep-demo": "Who won Lot 1, and why?",
   "eu-portability-demo": "Who won the EU lot?",
   "uk-portability-demo": "What was the UK award price?",
 };
 
-function EvidenceDetail({
-  evidence,
-  manifest,
-  displayText,
-}: {
-  evidence: EvidenceRecord | undefined;
-  manifest: SourceManifest | undefined;
-  displayText: (text: string) => string;
-}) {
-  if (!evidence) {
-    return (
-      <div className="empty-evidence">
-        <FileSearch size={22} />
-        <p>Select a finding to inspect its exact source anchor.</p>
-      </div>
-    );
+const shortNames: Record<string, string> = {
+  "cl-real-5802381-7547UCUK": "Office furniture evaluation",
+  "cl-correction-demo": "Award correction review",
+  "cl-deep-demo": "Medical supplies award",
+  "eu-portability-demo": "EU services notice",
+  "uk-portability-demo": "UK facilities award",
+};
+
+function formatLabel(value: string) {
+  return value.replaceAll("_", " ");
+}
+
+function runtimeResultLabel(result: CompositionResult) {
+  if (result.trace.compositionSurface === "codex") return "GPT-5.6 via Codex";
+  if (result.trace.compositionSurface === "openai_responses_api") {
+    return "GPT-5.6 via Responses API";
   }
-  return (
-    <div className="evidence-detail">
-      <div className="eyebrow">Evidence record</div>
-      <code>{evidence.id}</code>
-      <blockquote>{displayText(evidence.extractedText)}</blockquote>
-      <dl>
-        <div><dt>Page</dt><dd>{evidence.locator.page ?? "API"}</dd></div>
-        <div><dt>Section</dt><dd>{evidence.locator.section ?? "Not provided"}</dd></div>
-        <div><dt>Parser</dt><dd>{evidence.parserVersion}</dd></div>
-        <div><dt>Content hash</dt><dd className="hash">{evidence.contentHash.slice(0, 16)}...</dd></div>
-      </dl>
-      {manifest && (
-        <a className="source-link" href={manifest.canonicalUrl} target="_blank" rel="noreferrer">
-          <ExternalLink size={14} /> Open source portal
-        </a>
-      )}
-    </div>
-  );
+  return "Validated deterministic fallback";
+}
+
+function sourceForEvidence(
+  evidence: EvidenceRecord | undefined,
+  manifests: SourceManifest[],
+) {
+  return manifests.find((manifest) => manifest.id === evidence?.sourceManifestId);
+}
+
+function AnswerIcon({ heading }: { heading: string }) {
+  const normalized = heading.toLowerCase();
+  if (normalized.includes("award") || normalized.includes("winner")) {
+    return <Trophy size={17} />;
+  }
+  if (normalized.includes("loss") || normalized.includes("reject")) {
+    return <CircleMinus size={17} />;
+  }
+  return <BarChart3 size={17} />;
 }
 
 export function Workbench({
@@ -93,20 +115,25 @@ export function Workbench({
   initialResult,
   evidenceDeltas,
   publicPresentation,
+  runtimeCapabilities,
 }: WorkbenchProps) {
+  const composerRef = useRef<HTMLTextAreaElement>(null);
   const [fixtureId, setFixtureId] = useState(initialFixtureId);
   const [question, setQuestion] = useState(questions[initialFixtureId]);
-  const [mode, setMode] = useState<"codex" | "fallback">("codex");
+  const [submittedQuestion, setSubmittedQuestion] = useState(
+    questions[initialFixtureId],
+  );
+  const [runtimeMode, setRuntimeMode] = useState<RuntimeMode>("codex");
   const [result, setResult] = useState(initialResult);
   const [selectedEvidenceId, setSelectedEvidenceId] = useState(
     initialResult.readerOutput.sections[0]?.evidenceIds[0] ?? "",
   );
+  const [inspectorTab, setInspectorTab] = useState<InspectorTab>("evidence");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [inspectorOpen, setInspectorOpen] = useState(false);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
   const [runtimeWarning, setRuntimeWarning] = useState("");
-  const [deltaExpanded, setDeltaExpanded] = useState(
-    initialFixtureId === "cl-correction-demo",
-  );
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [canonicalUrl, setCanonicalUrl] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -114,49 +141,70 @@ export function Workbench({
   const [impactRunning, setImpactRunning] = useState(false);
   const [impact, setImpact] = useState<ImpactDiscoveryResult | null>(null);
   const [pipelineError, setPipelineError] = useState("");
+  const [copiedHash, setCopiedHash] = useState(false);
 
   const fixture = useMemo(
     () => fixtures.find((item) => item.id === fixtureId) ?? fixtures[0],
     [fixtureId, fixtures],
   );
-  const selectedEvidence = fixture.evidence.find(
-    (item) => item.id === selectedEvidenceId,
+  const activeDelta =
+    evidenceDeltas.find(
+      (delta) => delta.event.procedureId === fixture.scope.procedureId,
+    ) ?? null;
+  const availableEvidence = useMemo(
+    () => [...fixture.evidence, ...(ingestion?.evidence ?? [])],
+    [fixture.evidence, ingestion],
   );
-  const selectedManifest = fixture.manifests.find(
-    (item) => item.id === selectedEvidence?.sourceManifestId,
+  const availableManifests = useMemo(
+    () => [
+      ...fixture.manifests,
+      ...(ingestion ? [ingestion.sourceManifest] : []),
+    ],
+    [fixture.manifests, ingestion],
   );
-  const passedGates = result.trace.validationResults.filter((gate) => gate.passed).length;
-  const evidenceUsed = new Set(result.trace.evidenceIds).size;
-  const coverage = Math.round(
-    (evidenceUsed / Math.max(1, fixture.evidence.length)) * 100,
+  const selectedEvidence =
+    availableEvidence.find((item) => item.id === selectedEvidenceId) ??
+    availableEvidence[0];
+  const selectedManifest = sourceForEvidence(
+    selectedEvidence,
+    availableManifests,
   );
-  const provenanceLabel =
-    result.readerOutput.status === "insufficient_evidence"
-      ? "insufficient evidence"
-      : fixture.dataStatus === "public_snapshot"
-        ? "public snapshot"
-        : "simulated";
-  const activeDelta = evidenceDeltas.find(
-    (delta) => delta.event.procedureId === fixture.scope.procedureId,
-  ) ?? null;
-  const publicFixtureCount = fixtures.filter(
-    (item) => item.dataStatus === "public_snapshot",
+  const selectedEvidenceIndex = Math.max(
+    0,
+    availableEvidence.findIndex((item) => item.id === selectedEvidence?.id),
+  );
+  const passedGates = result.trace.validationResults.filter(
+    (gate) => gate.passed,
   ).length;
-  const syntheticFixtureCount = fixtures.length - publicFixtureCount;
+  const reviewCount =
+    (impact?.items.length ?? activeDelta?.affectedClaimIds.length ?? 0) +
+    result.readerOutput.gaps.length;
   const displayText = publicPresentation
     ? redactSubmissionText
     : (text: string) => text;
+
+  function openInspector(tab: InspectorTab) {
+    setInspectorTab(tab);
+    setInspectorOpen(true);
+  }
+
+  function selectEvidence(evidenceId: string) {
+    setSelectedEvidenceId(evidenceId);
+    openInspector("evidence");
+  }
 
   function changeFixture(nextId: string) {
     const nextQuestion = questions[nextId];
     setFixtureId(nextId);
     setQuestion(nextQuestion);
+    setSubmittedQuestion(nextQuestion);
     setSelectedEvidenceId("");
-    setDeltaExpanded(nextId === "cl-correction-demo");
+    setSidebarOpen(false);
     setUploadFile(null);
     setCanonicalUrl("");
     setIngestion(null);
     setImpact(null);
+    setError("");
     setPipelineError("");
     void executeAudit(nextId, nextQuestion, "fallback");
   }
@@ -164,22 +212,27 @@ export function Workbench({
   async function executeAudit(
     targetFixtureId: string,
     targetQuestion: string,
-    targetMode: "codex" | "fallback",
+    targetMode: RuntimeMode,
   ) {
     setRunning(true);
     setError("");
     setRuntimeWarning("");
+    setSubmittedQuestion(targetQuestion);
     try {
       const response = await fetch(
         targetMode === "codex" ? "/api/codex-run" : "/api/harness",
         {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fixtureId: targetFixtureId,
-          question: targetQuestion,
-          ...(targetMode === "fallback" ? { mode: "fallback" } : {}),
-        }),
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fixtureId: targetFixtureId,
+            question: targetQuestion,
+            ...(targetMode === "fallback"
+              ? { mode: "fallback" }
+              : targetMode === "api"
+                ? { mode: "auto" }
+                : {}),
+          }),
         },
       );
       const body = await response.json();
@@ -187,7 +240,9 @@ export function Workbench({
       const nextResult = body as CompositionResult & { runtimeWarning?: string };
       setResult(nextResult);
       setRuntimeWarning(nextResult.runtimeWarning ?? "");
-      setSelectedEvidenceId(nextResult.readerOutput.sections[0]?.evidenceIds[0] ?? "");
+      setSelectedEvidenceId(
+        nextResult.readerOutput.sections[0]?.evidenceIds[0] ?? "",
+      );
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Harness request failed");
     } finally {
@@ -196,19 +251,9 @@ export function Workbench({
   }
 
   function runAudit() {
-    void executeAudit(fixtureId, question, mode);
-  }
-
-  function inspectEvidenceDelta() {
-    if (!activeDelta) return;
-    setDeltaExpanded(true);
-    setSelectedEvidenceId(activeDelta.addedEvidenceIds[0]);
-    requestAnimationFrame(() => {
-      document.getElementById("evidence")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    });
+    const trimmedQuestion = question.trim();
+    if (trimmedQuestion.length < 3 || running) return;
+    void executeAudit(fixtureId, trimmedQuestion, runtimeMode);
   }
 
   async function uploadEvidence() {
@@ -232,7 +277,10 @@ export function Workbench({
       if (!response.ok) {
         throw new Error(body.error ?? "Document ingestion failed");
       }
-      setIngestion(body as DocumentIngestionResult);
+      const nextIngestion = body as DocumentIngestionResult;
+      setIngestion(nextIngestion);
+      setSelectedEvidenceId(nextIngestion.evidence[0]?.id ?? "");
+      openInspector("evidence");
     } catch (cause) {
       setPipelineError(
         cause instanceof Error ? cause.message : "Document ingestion failed",
@@ -263,6 +311,7 @@ export function Workbench({
         throw new Error(body.error ?? "Impact discovery failed");
       }
       setImpact(body as ImpactDiscoveryResult);
+      openInspector("changes");
     } catch (cause) {
       setPipelineError(
         cause instanceof Error ? cause.message : "Impact discovery failed",
@@ -272,115 +321,660 @@ export function Workbench({
     }
   }
 
+  function moveEvidence(direction: -1 | 1) {
+    const nextIndex =
+      (selectedEvidenceIndex + direction + availableEvidence.length) %
+      availableEvidence.length;
+    setSelectedEvidenceId(availableEvidence[nextIndex]?.id ?? "");
+  }
+
+  async function copyHash() {
+    if (!selectedEvidence) return;
+    await navigator.clipboard.writeText(selectedEvidence.contentHash);
+    setCopiedHash(true);
+    window.setTimeout(() => setCopiedHash(false), 1200);
+  }
+
+  const runtimeStatus =
+    runtimeMode === "api"
+      ? runtimeCapabilities.apiConfigured
+        ? `${runtimeCapabilities.apiModel} configured`
+        : "API not configured; safe fallback remains available"
+      : runtimeMode === "codex"
+        ? runtimeCapabilities.hosted
+          ? "Local Codex login required for a live run"
+          : "Uses the authenticated local Codex session"
+        : "No model or credential required";
+
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <div className="brand"><GitBranch size={21} /><span>TenderGraph</span></div>
-        <nav aria-label="Primary navigation">
-          <a className="nav-item active" href="#workspace"><Activity size={18} />Case workspace</a>
-          <a className="nav-item" href="#findings"><BookOpenCheck size={18} />Findings</a>
-          <a className="nav-item" href="#evidence"><FileSearch size={18} />Evidence</a>
-          <a className="nav-item" href="#delta"><GitCompareArrows size={18} />Evidence diff</a>
-          <a className="nav-item" href="#intelligence"><ScanSearch size={18} />Impact discovery</a>
-          <a className="nav-item" href="#trace"><ShieldCheck size={18} />Audit trace</a>
-        </nav>
-        <div className="sidebar-note">
-          <Database size={17} />
-          <div><strong>Golden corpus</strong><span>{publicFixtureCount} public · {syntheticFixtureCount} synthetic</span></div>
+    <div className="chat-shell">
+      <button
+        className="mobile-nav-button"
+        type="button"
+        title="Open tender list"
+        aria-label="Open tender list"
+        onClick={() => setSidebarOpen(true)}
+      >
+        <Menu size={20} />
+      </button>
+
+      {sidebarOpen && (
+        <button
+          className="mobile-scrim"
+          type="button"
+          aria-label="Close tender list"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      <aside className={`tender-sidebar ${sidebarOpen ? "mobile-open" : ""}`}>
+        <div className="sidebar-brand">
+          <span className="brand-mark"><GitBranch size={21} /></span>
+          <strong>TenderGraph</strong>
+          <button
+            className="sidebar-close"
+            type="button"
+            title="Close tender list"
+            aria-label="Close tender list"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <X size={18} />
+          </button>
         </div>
-      </aside>
 
-      <main id="workspace">
-        <header className="topbar">
-          <div>
-            <div className="eyebrow">Opening + award intelligence</div>
-            <h1>{displayText(fixture.name)}</h1>
-          </div>
-          <div className="header-status"><span className="status-dot" />Harness operational</div>
-        </header>
+        <button
+          className="new-analysis"
+          type="button"
+          onClick={() => {
+            setSidebarOpen(false);
+            composerRef.current?.focus();
+          }}
+        >
+          <Plus size={17} />
+          New analysis
+        </button>
 
-        <section className="case-strip" aria-label="Golden cases">
+        <div className="sidebar-section-label">Recent tenders</div>
+        <nav className="tender-list" aria-label="Tender cases">
           {fixtures.map((item) => (
             <button
-              className={item.id === fixtureId ? "case-tab selected" : "case-tab"}
+              type="button"
+              className={item.id === fixtureId ? "tender-item selected" : "tender-item"}
               key={item.id}
               onClick={() => changeFixture(item.id)}
             >
-              <Globe2 size={16} />
-              <span>{item.scope.jurisdiction}</span>
-              <small>{item.scope.procedureId}</small>
+              <FileText size={18} />
+              <span>
+                <strong>{displayText(shortNames[item.id] ?? item.name)}</strong>
+                <small>
+                  {item.scope.jurisdiction} / {item.scope.procedureId}
+                </small>
+              </span>
+              {item.id === fixtureId && <i aria-label="Current tender" />}
             </button>
           ))}
-        </section>
+        </nav>
 
-        <div className="simulation-banner">
-          <CircleAlert size={17} />
-          <span>
-            <strong>
-              {fixture.dataStatus === "public_snapshot"
-                ? "Hash-verified public snapshot."
-                : "Illustrative benchmark."}
-            </strong>{" "}
-            {fixture.sourceNote}
-            {publicPresentation && fixture.dataStatus === "public_snapshot" && (
-              <> Display names are anonymized; hashes refer to the frozen source evidence.</>
-            )}
-          </span>
+        <div className="review-queue-link">
+          <span><Inbox size={17} /></span>
+          <div>
+            <strong>Review queue</strong>
+            <small>Items awaiting human review</small>
+          </div>
+          <b>{reviewCount}</b>
         </div>
 
-        <section className="metrics" aria-label="Harness metrics">
-          <div><span>Runtime claims</span><strong>{result.trace.selectedClaimIds.length}</strong><small>promoted only</small></div>
-          <div><span>Evidence coverage</span><strong>{coverage}%</strong><small>{evidenceUsed} anchors used</small></div>
-          <div><span>Validation gates</span><strong>{passedGates}/{result.trace.validationResults.length}</strong><small>code-owned checks</small></div>
-          <div><span>Composition</span><strong className="compact-value">{result.trace.compositionSurface === "codex" ? "Codex 5.6" : result.mode === "live" ? "API 5.6" : "Fallback"}</strong><small>{result.trace.timings.totalMs} ms</small></div>
-        </section>
-
-        <section className="query-bar">
-          <Search size={18} />
-          <input
-            aria-label="Question for the procurement case"
-            value={question}
-            onChange={(event) => setQuestion(event.target.value)}
-          />
-          <div className="mode-control" aria-label="Composition mode">
-            <button className={mode === "codex" ? "selected" : ""} onClick={() => setMode("codex")}>Codex live</button>
-            <button className={mode === "fallback" ? "selected" : ""} onClick={() => setMode("fallback")}>Deterministic</button>
+        <div className="sidebar-footer">
+          <div>
+            <span><ShieldCheck size={17} /></span>
+            <p>
+              <strong>Golden corpus</strong>
+              <small>{fixtures.length} verified cases</small>
+            </p>
           </div>
-          <button className="run-button" disabled={running || question.length < 3} onClick={runAudit}>
-            {running ? <LoaderCircle className="spin" size={17} /> : <Play size={17} />}
-            {running ? "Running audit" : "Run audit"}
+          <button type="button" title="Runtime settings" aria-label="Runtime settings">
+            <Settings size={18} />
           </button>
-        </section>
-        {error && <div className="error-banner">{error}</div>}
-        {runtimeWarning && (
-          <div className="simulation-banner" role="status">
-            <CircleAlert size={17} />
-            <span><strong>Codex unavailable.</strong> The audit completed with the deterministic composer.</span>
+        </div>
+      </aside>
+
+      <main className="conversation-column">
+        <header className="conversation-header">
+          <div>
+            <h1>{displayText(shortNames[fixture.id] ?? fixture.name)}</h1>
+            <p>
+              {fixture.scope.jurisdiction}
+              <span>/</span>
+              {fixture.scope.procedureId}
+              {fixture.scope.lotId && <><span>/</span>{fixture.scope.lotId}</>}
+            </p>
+          </div>
+          <div className="verified-state">
+            <ShieldCheck size={15} />
+            {fixture.dataStatus === "public_snapshot"
+              ? "Evidence verified"
+              : "Benchmark verified"}
+          </div>
+          <button
+            className="mobile-inspector-button"
+            type="button"
+            title="Open inspector"
+            aria-label="Open inspector"
+            onClick={() => setInspectorOpen(true)}
+          >
+            <PanelRight size={20} />
+          </button>
+        </header>
+
+        <div className="conversation-scroll">
+          <section className="message user-message" aria-label="Your question">
+            <div className="message-avatar user-avatar"><UserRound size={17} /></div>
+            <div className="message-content">
+              <div className="message-byline">
+                <strong>You</strong>
+                <span>current analysis</span>
+              </div>
+              <p>{submittedQuestion}</p>
+            </div>
+          </section>
+
+          <section className="message assistant-message" aria-label="TenderGraph answer">
+            <div className="message-avatar assistant-avatar"><GitBranch size={18} /></div>
+            <div className="message-content">
+              <div className="message-byline">
+                <strong>TenderGraph</strong>
+                <span className="ai-label">AI</span>
+                <span>{runtimeResultLabel(result)}</span>
+              </div>
+              <div className="answer-heading">
+                <ShieldCheck size={20} />
+                <h2>{displayText(result.readerOutput.title)}</h2>
+              </div>
+              <p className="answer-summary">{displayText(result.readerOutput.summary)}</p>
+
+              <div className="claim-list">
+                {result.readerOutput.sections.map((section) => (
+                  <button
+                    type="button"
+                    className="claim-row"
+                    key={`${section.heading}-${section.claimIds[0]}`}
+                    onClick={() => selectEvidence(section.evidenceIds[0])}
+                  >
+                    <span className="claim-icon"><AnswerIcon heading={section.heading} /></span>
+                    <span>
+                      <strong>{displayText(section.heading)}</strong>
+                      <small>{displayText(section.body)}</small>
+                    </span>
+                    <span className="claim-validation">
+                      <CheckCircle2 size={15} />
+                      Verified
+                    </span>
+                    <span className="citation-count">
+                      {section.evidenceIds.length} citation
+                      {section.evidenceIds.length === 1 ? "" : "s"}
+                    </span>
+                    <ChevronRight size={17} />
+                  </button>
+                ))}
+              </div>
+
+              {result.readerOutput.gaps.length > 0 && (
+                <div className="review-notice">
+                  <AlertTriangle size={17} />
+                  <span>
+                    <strong>Human review required</strong>
+                    {displayText(result.readerOutput.gaps.join(" "))}
+                  </span>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {ingestion && (
+            <section className="message event-message" aria-label="Uploaded evidence">
+              <div className="message-avatar event-avatar"><Paperclip size={18} /></div>
+              <div className="message-content">
+                <div className="message-byline">
+                  <strong>You</strong>
+                  <span>uploaded evidence</span>
+                </div>
+                <button
+                  type="button"
+                  className="file-event"
+                  onClick={() => selectEvidence(ingestion.evidence[0]?.id ?? "")}
+                >
+                  <FileCheck2 size={20} />
+                  <span>
+                    <strong>{ingestion.file.name}</strong>
+                    <small>
+                      {ingestion.format.toUpperCase()} / {ingestion.evidence.length} evidence anchors
+                    </small>
+                  </span>
+                  <CheckCircle2 size={17} />
+                </button>
+              </div>
+            </section>
+          )}
+
+          {activeDelta && (
+            <section className="message assistant-message change-message" aria-label="Evidence change">
+              <div className="message-avatar change-avatar"><GitBranch size={18} /></div>
+              <div className="message-content">
+                <div className="message-byline">
+                  <strong>TenderGraph</strong>
+                  <span className="ai-label">AI</span>
+                  <span>incremental reevaluation</span>
+                </div>
+                <div className="change-title">
+                  <AlertTriangle size={19} />
+                  <h2>{displayText(activeDelta.event.title)}</h2>
+                </div>
+                <p className="change-description">
+                  {displayText(activeDelta.event.description)}
+                </p>
+                <div className="change-summary">
+                  <div>
+                    <span>Before</span>
+                    <strong>
+                      {displayText(
+                        fixture.claims.find((claim) =>
+                          activeDelta.event.affectedClaims.some(
+                            (change) =>
+                              ("previousClaimId" in change
+                                ? change.previousClaimId
+                                : change.claimId) === claim.id,
+                          ),
+                        )?.statement ?? "Prior decision state",
+                      )}
+                    </strong>
+                  </div>
+                  <span className="change-arrow"><ArrowRight size={18} /></span>
+                  <div>
+                    <span>After</span>
+                    <strong>
+                      {displayText(
+                        fixture.claims.find((claim) =>
+                          activeDelta.event.affectedClaims.some(
+                            (change) => change.claimId === claim.id,
+                          ),
+                        )?.statement ?? "Updated evidence state",
+                      )}
+                    </strong>
+                  </div>
+                </div>
+                <div className="change-footer">
+                  <span>
+                    <AlertTriangle size={15} />
+                    {activeDelta.affectedClaimIds.length} affected
+                  </span>
+                  <span>
+                    <ShieldCheck size={15} />
+                    {activeDelta.unchangedClaimIds.length} unchanged
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedEvidenceId(activeDelta.addedEvidenceIds[0]);
+                      openInspector("changes");
+                    }}
+                  >
+                    Review proposal
+                    <ArrowRight size={16} />
+                  </button>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {impact && (
+            <section className="message assistant-message impact-message" aria-label="Impact proposal">
+              <div className="message-avatar assistant-avatar"><Sparkles size={18} /></div>
+              <div className="message-content">
+                <div className="message-byline">
+                  <strong>TenderGraph</strong>
+                  <span className="ai-label">AI</span>
+                  <span>{impact.compositionSurface === "codex" ? "Codex impact discovery" : "validated fallback"}</span>
+                </div>
+                <div className="answer-heading">
+                  <LockKeyhole size={19} />
+                  <h2>{impact.items.length} claim changes proposed in shadow mode</h2>
+                </div>
+                <p className="answer-summary">
+                  Every active claim was classified. No authority or decision state
+                  changed automatically.
+                </p>
+                <button
+                  type="button"
+                  className="review-proposal-button"
+                  onClick={() => openInspector("changes")}
+                >
+                  Review {impact.items.length} proposal{impact.items.length === 1 ? "" : "s"}
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </section>
+          )}
+
+          {(error || runtimeWarning || pipelineError) && (
+            <div className={error || pipelineError ? "inline-status error" : "inline-status"}>
+              <AlertTriangle size={16} />
+              <span>
+                {error ||
+                  pipelineError ||
+                  `Codex was unavailable. ${runtimeWarning} The validated fallback completed the run.`}
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div className="composer-area">
+          {uploadFile && (
+            <div className="attachment-tray">
+              <FileText size={19} />
+              <div>
+                <strong>{uploadFile.name}</strong>
+                <small>{Math.max(1, Math.round(uploadFile.size / 1024))} KB</small>
+              </div>
+              <input
+                aria-label="Canonical source URL"
+                placeholder="Canonical source URL"
+                value={canonicalUrl}
+                onChange={(event) => setCanonicalUrl(event.target.value)}
+              />
+              {!ingestion ? (
+                <button
+                  type="button"
+                  disabled={uploading}
+                  onClick={() => void uploadEvidence()}
+                >
+                  {uploading ? <LoaderCircle className="spin" size={15} /> : <Upload size={15} />}
+                  {uploading ? "Extracting" : "Extract evidence"}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  disabled={impactRunning || ingestion.status !== "extracted"}
+                  onClick={() => void discoverImpact("document")}
+                >
+                  {impactRunning ? <LoaderCircle className="spin" size={15} /> : <Sparkles size={15} />}
+                  Analyze impact
+                </button>
+              )}
+              <button
+                className="icon-button"
+                type="button"
+                title="Remove attachment"
+                aria-label="Remove attachment"
+                onClick={() => {
+                  setUploadFile(null);
+                  setCanonicalUrl("");
+                  setIngestion(null);
+                  setImpact(null);
+                }}
+              >
+                <X size={16} />
+              </button>
+            </div>
+          )}
+
+          <div className="composer">
+            <label className="attach-button" title="Attach procurement evidence">
+              <Paperclip size={19} />
+              <span className="visually-hidden">Attach procurement evidence</span>
+              <input
+                type="file"
+                accept=".pdf,.docx,.html,.htm,.json,.csv,.md,.txt,image/*"
+                onChange={(event) => {
+                  setUploadFile(event.target.files?.[0] ?? null);
+                  setIngestion(null);
+                  setImpact(null);
+                  event.currentTarget.value = "";
+                }}
+              />
+            </label>
+            <textarea
+              ref={composerRef}
+              aria-label="Ask about this tender"
+              rows={1}
+              value={question}
+              placeholder="Ask about this tender or attach new evidence..."
+              onChange={(event) => setQuestion(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  runAudit();
+                }
+              }}
+            />
+            <button
+              className="send-button"
+              type="button"
+              title="Run analysis"
+              aria-label="Run analysis"
+              disabled={running || question.trim().length < 3}
+              onClick={runAudit}
+            >
+              {running ? <LoaderCircle className="spin" size={19} /> : <Send size={19} />}
+            </button>
+          </div>
+
+          <div className="composer-meta">
+            <div className="runtime-select-wrap">
+              {runtimeMode === "codex" ? (
+                <Bot size={14} />
+              ) : runtimeMode === "api" ? (
+                <Sparkles size={14} />
+              ) : (
+                <ShieldCheck size={14} />
+              )}
+              <select
+                aria-label="Analysis runtime"
+                value={runtimeMode}
+                onChange={(event) => setRuntimeMode(event.target.value as RuntimeMode)}
+              >
+                <option value="codex">Codex</option>
+                <option value="api">OpenAI API</option>
+                <option value="fallback">Safe fallback</option>
+              </select>
+            </div>
+            <span>{runtimeStatus}</span>
+            {activeDelta && !impact && (
+              <button
+                type="button"
+                disabled={impactRunning}
+                onClick={() => void discoverImpact("event")}
+              >
+                {impactRunning ? <LoaderCircle className="spin" size={13} /> : <Sparkles size={13} />}
+                Analyze verified update
+              </button>
+            )}
+          </div>
+        </div>
+      </main>
+
+      {inspectorOpen && (
+        <button
+          className="mobile-scrim inspector-scrim"
+          type="button"
+          aria-label="Close inspector"
+          onClick={() => setInspectorOpen(false)}
+        />
+      )}
+
+      <aside className={`inspector ${inspectorOpen ? "mobile-open" : ""}`}>
+        <div className="inspector-tabs" role="tablist" aria-label="Analysis inspector">
+          {(["evidence", "changes", "trace"] as InspectorTab[]).map((tab) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={inspectorTab === tab}
+              className={inspectorTab === tab ? "selected" : ""}
+              key={tab}
+              onClick={() => setInspectorTab(tab)}
+            >
+              {tab === "evidence" ? "Evidence" : tab === "changes" ? "Changes" : "Trace"}
+            </button>
+          ))}
+          <button
+            className="inspector-close"
+            type="button"
+            title="Close inspector"
+            aria-label="Close inspector"
+            onClick={() => setInspectorOpen(false)}
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {inspectorTab === "evidence" && (
+          <div className="inspector-body">
+            <div className="inspector-heading">
+              <h2>Evidence [{availableEvidence.length}]</h2>
+              <div>
+                <button
+                  type="button"
+                  title="Previous evidence"
+                  aria-label="Previous evidence"
+                  onClick={() => moveEvidence(-1)}
+                >
+                  <ChevronLeft size={17} />
+                </button>
+                <span>{selectedEvidenceIndex + 1} of {availableEvidence.length}</span>
+                <button
+                  type="button"
+                  title="Next evidence"
+                  aria-label="Next evidence"
+                  onClick={() => moveEvidence(1)}
+                >
+                  <ChevronRight size={17} />
+                </button>
+              </div>
+            </div>
+
+            {selectedEvidence ? (
+              <>
+                <div className="evidence-field">
+                  <span>Source</span>
+                  <div className="source-name">
+                    <FileText size={18} />
+                    <strong>
+                      {selectedManifest?.artifactType.replaceAll("_", " ") ??
+                        "Procurement document"}
+                    </strong>
+                  </div>
+                </div>
+                <div className="evidence-field split-field">
+                  <div>
+                    <span>Page</span>
+                    <strong>{selectedEvidence.locator.page ?? "N/A"}</strong>
+                  </div>
+                  <div>
+                    <span>Section</span>
+                    <strong>{selectedEvidence.locator.section ?? "Not specified"}</strong>
+                  </div>
+                </div>
+                <div className="evidence-field">
+                  <span>Quoted excerpt</span>
+                  <blockquote>{displayText(selectedEvidence.extractedText)}</blockquote>
+                </div>
+                <div className="evidence-field">
+                  <span>Content hash (SHA-256)</span>
+                  <div className="hash-row">
+                    <code>{selectedEvidence.contentHash}</code>
+                    <button
+                      type="button"
+                      title="Copy content hash"
+                      aria-label="Copy content hash"
+                      onClick={() => void copyHash()}
+                    >
+                      {copiedHash ? <Check size={16} /> : <Copy size={16} />}
+                    </button>
+                  </div>
+                </div>
+                <div className="evidence-field split-field">
+                  <div>
+                    <span>Parser</span>
+                    <strong>{selectedEvidence.parserVersion}</strong>
+                  </div>
+                  <div>
+                    <span>Authority</span>
+                    <strong className="authority-state">
+                      <ShieldCheck size={15} />
+                      {selectedManifest?.sourceStatus ?? "eligible for review"}
+                    </strong>
+                  </div>
+                </div>
+                {selectedManifest && (
+                  <a
+                    className="open-source-button"
+                    href={selectedManifest.canonicalUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Open source
+                    <ExternalLink size={16} />
+                  </a>
+                )}
+              </>
+            ) : (
+              <div className="empty-inspector">
+                <FileText size={24} />
+                <p>Select a finding to inspect its source anchor.</p>
+              </div>
+            )}
           </div>
         )}
 
-        {activeDelta && (
-          <section className="delta-band" id="delta" aria-label="Incremental evidence diff">
-            <div className="delta-heading">
-              <div className="delta-icon"><GitCompareArrows size={19} /></div>
-              <div>
-                <div className="eyebrow">Incremental reevaluation</div>
-                <h2>{displayText(activeDelta.event.title)}</h2>
-                <p>{displayText(activeDelta.event.description)}</p>
-              </div>
-              <div className="delta-metrics">
-                <span><strong>{activeDelta.affectedClaimIds.length}</strong> claim affected</span>
-                <span><strong>{activeDelta.unchangedClaimIds.length}</strong> unchanged</span>
-              </div>
-              <button className="inspect-delta" onClick={inspectEvidenceDelta}>
-                <FilePlus2 size={16} /> Inspect update
-              </button>
+        {inspectorTab === "changes" && (
+          <div className="inspector-body">
+            <div className="inspector-heading">
+              <h2>Change review</h2>
+              <span className="shadow-status"><LockKeyhole size={13} /> Shadow mode</span>
             </div>
-            {deltaExpanded && (
-              <div className="delta-details">
+
+            {impact ? (
+              <div className="change-list">
+                {impact.items.map((item) => {
+                  const claim = fixture.claims.find(
+                    (candidate) => candidate.id === item.claimId,
+                  );
+                  return (
+                    <article key={`${item.claimId}-${item.action}`}>
+                      <div className="change-item-topline">
+                        <span>{item.action}</span>
+                        <b>{Math.round(item.confidence * 100)}%</b>
+                      </div>
+                      <strong>{displayText(claim?.statement ?? item.claimId)}</strong>
+                      <p>{displayText(item.rationale)}</p>
+                      {item.proposedStatement && (
+                        <div className="proposed-statement">
+                          <span>Proposed state</span>
+                          {displayText(item.proposedStatement)}
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => selectEvidence(item.evidenceIds[0])}
+                      >
+                        Inspect evidence
+                        <ChevronRight size={15} />
+                      </button>
+                    </article>
+                  );
+                })}
+                <div className="review-lock">
+                  <LockKeyhole size={18} />
+                  <span>
+                    <strong>Human decision required</strong>
+                    No claim was changed or promoted automatically.
+                  </span>
+                </div>
+              </div>
+            ) : activeDelta ? (
+              <div className="change-list">
                 {activeDelta.event.affectedClaims.map((change) => {
                   const previousClaimId =
-                    change.changeType === "claim_superseded"
+                    "previousClaimId" in change
                       ? change.previousClaimId
                       : change.claimId;
                   const previousClaim = fixture.claims.find(
@@ -390,256 +984,93 @@ export function Workbench({
                     (claim) => claim.id === change.claimId,
                   );
                   return (
-                    <div className="delta-row" key={`${previousClaimId}-${change.claimId}`}>
-                      <div>
-                        <span>Before · {change.beforeEvidenceIds.length} anchor{change.beforeEvidenceIds.length === 1 ? "" : "s"}</span>
-                        <strong>{displayText(previousClaim?.statement ?? "Prior claim unavailable")}</strong>
+                    <article key={`${previousClaimId}-${change.claimId}`}>
+                      <div className="change-item-topline">
+                        <span>{formatLabel(change.changeType)}</span>
+                        <b>{change.afterEvidenceIds.length} anchors</b>
                       </div>
-                      <ChevronRight size={17} />
-                      <div>
-                        <span>After · {change.afterEvidenceIds.length} anchor{change.afterEvidenceIds.length === 1 ? "" : "s"}</span>
-                        <strong>{displayText(currentClaim?.statement ?? "Current claim unavailable")}</strong>
+                      <div className="before-after">
+                        <span>Before</span>
+                        <p>{displayText(previousClaim?.statement ?? "Prior claim")}</p>
+                        <span>After</span>
+                        <p>{displayText(currentClaim?.statement ?? "Updated claim")}</p>
                       </div>
-                      <p><b>{change.changeType.replaceAll("_", " ")}</b> · {displayText(change.explanation)}</p>
-                    </div>
+                      <p>{displayText(change.explanation)}</p>
+                      <button
+                        type="button"
+                        onClick={() => selectEvidence(change.afterEvidenceIds[0])}
+                      >
+                        Inspect evidence
+                        <ChevronRight size={15} />
+                      </button>
+                    </article>
                   );
                 })}
+                <button
+                  className="run-impact-button"
+                  type="button"
+                  disabled={impactRunning}
+                  onClick={() => void discoverImpact("event")}
+                >
+                  {impactRunning ? <LoaderCircle className="spin" size={16} /> : <Sparkles size={16} />}
+                  Run impact discovery
+                </button>
+              </div>
+            ) : (
+              <div className="empty-inspector">
+                <History size={24} />
+                <p>No evidence change is registered for this case.</p>
               </div>
             )}
-          </section>
+          </div>
         )}
 
-        <section className="intelligence-band" id="intelligence">
-          <div className="pipeline-heading">
-            <div>
-              <div className="eyebrow">Extensible evidence control plane</div>
-              <h2>Ingest a source, then discover which claims may change</h2>
+        {inspectorTab === "trace" && (
+          <div className="inspector-body">
+            <div className="inspector-heading">
+              <h2>Audit trace</h2>
+              <code>{result.trace.traceId.slice(0, 8)}</code>
             </div>
-            <span className="shadow-badge"><LockKeyhole size={14} /> Shadow mode</span>
-          </div>
-
-          <div className="pipeline-grid">
-            <div className="pipeline-panel">
-              <div className="pipeline-step">
-                <span>1</span>
-                <div><strong>Document ingestion</strong><small>Parse, anchor and hash</small></div>
-              </div>
-              <label className="file-picker" htmlFor="evidence-upload">
-                <FileUp size={18} />
-                <span>
-                  <strong>{uploadFile?.name ?? "Choose procurement document"}</strong>
-                  <small>PDF, DOCX, HTML, JSON, CSV, Markdown or text · 10 MB max</small>
-                </span>
-              </label>
-              <input
-                className="visually-hidden"
-                id="evidence-upload"
-                type="file"
-                accept=".pdf,.docx,.html,.htm,.json,.csv,.md,.txt,image/*"
-                onChange={(event) => {
-                  setUploadFile(event.target.files?.[0] ?? null);
-                  setIngestion(null);
-                  setImpact(null);
-                }}
-              />
-              <input
-                className="source-url-input"
-                aria-label="Canonical source URL"
-                placeholder="Canonical source URL (recommended)"
-                value={canonicalUrl}
-                onChange={(event) => setCanonicalUrl(event.target.value)}
-              />
-              <button
-                className="pipeline-button"
-                disabled={!uploadFile || uploading}
-                onClick={uploadEvidence}
-              >
-                {uploading ? <LoaderCircle className="spin" size={16} /> : <FileUp size={16} />}
-                {uploading ? "Extracting evidence" : "Ingest source"}
-              </button>
-
-              {ingestion && (
-                <div className="ingestion-result">
-                  <div>
-                    <CheckCircle2 size={17} />
-                    <strong>{ingestion.status.replaceAll("_", " ")}</strong>
-                    <span>{ingestion.format.toUpperCase()} · {ingestion.parser.adapter}</span>
-                  </div>
-                  <dl>
-                    <div><dt>Evidence anchors</dt><dd>{ingestion.evidence.length}</dd></div>
-                    <div><dt>File hash</dt><dd><code>{ingestion.file.sha256.slice(0, 12)}</code></dd></div>
-                    <div><dt>Authority</dt><dd>{ingestion.authorityState.replaceAll("_", " ")}</dd></div>
-                  </dl>
-                  {ingestion.warnings.map((warning) => (
-                    <p key={warning}>{warning}</p>
-                  ))}
-                </div>
-              )}
+            <div className="trace-summary">
+              <div><span>Surface</span><strong>{formatLabel(result.trace.compositionSurface)}</strong></div>
+              <div><span>Mode</span><strong>{formatLabel(result.trace.compositionMode)}</strong></div>
+              <div><span>Model</span><strong>{result.trace.model ?? "None"}</strong></div>
+              <div><span>Total</span><strong>{result.trace.timings.totalMs} ms</strong></div>
             </div>
-
-            <div className="pipeline-panel">
-              <div className="pipeline-step">
-                <span>2</span>
-                <div><strong>Codex impact discovery</strong><small>Classify every active claim</small></div>
-              </div>
-              <div className="impact-actions">
-                {activeDelta && (
-                  <button
-                    className="pipeline-button"
-                    disabled={impactRunning}
-                    onClick={() => void discoverImpact("event")}
-                  >
-                    {impactRunning ? <LoaderCircle className="spin" size={16} /> : <ScanSearch size={16} />}
-                    Analyze verified update
-                  </button>
-                )}
-                <button
-                  className="pipeline-button secondary"
-                  disabled={impactRunning || ingestion?.status !== "extracted"}
-                  onClick={() => void discoverImpact("document")}
-                >
-                  <ScanSearch size={16} />
-                  Analyze uploaded source
-                </button>
-              </div>
-              {!activeDelta && ingestion?.status !== "extracted" && (
-                <div className="pipeline-empty">
-                  Ingest an extracted document to activate impact discovery.
+            <div className="trace-section">
+              <h3>Validation gates</h3>
+              {result.trace.validationResults.map((gate) => (
+                <div className="trace-row" key={gate.gate}>
+                  {gate.passed ? (
+                    <CheckCircle2 size={16} />
+                  ) : (
+                    <AlertTriangle size={16} />
+                  )}
+                  <span>{formatLabel(gate.gate)}</span>
+                  <b>{gate.passed ? "Passed" : "Failed"}</b>
                 </div>
-              )}
-
-              {impact && (
-                <div className="impact-result">
-                  <div className="impact-summary">
-                    <span className="shadow-badge"><LockKeyhole size={13} /> {impact.status}</span>
-                    <strong>{impact.items.length} claim{impact.items.length === 1 ? "" : "s"} flagged</strong>
-                    <small>
-                      {impact.compositionSurface === "codex"
-                        ? "GPT-5.6 via Codex"
-                        : "Validated deterministic fallback"}
-                    </small>
-                  </div>
-                  {impact.items.map((item) => {
-                    const currentClaim = fixture.claims.find(
-                      (claim) => claim.id === item.claimId,
-                    );
-                    return (
-                      <article className="impact-item" key={item.claimId}>
-                        <div>
-                          <span>{item.action}</span>
-                          <code>{item.claimId}</code>
-                          <b>{Math.round(item.confidence * 100)}%</b>
-                        </div>
-                        <p>{displayText(item.rationale)}</p>
-                        <small>{displayText(currentClaim?.statement ?? item.claimId)}</small>
-                        {item.proposedStatement && (
-                          <strong>{displayText(item.proposedStatement)}</strong>
-                        )}
-                      </article>
-                    );
-                  })}
-                  <div className="impact-gates">
-                    <span>
-                      <ShieldCheck size={15} />
-                      {impact.validationResults.filter((gate) => gate.passed).length}/
-                      {impact.validationResults.length} code gates
-                    </span>
-                    <span>{impact.unchangedClaimIds.length} unchanged</span>
-                    {impact.referenceAgreement && (
-                      <span>
-                        Reference {impact.referenceAgreement.exact ? "exact" : `${Math.round(impact.referenceAgreement.recall * 100)}% recall`}
-                      </span>
-                    )}
-                  </div>
-                  <div className="human-review-lock">
-                    <LockKeyhole size={16} />
-                    <span><strong>Human decision required.</strong> No claim was changed or promoted automatically.</span>
-                  </div>
-                </div>
-              )}
+              ))}
             </div>
-          </div>
-          {pipelineError && <div className="error-banner">{pipelineError}</div>}
-        </section>
-
-        <div className="workspace-grid">
-          <section className="findings-panel" id="findings">
-            <div className="section-heading">
-              <div><div className="eyebrow">Reader output</div><h2>{displayText(result.readerOutput.title)}</h2></div>
-              <span
-                className={`answer-status ${
-                  fixture.dataStatus === "public_snapshot"
-                    ? "public_snapshot"
-                    : result.readerOutput.status
-                }`}
-              >
-                {provenanceLabel} · {result.readerOutput.decisionStage.replaceAll("_", " ")}
+            <div className="trace-section">
+              <h3>Runtime stages</h3>
+              {result.trace.stages.map((stage, index) => (
+                <div className="trace-row" key={stage.stage}>
+                  <span className="stage-index">{index + 1}</span>
+                  <span>{formatLabel(stage.stage)}</span>
+                  <b>{stage.sourceState ?? stage.status}</b>
+                </div>
+              ))}
+            </div>
+            <div className="trace-contract">
+              <ShieldCheck size={17} />
+              <span>
+                <strong>{passedGates}/{result.trace.validationResults.length} gates passed</strong>
+                Contract {result.trace.contractVersion}
               </span>
             </div>
-            <p className="summary">{displayText(result.readerOutput.summary)}</p>
-            <div className="findings-list">
-              {result.readerOutput.sections.map((section) => (
-                <button
-                  className="finding-row"
-                  key={`${section.heading}-${section.claimIds[0]}`}
-                  onClick={() => setSelectedEvidenceId(section.evidenceIds[0])}
-                >
-                  <CheckCircle2 size={18} />
-                  <span><strong>{displayText(section.heading)}</strong><small>{displayText(section.body)}</small></span>
-                  <ChevronRight size={17} />
-                </button>
-              ))}
-            </div>
-            {result.readerOutput.gaps.length > 0 && (
-              <div className="review-queue">
-                <div className="eyebrow">Human review queue</div>
-                {result.readerOutput.gaps.map((gap) => <p key={gap}>{displayText(gap)}</p>)}
-              </div>
-            )}
-          </section>
-
-          <aside className="evidence-panel" id="evidence">
-            <div className="panel-title"><FileSearch size={18} /><h2>Evidence inspector</h2></div>
-            <EvidenceDetail
-              evidence={selectedEvidence}
-              manifest={selectedManifest}
-              displayText={displayText}
-            />
-          </aside>
-        </div>
-
-        <section className="trace-band" id="trace">
-          <div className="panel-title"><ShieldCheck size={18} /><h2>Audit trace</h2><code>{result.trace.traceId.slice(0, 8)}</code></div>
-          <div className="gate-grid">
-            {result.trace.validationResults.map((gate) => (
-              <div className={gate.passed ? "gate passed" : "gate failed"} key={gate.gate}>
-                {gate.passed ? <CheckCircle2 size={16} /> : <CircleAlert size={16} />}
-                <span>{gate.gate.replaceAll("_", " ")}</span>
-              </div>
-            ))}
           </div>
-          {result.trace.stages.length > 0 && (
-            <div className="trace-stages" aria-label="Runtime trace stages">
-              {result.trace.stages.map((stage, index) => (
-                <div className={`trace-stage ${stage.status}`} key={stage.stage}>
-                  <span>{index + 1}</span>
-                  <strong>{stage.stage.replaceAll("_", " ")}</strong>
-                  <small>{stage.sourceState ?? stage.status}</small>
-                </div>
-              ))}
-            </div>
-          )}
-          <div className="trace-meta">
-            <span>Scope <code>{result.trace.resolvedScope.procedureId}/{result.trace.resolvedScope.lotId}</code></span>
-            <span>Contract <code>{result.trace.contractVersion}</code></span>
-            <span>Mode <code>{result.trace.compositionMode}</code></span>
-            <span>Surface <code>{result.trace.compositionSurface}</code></span>
-            {result.trace.codexSessionId && (
-              <span>Codex session <code>{result.trace.codexSessionId}</code></span>
-            )}
-          </div>
-        </section>
-      </main>
+        )}
+      </aside>
     </div>
   );
 }
