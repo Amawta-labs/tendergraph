@@ -57,6 +57,11 @@ claim authority without a separate human decision.
 - npm audit: 0 known vulnerabilities at implementation time.
 - Updated video: 177.200 seconds, H.264/AAC, English narration, no music,
   SHA-256 `65ad5cc7a51c36b884b6064db070ee36aa57d39d4e0b01afb07c7820932bd080`.
+- Production PDF probe: 4 pages, 8 page-addressable anchors, matching source
+  hash, and `eligible_for_review`.
+- Production impact probes: both document review and correction supersession
+  returned `shadow`, required human review, and passed all 6 gates. The
+  correction fixture matched its 2/2 reference impacts exactly.
 
 ## Residual boundaries
 

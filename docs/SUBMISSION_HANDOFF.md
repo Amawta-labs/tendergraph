@@ -6,13 +6,15 @@ before its confirmation exists.
 
 ## Verified freeze
 
-- Prior application freeze evidence commit: `cca2dcc` (`main`)
+- Deployed runtime commit: `e10f3f3b2812c4158676693cdf790459991b3560`
 - Production: https://openaihack.vercel.app
-- Immutable deployment: https://openaihack-iv46gogcf-amawta.vercel.app
+- Immutable deployment: https://openaihack-h3xqyrxqx-amawta.vercel.app
 - Anonymized presentation: https://openaihack.vercel.app/?submission=public
 - Video: https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
-- Local video candidate SHA-256: `65ad5cc7a51c36b884b6064db070ee36aa57d39d4e0b01afb07c7820932bd080`
-- Hosted video hash: pending redeployment and unauthenticated verification
+- Local and hosted video SHA-256:
+  `65ad5cc7a51c36b884b6064db070ee36aa57d39d4e0b01afb07c7820932bd080`
+- Production runtime verification:
+  `logs/production-runtime-verification-2026-07-17.md`
 - Video remediation evidence: `logs/video-official-rules-remediation-2026-07-16.md`
 - Submission readiness audit: `logs/submission-readiness-audit-2026-07-17.md`
 - Primary project thread Session ID: `019f615b-8a9a-7be1-bc50-65059c70d511`
@@ -25,7 +27,8 @@ before its confirmation exists.
 - Visibility: **Public**
 - Default branch: `main`
 - License detected by GitHub: **Apache-2.0**
-- Verified remote commit at publication: `5ebe9ecf6522b8fe3557c3ace07899a71a40167b`
+- Verified deployed runtime commit on `origin/main`:
+  `e10f3f3b2812c4158676693cdf790459991b3560`
 
 ## YouTube publication
 

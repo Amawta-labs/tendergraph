@@ -245,6 +245,8 @@ h2 { margin: 0; font-size: 16px; line-height: 1.25; }
   .simulation-banner { align-items: flex-start; }
   .metrics > div { padding: 12px; }
   .run-button { width: 100%; justify-content: center; }
+  .section-heading { flex-direction: column; gap: 8px; }
+  .answer-status { align-self: flex-start; }
   .pipeline-heading { align-items: flex-start; }
   .impact-actions { grid-template-columns: 1fr; }
   .impact-summary { align-items: flex-start; flex-wrap: wrap; }

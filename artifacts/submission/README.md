@@ -3,7 +3,8 @@
 ## Primary video
 
 - File: `../../public/tendergraph-build-week-demo.mp4`
-- Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4` (redeploy verification pending)
+- Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4`
+- Hosted hash verified against the local file on 2026-07-17
 - Duration: 177.200 seconds
 - Video: H.264, 1920x1080
 - Audio: AAC, mono, 48 kHz
