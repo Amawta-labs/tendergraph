@@ -68,6 +68,8 @@ Expansion paths include continuous opening and award monitoring, licensed jurisd
 - Live Codex smoke: `2/2`, each with `15/15` validation gates
 - Live Codex impact smoke: `2/2`, each with `6/6` gates and exact reference agreement
 - Dependency audit: `0` known npm vulnerabilities
+- Deterministic report: `artifacts/evals/deterministic-eval.json`
+- Ablation report: `artifacts/evals/enforcement-ablation.json`
 - Live report: `artifacts/evals/codex-smoke.json`
 - Impact report: `artifacts/evals/impact-smoke.json`
 

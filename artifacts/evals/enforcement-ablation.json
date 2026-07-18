@@ -1,0 +1,93 @@
+{
+  "contract": "tendergraph-enforcement-ablation.v1",
+  "createdAt": "2026-07-18T03:36:58.064Z",
+  "note": "Controlled fault ablation against schema-only admission; this measures enforcement, not model quality or prompt adherence.",
+  "faults": 8,
+  "harnessViolationsAdmitted": 0,
+  "schemaOnlyViolationsAdmitted": 8,
+  "results": [
+    {
+      "fault": "missing_claim",
+      "harnessAdmitted": false,
+      "schemaOnlyAdmitted": true,
+      "detectedBy": [
+        "claim_uniqueness",
+        "answer_completeness"
+      ]
+    },
+    {
+      "fault": "wrong_scope",
+      "harnessAdmitted": false,
+      "schemaOnlyAdmitted": true,
+      "detectedBy": [
+        "claim_admission",
+        "claim_uniqueness",
+        "claim_text_integrity",
+        "claim_evidence_pairing",
+        "scope_isolation",
+        "answer_completeness"
+      ]
+    },
+    {
+      "fault": "missing_signal",
+      "harnessAdmitted": false,
+      "schemaOnlyAdmitted": true,
+      "detectedBy": [
+        "claim_uniqueness",
+        "answer_completeness"
+      ]
+    },
+    {
+      "fault": "internal_leakage",
+      "harnessAdmitted": false,
+      "schemaOnlyAdmitted": true,
+      "detectedBy": [
+        "narrative_integrity",
+        "output_hygiene"
+      ]
+    },
+    {
+      "fault": "unknown_evidence",
+      "harnessAdmitted": false,
+      "schemaOnlyAdmitted": true,
+      "detectedBy": [
+        "claim_evidence_pairing",
+        "evidence_grounding",
+        "source_integrity"
+      ]
+    },
+    {
+      "fault": "unpromoted_claim",
+      "harnessAdmitted": false,
+      "schemaOnlyAdmitted": true,
+      "detectedBy": [
+        "claim_admission",
+        "claim_uniqueness",
+        "claim_text_integrity",
+        "claim_evidence_pairing",
+        "answer_completeness"
+      ]
+    },
+    {
+      "fault": "invented_claim",
+      "harnessAdmitted": false,
+      "schemaOnlyAdmitted": true,
+      "detectedBy": [
+        "claim_admission",
+        "claim_uniqueness",
+        "claim_text_integrity",
+        "claim_evidence_pairing",
+        "scope_isolation",
+        "answer_completeness"
+      ]
+    },
+    {
+      "fault": "latency",
+      "harnessAdmitted": false,
+      "schemaOnlyAdmitted": true,
+      "detectedBy": [
+        "latency_budget"
+      ]
+    }
+  ]
+}

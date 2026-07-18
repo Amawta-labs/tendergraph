@@ -1,10 +1,13 @@
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+
 import { composeDeterministicFallback } from "../src/lib/harness/fallback";
 import { validateLatency, validateReaderOutput } from "../src/lib/harness/gates";
 import { getFixture } from "../src/lib/harness/fixtures";
 import { buildAnswerPlan } from "../src/lib/harness/policy";
 import { StructuredTenderAnswerSchema } from "../src/lib/harness/schemas";
 
-function main() {
+async function main() {
   const fixture = getFixture("cl-deep-demo");
   if (!fixture) throw new Error("Chile fixture missing");
   const plan = buildAnswerPlan(fixture, "Who won and why?");
@@ -41,20 +44,27 @@ function main() {
     detectedBy: ["latency_budget"],
   });
 
-  console.log(
-    JSON.stringify(
-      {
-        contract: "tendergraph-enforcement-ablation.v1",
-        note: "Controlled fault ablation against schema-only admission; this measures enforcement, not model quality or prompt adherence.",
-        faults: results.length,
-        harnessViolationsAdmitted: results.filter((result) => result.harnessAdmitted).length,
-        schemaOnlyViolationsAdmitted: results.filter((result) => result.schemaOnlyAdmitted).length,
-        results,
-      },
-      null,
-      2,
-    ),
+  const report = {
+    contract: "tendergraph-enforcement-ablation.v1",
+    createdAt: new Date().toISOString(),
+    note: "Controlled fault ablation against schema-only admission; this measures enforcement, not model quality or prompt adherence.",
+    faults: results.length,
+    harnessViolationsAdmitted: results.filter((result) => result.harnessAdmitted).length,
+    schemaOnlyViolationsAdmitted: results.filter((result) => result.schemaOnlyAdmitted).length,
+    results,
+  };
+  const outputPath = path.join(
+    process.cwd(),
+    "artifacts",
+    "evals",
+    "enforcement-ablation.json",
   );
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  await writeFile(outputPath, `${JSON.stringify(report, null, 2)}\n`);
+  console.log(JSON.stringify(report, null, 2));
 }
 
-main();
+main().catch((error: unknown) => {
+  console.error(error);
+  process.exitCode = 1;
+});

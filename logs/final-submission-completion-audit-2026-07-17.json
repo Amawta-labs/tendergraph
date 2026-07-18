@@ -1,0 +1,76 @@
+{
+  "contract": "tendergraph-final-submission-audit.v1",
+  "auditedAt": "2026-07-17T23:37:29-04:00",
+  "auditedRepositoryBase": "7fdfab6fbd912ef49e766c511329fd12cff83276",
+  "overallStatus": "technical_complete_account_actions_pending",
+  "requirements": {
+    "codexAndGpt56Runtime": "proven",
+    "workingImplementation": "proven",
+    "completeProductExperience": "proven",
+    "meaningfulBuildWeekExtension": "proven",
+    "publicProcurementProvenance": "proven",
+    "adversarialAuthorityBoundary": "proven",
+    "incrementalReevaluation": "proven",
+    "publicRepositoryAndLicense": "proven",
+    "readmeCodexCollaboration": "proven",
+    "feedbackWithLogs": "proven",
+    "thirdPartyLicensing": "proven",
+    "englishSubmissionCopy": "prepared_not_submitted",
+    "videoTechnicalRequirements": "proven",
+    "publicYouTube": "incomplete",
+    "devpostRegistrationAndEntry": "unverified_incomplete",
+    "entrantAttestations": "requires_entrant_confirmation",
+    "submissionReceiptAndTag": "incomplete"
+  },
+  "evaluationEvidence": {
+    "unitTests": {
+      "passed": 44,
+      "failed": 0
+    },
+    "deterministicScenarios": {
+      "passed": 23,
+      "failed": 0,
+      "artifact": "artifacts/evals/deterministic-eval.json"
+    },
+    "enforcementAblation": {
+      "faults": 8,
+      "harnessViolationsAdmitted": 0,
+      "schemaOnlyViolationsAdmitted": 8,
+      "artifact": "artifacts/evals/enforcement-ablation.json"
+    },
+    "liveComposition": {
+      "passed": 2,
+      "failed": 0,
+      "gatesPerRun": 15
+    },
+    "liveImpact": {
+      "passed": 2,
+      "failed": 0,
+      "gatesPerRun": 6,
+      "exactReferenceAgreement": true
+    },
+    "productionPdf": {
+      "pages": 4,
+      "evidenceAnchors": 8
+    },
+    "productionCorrection": {
+      "supersessions": 2,
+      "unchangedClaims": 1,
+      "precision": 1,
+      "recall": 1
+    },
+    "knownVulnerabilities": 0
+  },
+  "accountStateObserved": {
+    "youtubeStudio": "redirected_to_google_sign_in",
+    "devpost": "unauthenticated_page_showed_log_in_sign_up_and_join_hackathon"
+  },
+  "pendingActions": [
+    "Authenticate YouTube and publish the exact MP4 as Public.",
+    "Verify YouTube playback while signed out and replace TODO_PUBLIC_YOUTUBE_URL.",
+    "Authenticate or register on Devpost and join OpenAI Build Week.",
+    "Confirm eligibility, team, representative, and ownership attestations.",
+    "Submit the Devpost entry and preserve its confirmation.",
+    "Tag the exact submitted commit and regenerate the final handoff archive."
+  ]
+}

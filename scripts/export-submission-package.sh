@@ -39,6 +39,8 @@ cp \
   "$ROOT_DIR/artifacts/submission/live-codex-run-anonymized.mp4" \
   "$PACKAGE_DIR/media/"
 cp \
+  "$ROOT_DIR/artifacts/evals/deterministic-eval.json" \
+  "$ROOT_DIR/artifacts/evals/enforcement-ablation.json" \
   "$ROOT_DIR/artifacts/evals/codex-smoke.json" \
   "$ROOT_DIR/artifacts/evals/impact-smoke.json" \
   "$ROOT_DIR/artifacts/submission/codex-feedback.json" \
@@ -56,6 +58,8 @@ cp \
   "$ROOT_DIR/logs/ingestion-impact-implementation-2026-07-17.md" \
   "$ROOT_DIR/logs/production-runtime-verification-2026-07-17.json" \
   "$ROOT_DIR/logs/production-runtime-verification-2026-07-17.md" \
+  "$ROOT_DIR/logs/final-submission-completion-audit-2026-07-17.json" \
+  "$ROOT_DIR/logs/final-submission-completion-audit-2026-07-17.md" \
   "$PACKAGE_DIR/evidence/"
 cp "$ROOT_DIR/artifacts/compliance/dependency-licenses.json" "$PACKAGE_DIR/compliance/"
 

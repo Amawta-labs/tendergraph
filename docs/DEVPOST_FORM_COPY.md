@@ -232,6 +232,12 @@ not a confirmed signed contract.
   reference agreement.
 - A public Apache-2.0 repository, reproducible setup, plugin, and hosted demo.
 
+The corresponding machine-readable reports are retained at
+`artifacts/evals/deterministic-eval.json`,
+`artifacts/evals/enforcement-ablation.json`,
+`artifacts/evals/codex-smoke.json`, and
+`artifacts/evals/impact-smoke.json`.
+
 ### What we learned
 
 Reliable agentic systems need a distinction between generation and authority.

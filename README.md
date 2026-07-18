@@ -76,6 +76,10 @@ The evaluation command executes the versioned scenarios in [`evals/scenarios.jso
 
 `npm run eval:impact` runs two live GPT-5.6/Codex impact scenarios: independent corroboration and a corrective resolution with two claim supersessions. Both must preserve shadow mode, pass 6/6 code gates, retain a Codex Session ID, and match the versioned reference impact exactly.
 
+The credential-free runners persist their reports at
+`artifacts/evals/deterministic-eval.json` and
+`artifacts/evals/enforcement-ablation.json`.
+
 ## Harness flow
 
 ```text
@@ -130,7 +134,11 @@ Accepts either a versioned evidence event or an ingested document. It invokes GP
 
 ### `GET /api/traces/:traceId`
 
-Returns the stored audit trace for a run. The local adapter writes immutable records under `.tendergraph/traces`. Vercel uses ephemeral `/tmp` storage for the public demo; the production boundary is PostgreSQL plus immutable object storage.
+Returns the stored audit trace for a run. The local adapter writes immutable
+records under `.tendergraph/traces`. Vercel uses ephemeral `/tmp` storage for
+the public demo, so hosted trace durability is not claimed in this release. A
+durable deployment would require an external database and immutable object
+storage.
 
 ## Codex collaboration
 

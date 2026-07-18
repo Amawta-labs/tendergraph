@@ -1,4 +1,5 @@
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 import { z } from "zod";
 
@@ -49,12 +50,21 @@ async function main() {
 
   const report = {
     contract: "tendergraph-eval.v1",
+    createdAt: new Date().toISOString(),
     scenarios: scenarios.length,
     passed: scenarios.length - failures.length,
     failed: failures.length,
     maxDeterministicRuntimeMs: Math.max(...timings),
     failures,
   };
+  const outputPath = path.join(
+    process.cwd(),
+    "artifacts",
+    "evals",
+    "deterministic-eval.json",
+  );
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  await writeFile(outputPath, `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify(report, null, 2));
   if (failures.length) process.exitCode = 1;
 }
