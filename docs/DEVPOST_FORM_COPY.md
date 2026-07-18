@@ -99,12 +99,17 @@ as persistent supplier barriers.
 
 ### Inspiration
 
+Public procurement alone represented
+[12.7% of OECD GDP and 29.9% of government expenditure in
+2023](https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/size-of-public-procurement_6979cd47.html),
+yet critical opening, evaluation, award, and correction decisions are still
+fragmented across portals, spreadsheets, PDFs, and attachments.
+
 Procurement teams do not need another chatbot that summarizes one PDF. They
 need to know who was recommended, why each competitor lost, which exact passage
 supports every conclusion, whether a later correction changed the decision,
-and which prior conclusions remain valid.
-
-This is a temporal problem as much as a document problem. The
+and which prior conclusions remain valid. This is a temporal decision problem,
+not just a document problem. The
 [Open Contracting Data Standard](https://standard.open-contracting.org/latest/en/guidance/map/amendments/)
 treats procurement information as a sequence of new releases, updates, and
 amendments. TenderGraph makes that changing decision state inspectable rather
@@ -112,10 +117,11 @@ than silently generating a fresh answer.
 
 ### What it does
 
-TenderGraph reconstructs opening and award decisions from source documents
-without treating model prose as authority. It compiles source manifests,
-addressable evidence records, human-reviewed claims, policy decisions, and a
-reader-facing answer into one auditable run.
+TenderGraph is a decision-change control plane for tender markets. It
+reconstructs opening and award decisions from source documents without treating
+model prose as authority. It compiles source manifests, addressable evidence
+records, human-reviewed claims, policy decisions, and a reader-facing answer
+into one auditable run.
 
 The default case is a hash-verified public Chilean evaluation. TenderGraph
 identifies the commission's award recommendation, compares evaluated scores,
@@ -204,7 +210,7 @@ Skill that reports the model, Session ID, audit trace, validation gates, and
 retained result artifact. Dated commits and retained sessions make both the
 build process and product runtime inspectable.
 
-### Challenges
+### Challenges we ran into
 
 The central challenge was establishing an authority boundary strong enough to
 survive adversarial model output. A schema-valid response can still alter
@@ -218,10 +224,26 @@ separates public evidence from synthetic portability and correction
 benchmarks, and it labels the public outcome as an evaluation recommendation,
 not a confirmed signed contract.
 
-### Accomplishments
+Production packaging exposed a third class of problem: code that worked locally
+could still fail inside a serverless function. Public probes revealed missing
+PDF geometry globals, an untraced PDF.js worker, and a read-only runtime path.
+We added explicit canvas polyfills, output-file tracing, and request-scoped
+temporary storage, then reran the real PDF and impact workflows against the
+deployed endpoints.
+
+Finally, a hosted Vercel function cannot inherit a developer's
+ChatGPT-authenticated Codex session. We made that boundary visible instead of
+hiding it: authenticated GPT-5.6/Codex runs execute locally or through the
+plugin, while the hosted demo returns a validated deterministic fallback when
+the Codex runtime is unavailable.
+
+### Accomplishments that we're proud of
 
 - A working hosted procurement workbench with a hash-verified public case.
-- Exact claim-to-evidence inspection and visible incremental supersession.
+- Production PDF ingestion with 4 pages, 8 addressable evidence anchors, parser
+  identity, locators, and a stable source hash.
+- Exact claim-to-evidence inspection and visible incremental supersession,
+  including a correction benchmark with 2/2 expected supersessions.
 - Fifteen runtime validation gates with deterministic safe fallback.
 - 44 unit and adversarial tests, all passing.
 - 23 deterministic evaluation scenarios, all passing.
@@ -230,7 +252,10 @@ not a confirmed signed contract.
 - Two live Codex smoke runs, each passing all 15 validation gates.
 - Two live Codex impact runs, each passing all 6 impact gates with exact
   reference agreement.
-- A public Apache-2.0 repository, reproducible setup, plugin, and hosted demo.
+- A reusable Codex plugin and `$tendergraph-analyze` skill that run through
+  ChatGPT-authenticated Codex without requiring an API key.
+- A public Apache-2.0 repository, dated Build Week history, reproducible setup,
+  hosted demo, and hash-verified submission package.
 
 The corresponding machine-readable reports are retained at
 `artifacts/evals/deterministic-eval.json`,
@@ -247,6 +272,11 @@ explicit, testable contracts. We also learned that incremental reevaluation is
 most useful when the unchanged complement is proven, not merely when a new
 answer is displayed.
 
+We learned to treat production probes as part of the reasoning harness. Passing
+unit tests did not prove that a PDF worker, native geometry dependency, or
+temporary filesystem would survive serverless packaging. End-to-end deployment
+checks found failures that local execution could not.
+
 This matches the central result of
 [*From Prompts to Contracts*](https://arxiv.org/abs/2607.08028):
 code-owned guarantees are load-bearing and are not reproduced by prompt
@@ -254,9 +284,9 @@ instructions alone. TenderGraph extends that architecture with procurement
 scope, human-reviewed award claims, evidence-delta events, supersession, and
 exact before-and-after decision diffs.
 
-### What's next
+### What's next for TenderGraph
 
-Next we would add licensed live procurement connectors, OCR for scanned
+Next we will add licensed live procurement connectors, OCR for scanned
 documents, durable hosted trace and review storage, organization-level access
 controls, and jurisdiction-specific policy packs. Multi-format ingestion and
 assisted impact discovery with mandatory review are implemented in this
