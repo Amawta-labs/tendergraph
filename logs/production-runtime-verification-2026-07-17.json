@@ -1,9 +1,10 @@
 {
   "verifiedAt": "2026-07-17T23:19:43-04:00",
-  "runtimeCommit": "e10f3f3b2812c4158676693cdf790459991b3560",
+  "runtimeProbeCommit": "e10f3f3b2812c4158676693cdf790459991b3560",
+  "finalPresentationFreeze": "0591971",
   "deployment": {
     "canonicalUrl": "https://openaihack.vercel.app",
-    "immutableUrl": "https://openaihack-h3xqyrxqx-amawta.vercel.app"
+    "immutableUrl": "https://openaihack-cnzwcbkdy-amawta.vercel.app"
   },
   "ingestion": {
     "status": "extracted",
@@ -65,7 +66,8 @@
     "consoleWarnings": 0,
     "impactControlPlanePresent": true,
     "incoherentOverlapObserved": false,
-    "mobileReaderHeadingRemediated": true
+    "mobileReaderHeadingRemediated": true,
+    "mobileReaderHeadingContentWidthPx": 320
   },
   "pendingAccountActions": [
     "Publish the exact video as Public on YouTube and verify signed-out playback.",

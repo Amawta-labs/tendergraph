@@ -1,9 +1,10 @@
 # Production Runtime Verification
 
 - Verified at: `2026-07-17T23:19:43-04:00`
-- Runtime commit: `e10f3f3b2812c4158676693cdf790459991b3560`
+- API runtime probe commit: `e10f3f3b2812c4158676693cdf790459991b3560`
+- Final presentation freeze: `0591971`
 - Canonical URL: https://openaihack.vercel.app
-- Immutable URL: https://openaihack-h3xqyrxqx-amawta.vercel.app
+- Immutable URL: https://openaihack-cnzwcbkdy-amawta.vercel.app
 
 ## Public PDF ingestion
 
@@ -50,6 +51,8 @@ remain the evidence for GPT-5.6 runtime execution.
   intentional horizontal scroller on mobile.
 - Pixel review found and remediated an overly narrow mobile reader-title column
   by stacking its status badge below the full-width heading.
+- The remediated 390 x 844 production capture gives the reader heading a
+  320-pixel content track and keeps the status badge on its own row.
 
 ## Remaining external actions
 

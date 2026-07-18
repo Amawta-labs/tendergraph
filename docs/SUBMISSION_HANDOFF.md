@@ -6,9 +6,10 @@ before its confirmation exists.
 
 ## Verified freeze
 
-- Deployed runtime commit: `e10f3f3b2812c4158676693cdf790459991b3560`
+- Deployed presentation freeze: `0591971`
+- Verified API runtime commit: `e10f3f3b2812c4158676693cdf790459991b3560`
 - Production: https://openaihack.vercel.app
-- Immutable deployment: https://openaihack-h3xqyrxqx-amawta.vercel.app
+- Immutable deployment: https://openaihack-cnzwcbkdy-amawta.vercel.app
 - Anonymized presentation: https://openaihack.vercel.app/?submission=public
 - Video: https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
 - Local and hosted video SHA-256:
@@ -27,8 +28,7 @@ before its confirmation exists.
 - Visibility: **Public**
 - Default branch: `main`
 - License detected by GitHub: **Apache-2.0**
-- Verified deployed runtime commit on `origin/main`:
-  `e10f3f3b2812c4158676693cdf790459991b3560`
+- Verified presentation freeze on `origin/main`: `0591971`
 
 ## YouTube publication
 
