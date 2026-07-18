@@ -4,17 +4,16 @@ This file contains the remaining account-bound steps after the verified local
 freeze and Vercel deployment. It does not mark an external action complete
 before its confirmation exists.
 
-## Verified freeze
+## Verified chat-first video freeze
 
-- Deployed presentation freeze: `0591971`
-- Verified API runtime commit: `e10f3f3b2812c4158676693cdf790459991b3560`
+- Deployed video freeze: `a12286f2a408ee453cf459b08a10473dffd00089`
+- Deployment ID: `dpl_wgAXqVwQAyRytc5E9FYdsT36pu95`
 - Production: https://openaihack.vercel.app
-- Immutable deployment: https://openaihack-cnzwcbkdy-amawta.vercel.app
+- Immutable deployment: https://openaihack-9v9smulcf-amawta.vercel.app
 - Anonymized presentation: https://openaihack.vercel.app/?submission=public
 - Video: https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
-- Local video SHA-256:
+- Local and hosted video SHA-256, verified on 2026-07-18:
   `89b9b3430f88c210fbf6ce9b16cbe8652ea6dc23bddab4f83d3945ec013dd0eb`
-- Hosted hash verification: pending the deployment of this freeze candidate.
 - Production runtime verification:
   `logs/production-runtime-verification-2026-07-17.md`
 - Final requirement-by-requirement audit:

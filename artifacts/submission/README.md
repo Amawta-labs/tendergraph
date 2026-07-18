@@ -4,6 +4,7 @@
 
 - File: `../../public/tendergraph-build-week-chat-first-demo.mp4`
 - Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4`
+- Hosted hash verified against the local file on 2026-07-18
 - Duration: 161.600 seconds
 - Video: H.264, 1920x1080, 30 fps
 - Audio: AAC, mono, 48 kHz
