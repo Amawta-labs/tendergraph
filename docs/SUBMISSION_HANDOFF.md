@@ -6,15 +6,14 @@ before its confirmation exists.
 
 ## Verified chat-first video freeze
 
-- Deployed video freeze: `a12286f2a408ee453cf459b08a10473dffd00089`
-- Deployment ID: `dpl_wgAXqVwQAyRytc5E9FYdsT36pu95`
+- Deployed video freeze: `6647ba992484e51639bf5a15d041310c81d57b36`
+- Deployment ID: `dpl_EpiU73rtcFag2x83z1VEnSuhKtVH`
 - Production: https://openaihack.vercel.app
-- Immutable deployment: https://openaihack-9v9smulcf-amawta.vercel.app
+- Immutable deployment: https://openaihack-2hrzqw5lf-amawta.vercel.app
 - Anonymized presentation: https://openaihack.vercel.app/?submission=public
 - Video: https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
-- Local video SHA-256:
+- Local and hosted video SHA-256, verified on 2026-07-18:
   `d559ccb1a44091b8a4779bc03e33af25359039665516f03069710209fb7fc954`
-- Hosted hash verification: pending deployment of the dynamic cut.
 - Production runtime verification:
   `logs/production-runtime-verification-2026-07-17.md`
 - Final requirement-by-requirement audit:
