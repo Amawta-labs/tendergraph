@@ -41,6 +41,8 @@ claim authority without a separate human decision.
   The final implementation imports the PDF.js-supported `@napi-rs/canvas`
   polyfills explicitly and externalizes both server packages for Next.js
   tracing.
+- A subsequent production probe exposed PDF.js's dynamic fake-worker import.
+  The `/api/ingest` file trace now explicitly includes `pdf.worker.mjs`.
 - Desktop and 390 px mobile browser review: pass; no product console error or
   incoherent overlap.
 - Final live public corroboration impact run: 6/6 gates, exact reference
