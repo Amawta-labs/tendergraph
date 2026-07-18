@@ -1,0 +1,153 @@
+{
+  "contractVersion": "impact-discovery-input.v1",
+  "runId": "2002d8b7-075f-4cb5-9686-5c87a6c09984",
+  "createdAt": "2026-07-17T20:57:56.937Z",
+  "requestedModel": "gpt-5.6-terra",
+  "fixture": {
+    "id": "cl-correction-demo",
+    "name": "Chile award correction benchmark",
+    "dataStatus": "synthetic",
+    "scope": {
+      "jurisdiction": "CL",
+      "procedureId": "CL-CORRECTION-001",
+      "lotId": "LOT-1"
+    }
+  },
+  "addedSourceManifests": [
+    {
+      "id": "manifest-cl-correction-resolution",
+      "connector": "mercado_publico",
+      "jurisdiction": "CL",
+      "procedureId": "CL-CORRECTION-001",
+      "lotId": "LOT-1",
+      "artifactType": "synthetic_corrective_resolution",
+      "canonicalUrl": "https://example.com/synthetic/cl-correction-resolution",
+      "retrievedAt": "2026-07-14T15:00:00.000Z",
+      "publishedAt": "2026-07-14T14:00:00.000Z",
+      "mimeType": "application/json",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "license": "Synthetic benchmark created for TenderGraph",
+      "snapshotKey": "synthetic/cl-correction-resolution.json",
+      "retrievalMode": "snapshot",
+      "sourceStatus": "eligible",
+      "runtimePolicy": "claim_authority",
+      "issuer": "Illustrative Regional Hospital",
+      "selectionRule": "Synthetic corrective resolution selected only for supersession-contract testing."
+    }
+  ],
+  "addedEvidence": [
+    {
+      "id": "ev-cl-correction-new-winner",
+      "sourceManifestId": "manifest-cl-correction-resolution",
+      "contentHash": "6666666666666666666666666666666666666666666666666666666666666666",
+      "locator": {
+        "page": 1,
+        "section": "Corrected decision",
+        "table": null,
+        "startOffset": null,
+        "endOffset": null
+      },
+      "extractedText": "The corrective resolution supersedes the original decision and names Andes Clinical Supply as winner with 94.1 corrected points.",
+      "parserVersion": "synthetic-benchmark.v1"
+    },
+    {
+      "id": "ev-cl-correction-new-loss",
+      "sourceManifestId": "manifest-cl-correction-resolution",
+      "contentHash": "7777777777777777777777777777777777777777777777777777777777777777",
+      "locator": {
+        "page": 2,
+        "section": "Correction rationale",
+        "table": "Corrected scores",
+        "startOffset": null,
+        "endOffset": null
+      },
+      "extractedText": "After correcting the warranty-score formula, DemoMed records 91.8 points and is not awarded because Andes records 94.1 points.",
+      "parserVersion": "synthetic-benchmark.v1"
+    }
+  ],
+  "activeClaims": [
+    {
+      "id": "claim-cl-correction-rule",
+      "procedureId": "CL-CORRECTION-001",
+      "lotId": "LOT-1",
+      "subject": {
+        "type": "lot",
+        "id": "CL-CORRECTION-001-LOT-1",
+        "label": "Lot 1"
+      },
+      "predicate": "award_rule",
+      "value": "highest corrected total score",
+      "statement": "The benchmark awards Lot 1 to the admissible offer with the highest corrected total score.",
+      "qualifiers": {
+        "benchmark": "synthetic"
+      },
+      "evidenceIds": [
+        "ev-cl-correction-criterion"
+      ],
+      "extractorRunId": "extract-cl-correction-v1",
+      "confidence": 1,
+      "riskTier": "low",
+      "status": "eligible",
+      "promotionReason": "Directly stated in the synthetic evaluation rule.",
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "supersedesClaimId": null
+    },
+    {
+      "id": "claim-cl-correction-original-winner",
+      "procedureId": "CL-CORRECTION-001",
+      "lotId": "LOT-1",
+      "subject": {
+        "type": "supplier",
+        "id": "supplier-demomed",
+        "label": "DemoMed Ltd."
+      },
+      "predicate": "winner",
+      "value": "DemoMed Ltd.",
+      "statement": "The original benchmark resolution named DemoMed Ltd. as winner of Lot 1.",
+      "qualifiers": {
+        "decisionVersion": "original",
+        "benchmark": "synthetic"
+      },
+      "evidenceIds": [
+        "ev-cl-correction-original-winner"
+      ],
+      "extractorRunId": "extract-cl-correction-v1",
+      "confidence": 1,
+      "riskTier": "consequential",
+      "status": "eligible",
+      "promotionReason": "Replaced by the later corrective resolution.",
+      "reviewedBy": "Synthetic benchmark reviewer",
+      "reviewedAt": "2026-07-14T15:15:00.000Z",
+      "supersedesClaimId": null
+    },
+    {
+      "id": "claim-cl-correction-original-loss",
+      "procedureId": "CL-CORRECTION-001",
+      "lotId": "LOT-1",
+      "subject": {
+        "type": "supplier",
+        "id": "supplier-andes",
+        "label": "Andes Clinical Supply"
+      },
+      "predicate": "loss_reason",
+      "value": "lower original score",
+      "statement": "The original benchmark table showed Andes Clinical Supply below DemoMed Ltd. on total score.",
+      "qualifiers": {
+        "decisionVersion": "original",
+        "benchmark": "synthetic"
+      },
+      "evidenceIds": [
+        "ev-cl-correction-original-loss"
+      ],
+      "extractorRunId": "extract-cl-correction-v1",
+      "confidence": 1,
+      "riskTier": "consequential",
+      "status": "eligible",
+      "promotionReason": "Replaced by the corrected score table.",
+      "reviewedBy": "Synthetic benchmark reviewer",
+      "reviewedAt": "2026-07-14T15:15:00.000Z",
+      "supersedesClaimId": null
+    }
+  ]
+}

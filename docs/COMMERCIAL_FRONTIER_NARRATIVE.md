@@ -51,11 +51,14 @@ value:
 - detect when a correction changes the winner or loss rationale without
   silently rewriting unrelated conclusions.
 
-The natural expansion is continuous monitoring across openings and awards,
+The current Build Week system now ingests PDF, DOCX, HTML, JSON, CSV, Markdown,
+and text into hashed, addressable evidence, then asks GPT-5.6/Codex to discover
+which active claims may be corroborated, invalidated, superseded, or require
+review. The proposal is validated in code and remains in shadow mode until a
+human decision. This is extensible multi-format ingestion, not a claim of
+universal connector coverage. The next expansion is continuous monitoring,
 licensed jurisdiction connectors, organization-specific review policies,
-portfolio-level competitor intelligence, and private RFPs. The current Build
-Week submission proves the control layer and one deep public case; it does not
-claim universal ingestion or automatic impact discovery.
+portfolio-level competitor intelligence, OCR, and private RFPs.
 
 ## Why this is a frontier system
 
@@ -72,6 +75,12 @@ versioned sources
   -> code-owned admission gates
   -> reader answer plus audit trace
   -> explicit evidence delta and claim supersession
+
+new document
+  -> format adapter and hashed evidence chunks
+  -> GPT-5.6/Codex claim-by-claim impact classification
+  -> code-owned impact gates
+  -> shadow proposal and mandatory human review
 ```
 
 OpenAI's agent guidance identifies complex decision-making, difficult-to-
@@ -87,6 +96,8 @@ high-risk actions. TenderGraph applies that pattern to procurement:
   scope, leaks internals, or omits a required claim is discarded.
 - New evidence creates a versioned event. Claims can be corroborated,
   invalidated, or superseded; the unchanged complement is explicit.
+- New documents can be parsed and evaluated automatically, but the model's
+  impact proposal cannot mutate source or claim authority.
 
 The model's freedom is concentrated where it creates value: semantic
 synthesis. Its authority is removed where an error would create commercial,
@@ -148,12 +159,14 @@ case, and product experience.
 - One hash-verified public Chilean evaluation with addressable evidence.
 - A visible synthetic correction benchmark with two explicit supersessions.
 - 15 code-owned runtime gates.
-- 32/32 unit and adversarial tests.
+- 44/44 unit and adversarial tests, including PDF ingestion and impact attacks.
 - 23/23 deterministic contract scenarios.
 - An enforcement ablation where the harness admitted 0/8 injected faults and
   the schema-only control admitted 8/8.
 - Two live GPT-5.6 Terra runs through ChatGPT-authenticated Codex, each passing
   15/15 gates.
+- Two live GPT-5.6 Terra impact runs, each passing 6/6 impact gates with exact
+  reference agreement: one corroboration and one two-claim supersession.
 - A Codex plugin and skill that make the workflow runnable without an API key.
 
 ## Defensibility

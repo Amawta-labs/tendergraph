@@ -6,7 +6,7 @@
 - Local submission asset: `public/tendergraph-build-week-demo.mp4`
 - Hosted transfer URL: https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
 - Thumbnail: `artifacts/submission/verification-evidence.png`
-- Duration: 2:29
+- Duration: 2:57.200
 - Language: English
 
 ## Title
@@ -21,7 +21,8 @@ procurement teams, built for OpenAI Build Week.
 It reconstructs opening and award decisions from addressable evidence records,
 human-reviewed claims, and code-owned validation contracts. The demo uses a
 hash-verified public Chilean evaluation and a visibly synthetic correction
-benchmark to show claim supersession and incremental evidence impact.
+benchmark to show multi-format evidence ingestion, automatic shadow impact
+discovery, and claim supersession.
 Buyer and supplier display names in the public case are anonymized for the
 submission video; procedure scope, scores, evidence anchors, and hashes remain
 visible.
@@ -32,20 +33,22 @@ Supersession story: https://openaihack.vercel.app/?case=cl-correction-demo
 Runtime evidence:
 - GPT-5.6 Terra through ChatGPT-authenticated Codex
 - 15 code-owned validation gates
-- 32/32 contract and adversarial tests
+- 44/44 contract and adversarial tests
 - 23/23 deterministic contract scenarios
 - 2/2 live Codex smoke runs
+- 2/2 live Codex impact runs with 6/6 gates and exact reference agreement
 - 1 recorded live browser run with a full Codex Session ID
 - 0/8 injected faults admitted by the harness
 
 Chapters:
 00:00 Product and problem
-00:18 Public evidence chain
-00:45 Live Codex runtime and validation gates
-01:15 Corrective resolution benchmark
-01:38 Claim supersession diff
-01:55 Verification metrics
-02:09 Codex collaboration evidence
+00:16 Public evidence chain
+00:40 Live Codex runtime and validation gates
+01:08 Evidence ingestion and automatic impact discovery
+01:35 Corrective resolution benchmark
+01:57 Claim supersession diff
+02:12 Verification metrics
+02:27 Codex collaboration evidence
 
 ## Upload settings
 

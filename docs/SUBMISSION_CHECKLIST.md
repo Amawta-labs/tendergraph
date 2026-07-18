@@ -16,7 +16,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] Confirm the repository is original team work and contains no Arquimed code, client data, secrets, or unlicensed assets (`0` exact source-file hash matches; placeholder-only secret scan).
 - [x] Record the prior-project boundary in `docs/BUILD_WEEK_PROVENANCE.md`.
 - [x] Attribute the paper, open-source packages, and public ChileCompra material in `THIRD_PARTY_NOTICES.md`.
-- [x] Recheck every third-party API, dataset, font, icon, and media license before submission (`79` packages, `0` unknown licenses).
+- [x] Recheck every third-party API, dataset, font, icon, and media license before submission (`131` packages, `0` unknown licenses).
 
 ## Required project evidence
 
@@ -24,6 +24,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] Project fits **Work & Productivity**.
 - [x] Dated Git commits distinguish new Build Week work.
 - [x] Runtime Codex session IDs are preserved in `artifacts/evals/codex-smoke.json`.
+- [x] Impact-discovery Codex session IDs are preserved in `artifacts/evals/impact-smoke.json`.
 - [x] Run `/feedback` in the primary Codex development thread and record that session ID in README and Devpost.
 - [x] Keep timestamped Codex session evidence in `artifacts/evals/codex-smoke.json` and `artifacts/submission/live-codex-run-anonymized.json`.
 
@@ -35,7 +36,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] Judges can test https://openaihack.vercel.app without rebuilding or authentication.
 - [x] Local live-Codex and plugin instructions are documented.
 - [x] Redeploy the final video and confirm its hosted hash is accessible without login; recheck it through the judging period.
-- [x] Run the final command set for the freeze candidate: typecheck, tests, deterministic eval, ablation, Codex smoke, build, and dependency audit.
+- [x] Run the final command set for the new freeze candidate: typecheck, 44 tests, deterministic eval, ablation, Codex composition smoke, Codex impact smoke, build, and dependency audit.
 
 ## Devpost fields
 
@@ -48,7 +49,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 ## Video
 
-- [x] Render a clear 2:29 demo with English audio at `public/tendergraph-build-week-demo.mp4`.
+- [x] Rerender the 2:57 demo with the implemented ingestion and impact-discovery scene at `public/tendergraph-build-week-demo.mp4`.
 - [x] Keep the video under three minutes.
 - [x] Show what was built and how Codex and GPT-5.6 were used.
 - [x] Anonymize real buyer and supplier display names while preserving scores, scope, evidence anchors, and hashes.

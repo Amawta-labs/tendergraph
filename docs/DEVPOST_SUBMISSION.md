@@ -20,7 +20,9 @@ The market is material and the problem is structural. Public procurement represe
 
 The default case is a hash-verified public Chilean evaluation. TenderGraph identifies the commission's award recommendation, compares evaluated scores, explains why the other suppliers were not recommended, and preserves the source limitation that the snapshot is not proof of a signed contract.
 
-The differentiating workflow is a validated incremental evidence-delta contract. Versioned events declare changed evidence and affected claim versions; TenderGraph rejects incomplete or inconsistent dependency declarations, computes the unchanged complement, and presents the exact before/after diff. A public event demonstrates corroboration of one claim. A separate, visibly synthetic correction benchmark demonstrates two explicit supersessions: the winner changes, the loss explanation reverses, and the award rule remains unchanged. Automatic document ingestion and impact discovery are not part of this submission.
+The differentiating workflow is a validated evidence-change pipeline. TenderGraph ingests PDF, DOCX, HTML, JSON, CSV, Markdown, and text into hashed evidence anchors. GPT-5.6/Codex then compares the new evidence with every active claim and proposes corroboration, invalidation, supersession, review, or an explicit unchanged classification. Six code-owned gates reject scope contamination, incomplete claim partitions, invented evidence, invalid action semantics, and any attempt to grant model authority. The result remains in shadow mode until human review.
+
+A public event demonstrates independent corroboration of one claim. A separate, visibly synthetic correction benchmark demonstrates two automatic supersession detections: the winner changes, the loss explanation reverses, and the award rule remains unchanged. Both live impact evaluations matched their versioned references exactly.
 
 ## Why this is frontier
 
@@ -36,7 +38,7 @@ The claim is not that GPT-5.6 is infallible or that older models cannot generate
 
 The initial buyer is a bidder's commercial intelligence, proposal, or public sector sales team. Post-opening and post-award reconstruction provides an observable first workflow: compress a fragmented award file into an inspectable decision record, preserve evidence for debriefs and challenges, and turn losses into reusable institutional knowledge.
 
-Expansion paths include continuous opening and award monitoring, licensed jurisdiction connectors, organization-specific review policy, portfolio-level competitor intelligence, and private RFPs. The defensible asset is the accumulated decision graph: source contracts, claim-evidence histories, correction events, and organization-specific review decisions. The current Build Week submission proves the control layer and one deep public case; it does not claim universal ingestion or automatic impact discovery.
+Expansion paths include continuous opening and award monitoring, licensed jurisdiction connectors, OCR, organization-specific review policy, portfolio-level competitor intelligence, and private RFPs. The defensible asset is the accumulated decision graph: source contracts, claim-evidence histories, correction events, and organization-specific review decisions. The current submission implements extensible document ingestion and automatic shadow impact discovery; it does not claim universal live connector coverage.
 
 ## How it works
 
@@ -46,6 +48,8 @@ Expansion paths include continuous opening and award monitoring, licensed jurisd
 4. Codex invokes GPT-5.6 Terra to compose a structured answer from only the selected claims and evidence.
 5. Fifteen validation gates reject altered claim text, mismatched evidence, missing or duplicated claims, source failures, scope contamination, provenance errors, internal leakage, incomplete traces, and latency violations.
 6. If Codex is unavailable or violates the contract, TenderGraph returns a deterministic safe composition and records the reason.
+7. New documents pass through format-specific parsers and become hashed evidence anchors with `context_only` authority.
+8. GPT-5.6/Codex classifies every active claim against the new evidence; six impact gates admit only a shadow proposal requiring human review.
 
 ## What is technically demonstrated
 
@@ -54,16 +58,18 @@ Expansion paths include continuous opening and award monitoring, licensed jurisd
 - A distributable TenderGraph Codex plugin and `$tendergraph-analyze` skill.
 - Immutable six-stage local audit traces retrievable across local processes; hosted durable storage is a production boundary.
 - Claim invalidation, supersession, and exact before/after evidence dependency diffs.
-- 32 unit/adversarial tests, 23 deterministic evaluation scenarios, an 8-fault enforcement ablation, and a 2-run live Codex smoke evaluation.
+- 44 unit/adversarial tests, 23 deterministic evaluation scenarios, an 8-fault enforcement ablation, a 2-run live composition evaluation, and a 2-run live impact evaluation.
 
 ## Evaluation evidence
 
-- Unit and adversarial suite: `32/32`
+- Unit and adversarial suite: `44/44`
 - Deterministic contract scenarios: `23/23`
 - Enforcement ablation: harness admitted `0/8`; schema-only control admitted `8/8`
 - Live Codex smoke: `2/2`, each with `15/15` validation gates
+- Live Codex impact smoke: `2/2`, each with `6/6` gates and exact reference agreement
 - Dependency audit: `0` known npm vulnerabilities
 - Live report: `artifacts/evals/codex-smoke.json`
+- Impact report: `artifacts/evals/impact-smoke.json`
 
 ## How we used Codex and GPT-5.6
 
@@ -89,6 +95,7 @@ Requirements: Node.js 24+, npm 11+, Codex CLI 0.144.0+, and a ChatGPT-authentica
 ```bash
 npm install
 npm run eval:codex
+npm run eval:impact
 npm run dev
 ```
 
@@ -105,4 +112,4 @@ Invoke `$tendergraph-analyze` in Codex.
 
 ## Limitations
 
-TenderGraph does not claim autonomous procurement decision-making, legal compliance, universal live connector coverage, automatic document ingestion, or automatic impact discovery. The public case is a frozen snapshot; the correction, EU, UK, and deep Chile fixtures are explicitly synthetic. The hosted deployment cannot inherit a developer's local ChatGPT authentication, so live Codex testing uses the documented local or plugin path. Trace durability is local in this release; the hosted demo uses ephemeral storage.
+TenderGraph does not claim autonomous procurement decision-making, legal compliance, universal live connector coverage, OCR for scanned images, or automatic authority changes. The public case is a frozen snapshot; the correction, EU, UK, and deep Chile fixtures are explicitly synthetic. Ingestion supports an extensible set of common document formats, and automatic impact discovery produces only a shadow proposal requiring human review. The hosted deployment cannot inherit a developer's local ChatGPT authentication, so live Codex testing uses the documented local or plugin path. Trace durability is local in this release; the hosted demo uses ephemeral storage.

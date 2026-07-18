@@ -10,12 +10,15 @@ import {
   ExternalLink,
   FileSearch,
   FilePlus2,
+  FileUp,
   GitBranch,
   GitCompareArrows,
   Globe2,
   LoaderCircle,
+  LockKeyhole,
   Play,
   Search,
+  ScanSearch,
   ShieldCheck,
 } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -23,8 +26,10 @@ import { useMemo, useState } from "react";
 import type {
   CaseFixture,
   CompositionResult,
+  DocumentIngestionResult,
   EvidenceRecord,
   EvidenceDeltaResult,
+  ImpactDiscoveryResult,
   SourceManifest,
 } from "@/lib/harness/schemas";
 import { redactSubmissionText } from "@/lib/submission-redaction";
@@ -102,6 +107,13 @@ export function Workbench({
   const [deltaExpanded, setDeltaExpanded] = useState(
     initialFixtureId === "cl-correction-demo",
   );
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+  const [canonicalUrl, setCanonicalUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [ingestion, setIngestion] = useState<DocumentIngestionResult | null>(null);
+  const [impactRunning, setImpactRunning] = useState(false);
+  const [impact, setImpact] = useState<ImpactDiscoveryResult | null>(null);
+  const [pipelineError, setPipelineError] = useState("");
 
   const fixture = useMemo(
     () => fixtures.find((item) => item.id === fixtureId) ?? fixtures[0],
@@ -141,6 +153,11 @@ export function Workbench({
     setQuestion(nextQuestion);
     setSelectedEvidenceId("");
     setDeltaExpanded(nextId === "cl-correction-demo");
+    setUploadFile(null);
+    setCanonicalUrl("");
+    setIngestion(null);
+    setImpact(null);
+    setPipelineError("");
     void executeAudit(nextId, nextQuestion, "fallback");
   }
 
@@ -194,6 +211,67 @@ export function Workbench({
     });
   }
 
+  async function uploadEvidence() {
+    if (!uploadFile) return;
+    setUploading(true);
+    setPipelineError("");
+    setImpact(null);
+    try {
+      const form = new FormData();
+      form.set("file", uploadFile);
+      form.set("jurisdiction", fixture.scope.jurisdiction);
+      form.set("procedureId", fixture.scope.procedureId);
+      if (fixture.scope.lotId) form.set("lotId", fixture.scope.lotId);
+      form.set("artifactType", "procurement_document");
+      if (canonicalUrl.trim()) form.set("canonicalUrl", canonicalUrl.trim());
+      const response = await fetch("/api/ingest", {
+        method: "POST",
+        body: form,
+      });
+      const body = await response.json();
+      if (!response.ok) {
+        throw new Error(body.error ?? "Document ingestion failed");
+      }
+      setIngestion(body as DocumentIngestionResult);
+    } catch (cause) {
+      setPipelineError(
+        cause instanceof Error ? cause.message : "Document ingestion failed",
+      );
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  async function discoverImpact(source: "event" | "document") {
+    if (source === "event" && !activeDelta) return;
+    if (source === "document" && !ingestion) return;
+    setImpactRunning(true);
+    setPipelineError("");
+    try {
+      const response = await fetch("/api/impact-discovery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fixtureId,
+          ...(source === "event"
+            ? { eventId: activeDelta?.event.id }
+            : { document: ingestion }),
+        }),
+      });
+      const body = await response.json();
+      if (!response.ok) {
+        throw new Error(body.error ?? "Impact discovery failed");
+      }
+      setImpact(body as ImpactDiscoveryResult);
+    } catch (cause) {
+      setPipelineError(
+        cause instanceof Error ? cause.message : "Impact discovery failed",
+      );
+    } finally {
+      setImpactRunning(false);
+    }
+  }
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -203,6 +281,7 @@ export function Workbench({
           <a className="nav-item" href="#findings"><BookOpenCheck size={18} />Findings</a>
           <a className="nav-item" href="#evidence"><FileSearch size={18} />Evidence</a>
           <a className="nav-item" href="#delta"><GitCompareArrows size={18} />Evidence diff</a>
+          <a className="nav-item" href="#intelligence"><ScanSearch size={18} />Impact discovery</a>
           <a className="nav-item" href="#trace"><ShieldCheck size={18} />Audit trace</a>
         </nav>
         <div className="sidebar-note">
@@ -329,6 +408,159 @@ export function Workbench({
             )}
           </section>
         )}
+
+        <section className="intelligence-band" id="intelligence">
+          <div className="pipeline-heading">
+            <div>
+              <div className="eyebrow">Extensible evidence control plane</div>
+              <h2>Ingest a source, then discover which claims may change</h2>
+            </div>
+            <span className="shadow-badge"><LockKeyhole size={14} /> Shadow mode</span>
+          </div>
+
+          <div className="pipeline-grid">
+            <div className="pipeline-panel">
+              <div className="pipeline-step">
+                <span>1</span>
+                <div><strong>Document ingestion</strong><small>Parse, anchor and hash</small></div>
+              </div>
+              <label className="file-picker" htmlFor="evidence-upload">
+                <FileUp size={18} />
+                <span>
+                  <strong>{uploadFile?.name ?? "Choose procurement document"}</strong>
+                  <small>PDF, DOCX, HTML, JSON, CSV, Markdown or text · 10 MB max</small>
+                </span>
+              </label>
+              <input
+                className="visually-hidden"
+                id="evidence-upload"
+                type="file"
+                accept=".pdf,.docx,.html,.htm,.json,.csv,.md,.txt,image/*"
+                onChange={(event) => {
+                  setUploadFile(event.target.files?.[0] ?? null);
+                  setIngestion(null);
+                  setImpact(null);
+                }}
+              />
+              <input
+                className="source-url-input"
+                aria-label="Canonical source URL"
+                placeholder="Canonical source URL (recommended)"
+                value={canonicalUrl}
+                onChange={(event) => setCanonicalUrl(event.target.value)}
+              />
+              <button
+                className="pipeline-button"
+                disabled={!uploadFile || uploading}
+                onClick={uploadEvidence}
+              >
+                {uploading ? <LoaderCircle className="spin" size={16} /> : <FileUp size={16} />}
+                {uploading ? "Extracting evidence" : "Ingest source"}
+              </button>
+
+              {ingestion && (
+                <div className="ingestion-result">
+                  <div>
+                    <CheckCircle2 size={17} />
+                    <strong>{ingestion.status.replaceAll("_", " ")}</strong>
+                    <span>{ingestion.format.toUpperCase()} · {ingestion.parser.adapter}</span>
+                  </div>
+                  <dl>
+                    <div><dt>Evidence anchors</dt><dd>{ingestion.evidence.length}</dd></div>
+                    <div><dt>File hash</dt><dd><code>{ingestion.file.sha256.slice(0, 12)}</code></dd></div>
+                    <div><dt>Authority</dt><dd>{ingestion.authorityState.replaceAll("_", " ")}</dd></div>
+                  </dl>
+                  {ingestion.warnings.map((warning) => (
+                    <p key={warning}>{warning}</p>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="pipeline-panel">
+              <div className="pipeline-step">
+                <span>2</span>
+                <div><strong>Codex impact discovery</strong><small>Classify every active claim</small></div>
+              </div>
+              <div className="impact-actions">
+                {activeDelta && (
+                  <button
+                    className="pipeline-button"
+                    disabled={impactRunning}
+                    onClick={() => void discoverImpact("event")}
+                  >
+                    {impactRunning ? <LoaderCircle className="spin" size={16} /> : <ScanSearch size={16} />}
+                    Analyze verified update
+                  </button>
+                )}
+                <button
+                  className="pipeline-button secondary"
+                  disabled={impactRunning || ingestion?.status !== "extracted"}
+                  onClick={() => void discoverImpact("document")}
+                >
+                  <ScanSearch size={16} />
+                  Analyze uploaded source
+                </button>
+              </div>
+              {!activeDelta && ingestion?.status !== "extracted" && (
+                <div className="pipeline-empty">
+                  Ingest an extracted document to activate impact discovery.
+                </div>
+              )}
+
+              {impact && (
+                <div className="impact-result">
+                  <div className="impact-summary">
+                    <span className="shadow-badge"><LockKeyhole size={13} /> {impact.status}</span>
+                    <strong>{impact.items.length} claim{impact.items.length === 1 ? "" : "s"} flagged</strong>
+                    <small>
+                      {impact.compositionSurface === "codex"
+                        ? "GPT-5.6 via Codex"
+                        : "Validated deterministic fallback"}
+                    </small>
+                  </div>
+                  {impact.items.map((item) => {
+                    const currentClaim = fixture.claims.find(
+                      (claim) => claim.id === item.claimId,
+                    );
+                    return (
+                      <article className="impact-item" key={item.claimId}>
+                        <div>
+                          <span>{item.action}</span>
+                          <code>{item.claimId}</code>
+                          <b>{Math.round(item.confidence * 100)}%</b>
+                        </div>
+                        <p>{displayText(item.rationale)}</p>
+                        <small>{displayText(currentClaim?.statement ?? item.claimId)}</small>
+                        {item.proposedStatement && (
+                          <strong>{displayText(item.proposedStatement)}</strong>
+                        )}
+                      </article>
+                    );
+                  })}
+                  <div className="impact-gates">
+                    <span>
+                      <ShieldCheck size={15} />
+                      {impact.validationResults.filter((gate) => gate.passed).length}/
+                      {impact.validationResults.length} code gates
+                    </span>
+                    <span>{impact.unchangedClaimIds.length} unchanged</span>
+                    {impact.referenceAgreement && (
+                      <span>
+                        Reference {impact.referenceAgreement.exact ? "exact" : `${Math.round(impact.referenceAgreement.recall * 100)}% recall`}
+                      </span>
+                    )}
+                  </div>
+                  <div className="human-review-lock">
+                    <LockKeyhole size={16} />
+                    <span><strong>Human decision required.</strong> No claim was changed or promoted automatically.</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          {pipelineError && <div className="error-banner">{pipelineError}</div>}
+        </section>
 
         <div className="workspace-grid">
           <section className="findings-panel" id="findings">

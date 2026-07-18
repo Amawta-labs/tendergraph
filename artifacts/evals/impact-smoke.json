@@ -1,0 +1,43 @@
+{
+  "contract": "tendergraph-impact-smoke.v1",
+  "createdAt": "2026-07-17T20:58:07.202Z",
+  "model": "gpt-5.6-terra",
+  "expectedRuns": 2,
+  "passed": 2,
+  "failed": 0,
+  "runs": [
+    {
+      "scenarioId": "public-selection-corroboration",
+      "passed": true,
+      "runId": "1b342c42-3a5a-418e-a28e-baa3d6d7dedd",
+      "proposalId": "1b342c42-3a5a-418e-a28e-baa3d6d7dedd",
+      "codexSessionId": "019f71de-fd65-71b1-bf61-3f509dd1b681",
+      "model": "gpt-5.6-terra",
+      "actions": [
+        "corroborate"
+      ],
+      "gatesPassed": 6,
+      "gatesTotal": 6,
+      "exactReferenceAgreement": true,
+      "elapsedMs": 10008,
+      "failures": []
+    },
+    {
+      "scenarioId": "corrected-award-supersession",
+      "passed": true,
+      "runId": "2002d8b7-075f-4cb5-9686-5c87a6c09984",
+      "proposalId": "2002d8b7-075f-4cb5-9686-5c87a6c09984",
+      "codexSessionId": "019f71df-247f-7d33-a30b-f48b5beab9dd",
+      "model": "gpt-5.6-terra",
+      "actions": [
+        "supersede",
+        "supersede"
+      ],
+      "gatesPassed": 6,
+      "gatesTotal": 6,
+      "exactReferenceAgreement": true,
+      "elapsedMs": 10518,
+      "failures": []
+    }
+  ]
+}

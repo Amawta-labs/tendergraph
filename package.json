@@ -13,14 +13,19 @@
     "eval": "tsx evals/run.ts",
     "eval:live": "tsx evals/live.ts",
     "eval:codex": "tsx evals/codex-smoke.ts",
+    "eval:impact": "tsx evals/impact-smoke.ts",
     "eval:ablation": "tsx evals/ablation.ts",
     "compliance:licenses": "node scripts/generate-license-inventory.mjs",
-    "tendergraph:codex": "tsx src/cli/codex-run.ts"
+    "tendergraph:codex": "tsx src/cli/codex-run.ts",
+    "tendergraph:impact": "tsx src/cli/codex-impact.ts"
   },
   "dependencies": {
+    "cheerio": "^1.2.0",
     "lucide-react": "^0.468.0",
+    "mammoth": "^1.12.0",
     "next": "16.2.10",
     "openai": "6.47.0",
+    "pdfjs-dist": "^6.1.200",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "zod": "4.4.3"

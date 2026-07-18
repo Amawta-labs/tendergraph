@@ -1,15 +1,10 @@
 {
   "contract": "tendergraph-dependency-license-inventory.v1",
   "source": "npm query * --json",
-  "packageLockSha256": "fc9e4e423dbbfde8dee18c7e99499e06771d2840957ec17ea154c572a843515d",
-  "packageCount": 79,
+  "packageLockSha256": "a5853145a7f2dabc2e2f26074877628a66d2eed1f67520db4f94b2574d14c674",
+  "packageCount": 131,
   "unknownLicenseCount": 0,
   "packages": [
-    {
-      "name": "@emnapi/wasi-threads",
-      "version": "1.2.2",
-      "license": "MIT"
-    },
     {
       "name": "@esbuild/linux-x64",
       "version": "0.28.1",
@@ -43,6 +38,21 @@
     {
       "name": "@jridgewell/sourcemap-codec",
       "version": "1.5.5",
+      "license": "MIT"
+    },
+    {
+      "name": "@napi-rs/canvas-linux-x64-gnu",
+      "version": "1.0.2",
+      "license": "MIT"
+    },
+    {
+      "name": "@napi-rs/canvas-linux-x64-musl",
+      "version": "1.0.2",
+      "license": "MIT"
+    },
+    {
+      "name": "@napi-rs/canvas",
+      "version": "1.0.2",
       "license": "MIT"
     },
     {
@@ -156,14 +166,39 @@
       "license": "MIT"
     },
     {
+      "name": "@xmldom/xmldom",
+      "version": "0.8.13",
+      "license": "MIT"
+    },
+    {
+      "name": "argparse",
+      "version": "1.0.10",
+      "license": "MIT"
+    },
+    {
       "name": "assertion-error",
       "version": "2.0.1",
+      "license": "MIT"
+    },
+    {
+      "name": "base64-js",
+      "version": "1.5.1",
       "license": "MIT"
     },
     {
       "name": "baseline-browser-mapping",
       "version": "2.10.43",
       "license": "Apache-2.0"
+    },
+    {
+      "name": "bluebird",
+      "version": "3.4.7",
+      "license": "MIT"
+    },
+    {
+      "name": "boolbase",
+      "version": "1.0.0",
+      "license": "ISC"
     },
     {
       "name": "caniuse-lite",
@@ -173,6 +208,16 @@
     {
       "name": "chai",
       "version": "6.2.2",
+      "license": "MIT"
+    },
+    {
+      "name": "cheerio-select",
+      "version": "2.1.0",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "cheerio",
+      "version": "1.2.0",
       "license": "MIT"
     },
     {
@@ -186,6 +231,21 @@
       "license": "MIT"
     },
     {
+      "name": "core-util-is",
+      "version": "1.0.3",
+      "license": "MIT"
+    },
+    {
+      "name": "css-select",
+      "version": "5.2.2",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "css-what",
+      "version": "6.2.2",
+      "license": "BSD-2-Clause"
+    },
+    {
       "name": "csstype",
       "version": "3.2.3",
       "license": "MIT"
@@ -194,6 +254,56 @@
       "name": "detect-libc",
       "version": "2.1.2",
       "license": "Apache-2.0"
+    },
+    {
+      "name": "dingbat-to-unicode",
+      "version": "1.0.1",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "dom-serializer",
+      "version": "2.0.0",
+      "license": "MIT"
+    },
+    {
+      "name": "domelementtype",
+      "version": "2.3.0",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "domhandler",
+      "version": "5.0.3",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "domutils",
+      "version": "3.2.2",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "duck",
+      "version": "0.1.12",
+      "license": "BSD"
+    },
+    {
+      "name": "encoding-sniffer",
+      "version": "0.2.1",
+      "license": "MIT"
+    },
+    {
+      "name": "entities",
+      "version": "4.5.0",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "entities",
+      "version": "6.0.1",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "entities",
+      "version": "7.0.1",
+      "license": "BSD-2-Clause"
     },
     {
       "name": "es-module-lexer",
@@ -221,6 +331,41 @@
       "license": "MIT"
     },
     {
+      "name": "htmlparser2",
+      "version": "10.1.0",
+      "license": "MIT"
+    },
+    {
+      "name": "iconv-lite",
+      "version": "0.6.3",
+      "license": "MIT"
+    },
+    {
+      "name": "immediate",
+      "version": "3.0.6",
+      "license": "MIT"
+    },
+    {
+      "name": "inherits",
+      "version": "2.0.4",
+      "license": "ISC"
+    },
+    {
+      "name": "isarray",
+      "version": "1.0.0",
+      "license": "MIT"
+    },
+    {
+      "name": "jszip",
+      "version": "3.10.1",
+      "license": "(MIT OR GPL-3.0-or-later)"
+    },
+    {
+      "name": "lie",
+      "version": "3.3.0",
+      "license": "MIT"
+    },
+    {
       "name": "lightningcss-linux-x64-gnu",
       "version": "1.32.0",
       "license": "MPL-2.0"
@@ -236,6 +381,11 @@
       "license": "MPL-2.0"
     },
     {
+      "name": "lop",
+      "version": "0.4.2",
+      "license": "BSD-2-Clause"
+    },
+    {
       "name": "lucide-react",
       "version": "0.468.0",
       "license": "ISC"
@@ -244,6 +394,11 @@
       "name": "magic-string",
       "version": "0.30.21",
       "license": "MIT"
+    },
+    {
+      "name": "mammoth",
+      "version": "1.12.0",
+      "license": "BSD-2-Clause"
     },
     {
       "name": "nanoid",
@@ -256,6 +411,11 @@
       "license": "MIT"
     },
     {
+      "name": "nth-check",
+      "version": "2.1.1",
+      "license": "BSD-2-Clause"
+    },
+    {
       "name": "obug",
       "version": "2.1.3",
       "license": "MIT"
@@ -266,9 +426,44 @@
       "license": "Apache-2.0"
     },
     {
+      "name": "option",
+      "version": "0.2.4",
+      "license": "BSD-2-Clause"
+    },
+    {
+      "name": "pako",
+      "version": "1.0.11",
+      "license": "(MIT AND Zlib)"
+    },
+    {
+      "name": "parse5-htmlparser2-tree-adapter",
+      "version": "7.1.0",
+      "license": "MIT"
+    },
+    {
+      "name": "parse5-parser-stream",
+      "version": "7.1.2",
+      "license": "MIT"
+    },
+    {
+      "name": "parse5",
+      "version": "7.3.0",
+      "license": "MIT"
+    },
+    {
+      "name": "path-is-absolute",
+      "version": "1.0.1",
+      "license": "MIT"
+    },
+    {
       "name": "pathe",
       "version": "2.0.3",
       "license": "MIT"
+    },
+    {
+      "name": "pdfjs-dist",
+      "version": "6.1.200",
+      "license": "Apache-2.0"
     },
     {
       "name": "picocolors",
@@ -286,6 +481,11 @@
       "license": "MIT"
     },
     {
+      "name": "process-nextick-args",
+      "version": "2.0.1",
+      "license": "MIT"
+    },
+    {
       "name": "react-dom",
       "version": "19.2.7",
       "license": "MIT"
@@ -296,8 +496,23 @@
       "license": "MIT"
     },
     {
+      "name": "readable-stream",
+      "version": "2.3.8",
+      "license": "MIT"
+    },
+    {
       "name": "rolldown",
       "version": "1.1.5",
+      "license": "MIT"
+    },
+    {
+      "name": "safe-buffer",
+      "version": "5.1.2",
+      "license": "MIT"
+    },
+    {
+      "name": "safer-buffer",
+      "version": "2.1.2",
       "license": "MIT"
     },
     {
@@ -309,6 +524,11 @@
       "name": "semver",
       "version": "7.8.5",
       "license": "ISC"
+    },
+    {
+      "name": "setimmediate",
+      "version": "1.0.5",
+      "license": "MIT"
     },
     {
       "name": "sharp",
@@ -326,6 +546,11 @@
       "license": "BSD-3-Clause"
     },
     {
+      "name": "sprintf-js",
+      "version": "1.0.3",
+      "license": "BSD-3-Clause"
+    },
+    {
       "name": "stackback",
       "version": "0.0.2",
       "license": "MIT"
@@ -333,6 +558,11 @@
     {
       "name": "std-env",
       "version": "4.2.0",
+      "license": "MIT"
+    },
+    {
+      "name": "string_decoder",
+      "version": "1.1.1",
       "license": "MIT"
     },
     {
@@ -376,8 +606,23 @@
       "license": "Apache-2.0"
     },
     {
+      "name": "underscore",
+      "version": "1.13.8",
+      "license": "MIT"
+    },
+    {
       "name": "undici-types",
       "version": "7.18.2",
+      "license": "MIT"
+    },
+    {
+      "name": "undici",
+      "version": "7.28.0",
+      "license": "MIT"
+    },
+    {
+      "name": "util-deprecate",
+      "version": "1.0.2",
       "license": "MIT"
     },
     {
@@ -391,8 +636,23 @@
       "license": "MIT"
     },
     {
+      "name": "whatwg-encoding",
+      "version": "3.1.1",
+      "license": "MIT"
+    },
+    {
+      "name": "whatwg-mimetype",
+      "version": "4.0.0",
+      "license": "MIT"
+    },
+    {
       "name": "why-is-node-running",
       "version": "2.3.0",
+      "license": "MIT"
+    },
+    {
+      "name": "xmlbuilder",
+      "version": "10.1.1",
       "license": "MIT"
     },
     {

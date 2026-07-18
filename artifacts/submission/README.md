@@ -3,17 +3,18 @@
 ## Primary video
 
 - File: `../../public/tendergraph-build-week-demo.mp4`
-- Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4` (verified against the SHA-256 below)
-- Duration: 148.083 seconds
+- Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4` (redeploy verification pending)
+- Duration: 177.200 seconds
 - Video: H.264, 1920x1080
 - Audio: AAC, mono, 48 kHz
-- Integrated loudness: -17.9 LUFS
-- True peak: -1.9 dBFS
-- SHA-256: `a80fdee4d8e3852057ae7a2365b42c2df605089f7a54e9a16d898f507a407feb`
+- Integrated loudness: -17.7 LUFS
+- True peak: -1.7 dBFS
+- SHA-256: `65ad5cc7a51c36b884b6064db070ee36aa57d39d4e0b01afb07c7820932bd080`
 
-The video contains seven narrated chapters: product/problem, public evidence
-chain, Codex runtime and validation gates, correction benchmark, supersession
-diff, verification metrics, and Codex collaboration evidence. The runtime
+The video contains eight narrated chapters: product/problem, public evidence
+chain, Codex runtime and validation gates, document ingestion and automatic
+impact discovery, correction benchmark, supersession diff, verification
+metrics, and Codex collaboration evidence. The runtime
 chapter contains a real authenticated localhost click, running state, completed
 answer, 15/15 gates, and full Codex Session ID. The public presentation replaces
 buyer and supplier display names with stable aliases while preserving scope,
@@ -27,6 +28,7 @@ The verified live browser segment is retained as
 ## Still images
 
 - `public-workbench.png`: public Chile evaluation workbench.
+- `impact-discovery.png`: anonymized multi-format ingestion and shadow impact proposal.
 - `correction-diff.png`: visibly synthetic correction benchmark.
 - `verification-evidence.png`: test, evaluation, and Codex session evidence.
 - `codex-collaboration.png`: dated commits and retained Codex Session IDs.
@@ -39,4 +41,5 @@ workbench with Firefox Marionette enabled. Then run
 `PIPER_BIN`, and `VOICE_MODEL` pointing to the verified capture, localhost demo,
 Piper 1.2 binary, and English voice. The renderer rejects a capture that did not
 observe both running and completed states, creates all scenes, masters the audio,
-encodes H.264/AAC, and rejects videos without audio or at least 180 seconds long.
+encodes H.264/AAC, and rejects videos without audio or with a duration of 180
+seconds or longer.

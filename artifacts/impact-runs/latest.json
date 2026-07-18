@@ -1,0 +1,134 @@
+{
+  "contractVersion": "impact-discovery-result.v1",
+  "proposalId": "2002d8b7-075f-4cb5-9686-5c87a6c09984",
+  "createdAt": "2026-07-17T20:58:07.187Z",
+  "fixtureId": "cl-correction-demo",
+  "scope": {
+    "jurisdiction": "CL",
+    "procedureId": "CL-CORRECTION-001",
+    "lotId": "LOT-1"
+  },
+  "status": "shadow",
+  "mode": "live",
+  "model": "gpt-5.6-terra",
+  "compositionSurface": "codex",
+  "codexSessionId": "019f71df-247f-7d33-a30b-f48b5beab9dd",
+  "sourceManifestIds": [
+    "manifest-cl-correction-resolution"
+  ],
+  "evidenceIds": [
+    "ev-cl-correction-new-winner",
+    "ev-cl-correction-new-loss"
+  ],
+  "items": [
+    {
+      "claimId": "claim-cl-correction-original-winner",
+      "action": "supersede",
+      "evidenceIds": [
+        "ev-cl-correction-new-winner"
+      ],
+      "confidence": 1,
+      "rationale": "The corrective resolution explicitly supersedes the original decision and names a different winner.",
+      "proposedStatement": "Andes Clinical Supply is the winner of Lot 1 with 94.1 corrected points."
+    },
+    {
+      "claimId": "claim-cl-correction-original-loss",
+      "action": "supersede",
+      "evidenceIds": [
+        "ev-cl-correction-new-loss"
+      ],
+      "confidence": 1,
+      "rationale": "The corrected score table reverses the relevant ranking and provides the corrected non-award rationale.",
+      "proposedStatement": "DemoMed records 91.8 points and is not awarded because Andes Clinical Supply records 94.1 points."
+    }
+  ],
+  "unchangedClaimIds": [
+    "claim-cl-correction-rule"
+  ],
+  "needsHumanReviewClaimIds": [
+    "claim-cl-correction-original-winner",
+    "claim-cl-correction-original-loss"
+  ],
+  "gaps": [],
+  "validationResults": [
+    {
+      "gate": "impact_schema",
+      "passed": true,
+      "code": null,
+      "details": {
+        "items": 2
+      }
+    },
+    {
+      "gate": "impact_scope",
+      "passed": true,
+      "code": null,
+      "details": {
+        "procedureId": "CL-CORRECTION-001",
+        "sourceManifestIds": [
+          "manifest-cl-correction-resolution"
+        ]
+      }
+    },
+    {
+      "gate": "impact_claim_partition",
+      "passed": true,
+      "code": null,
+      "details": {
+        "activeClaimIds": [
+          "claim-cl-correction-rule",
+          "claim-cl-correction-original-winner",
+          "claim-cl-correction-original-loss"
+        ],
+        "itemIds": [
+          "claim-cl-correction-original-winner",
+          "claim-cl-correction-original-loss"
+        ],
+        "unchangedClaimIds": [
+          "claim-cl-correction-rule"
+        ]
+      }
+    },
+    {
+      "gate": "impact_evidence_binding",
+      "passed": true,
+      "code": null,
+      "details": {
+        "allowedEvidenceIds": [
+          "ev-cl-correction-new-winner",
+          "ev-cl-correction-new-loss"
+        ]
+      }
+    },
+    {
+      "gate": "impact_action_semantics",
+      "passed": true,
+      "code": null,
+      "details": {
+        "actions": [
+          "supersede",
+          "supersede"
+        ]
+      }
+    },
+    {
+      "gate": "shadow_authority",
+      "passed": true,
+      "code": null,
+      "details": {
+        "autoApplied": false,
+        "requiresHumanReview": true
+      }
+    }
+  ],
+  "requiresHumanReview": true,
+  "referenceAgreement": {
+    "expectedItems": 2,
+    "matchedItems": 2,
+    "precision": 1,
+    "recall": 1,
+    "exact": true
+  },
+  "elapsedMs": 10240,
+  "fallbackReason": null
+}

@@ -24,7 +24,13 @@ Official portal URLs identify the structures being modelled. They do not imply e
 
 ## Runtime dependencies
 
-Runtime and development dependencies retain their respective upstream licenses. Their authoritative license texts are available in each installed package and package registry record. Material dependencies include Next.js, React, OpenAI's JavaScript SDK, Zod, Lucide, TypeScript, and Vitest. The locked dependency inventory is preserved at `artifacts/compliance/dependency-licenses.json` and can be regenerated with `npm run compliance:licenses`.
+Runtime and development dependencies retain their respective upstream licenses.
+Their authoritative license texts are available in each installed package and
+package registry record. Material dependencies include Next.js, React,
+OpenAI's JavaScript SDK, Zod, Lucide, PDF.js (Apache-2.0), Mammoth
+(BSD-2-Clause), Cheerio (MIT), TypeScript, and Vitest. The locked dependency
+inventory is preserved at `artifacts/compliance/dependency-licenses.json` and
+can be regenerated with `npm run compliance:licenses`.
 
 ## ChileCompra public procurement snapshot
 

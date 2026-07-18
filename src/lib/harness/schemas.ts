@@ -1,10 +1,11 @@
 import { z } from "zod";
 
-export const JurisdictionSchema = z.enum(["CL", "EU", "UK"]);
+export const JurisdictionSchema = z.enum(["CL", "EU", "UK", "OTHER"]);
 export const ConnectorSchema = z.enum([
   "mercado_publico",
   "ted",
   "contracts_finder",
+  "manual_upload",
 ]);
 export const RiskTierSchema = z.enum(["low", "consequential"]);
 export const ClaimStatusSchema = z.enum([
@@ -253,6 +254,122 @@ export const EvidenceDeltaResultSchema = z.object({
   valid: z.literal(true),
 });
 
+export const DocumentFormatSchema = z.enum([
+  "pdf",
+  "docx",
+  "html",
+  "json",
+  "markdown",
+  "csv",
+  "text",
+  "image",
+  "unsupported",
+]);
+
+export const DocumentIngestionMetadataSchema = z.strictObject({
+  jurisdiction: JurisdictionSchema,
+  procedureId: z.string().min(1).max(160),
+  lotId: z.string().min(1).max(160).nullable(),
+  artifactType: z.string().min(1).max(160),
+  canonicalUrl: z.string().url().nullable(),
+  issuer: z.string().min(1).max(240).nullable(),
+  license: z.string().min(1).max(160).nullable(),
+  publishedAt: z.string().datetime().nullable(),
+});
+
+export const DocumentIngestionResultSchema = z.strictObject({
+  contractVersion: z.literal("document-ingestion.v1"),
+  ingestionId: z.string().min(1),
+  createdAt: z.string().datetime(),
+  status: z.enum(["extracted", "needs_ocr", "unsupported", "rejected"]),
+  format: DocumentFormatSchema,
+  file: z.strictObject({
+    name: z.string().min(1),
+    mimeType: z.string().min(1),
+    byteLength: z.number().int().positive(),
+    sha256: z.string().regex(/^[a-f0-9]{64}$/),
+  }),
+  parser: z.strictObject({
+    adapter: z.string().min(1),
+    version: z.string().min(1),
+  }),
+  pageCount: z.number().int().positive().nullable(),
+  sourceManifest: SourceManifestSchema,
+  evidence: z.array(EvidenceRecordSchema),
+  authorityState: z.enum(["context_only", "eligible_for_review"]),
+  warnings: z.array(z.string()),
+});
+
+export const ImpactActionSchema = z.enum([
+  "corroborate",
+  "invalidate",
+  "supersede",
+  "review",
+]);
+
+export const ImpactCandidateItemSchema = z.strictObject({
+  claimId: z.string().min(1),
+  action: ImpactActionSchema,
+  evidenceIds: z.array(z.string().min(1)).min(1),
+  confidence: z.number().min(0).max(1),
+  rationale: z.string().min(1).max(1200),
+  proposedStatement: z.string().min(1).max(2000).nullable(),
+});
+
+export const ImpactCandidateSchema = z.strictObject({
+  items: z.array(ImpactCandidateItemSchema),
+  unchangedClaimIds: z.array(z.string().min(1)),
+  gaps: z.array(z.string().min(1).max(1000)),
+});
+
+export const ImpactDiscoveryInputSchema = z.strictObject({
+  contractVersion: z.literal("impact-discovery-input.v1"),
+  runId: z.string().min(1),
+  createdAt: z.string().datetime(),
+  requestedModel: z.string().min(1),
+  fixture: z.strictObject({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    dataStatus: z.enum(["synthetic", "public_snapshot"]),
+    scope: ProcedureScopeSchema,
+  }),
+  addedSourceManifests: z.array(SourceManifestSchema).min(1),
+  addedEvidence: z.array(EvidenceRecordSchema).min(1),
+  activeClaims: z.array(PromotedClaimSchema).min(1),
+});
+
+export const ImpactDiscoveryResultSchema = z.strictObject({
+  contractVersion: z.literal("impact-discovery-result.v1"),
+  proposalId: z.string().min(1),
+  createdAt: z.string().datetime(),
+  fixtureId: z.string().min(1),
+  scope: ProcedureScopeSchema,
+  status: z.literal("shadow"),
+  mode: z.enum(["live", "deterministic_fallback"]),
+  model: z.string().min(1).nullable(),
+  compositionSurface: z.enum(["codex", "deterministic"]),
+  codexSessionId: z.string().min(1).nullable(),
+  sourceManifestIds: z.array(z.string().min(1)).min(1),
+  evidenceIds: z.array(z.string().min(1)).min(1),
+  items: z.array(ImpactCandidateItemSchema),
+  unchangedClaimIds: z.array(z.string().min(1)),
+  needsHumanReviewClaimIds: z.array(z.string().min(1)),
+  gaps: z.array(z.string().min(1)),
+  validationResults: z.array(ValidationGateResultSchema),
+  requiresHumanReview: z.literal(true),
+  referenceAgreement: z
+    .strictObject({
+      expectedItems: z.number().int().nonnegative(),
+      matchedItems: z.number().int().nonnegative(),
+      precision: z.number().min(0).max(1),
+      recall: z.number().min(0).max(1),
+      exact: z.boolean(),
+    })
+    .nullable(),
+  elapsedMs: z.number().int().nonnegative(),
+  fallbackReason: z.string().min(1).nullable(),
+});
+
 export const CodexRunInputSchema = z.object({
   contractVersion: z.literal("codex-composition.v1"),
   runId: z.string().min(1),
@@ -307,4 +424,11 @@ export type HarnessTrace = z.infer<typeof HarnessTraceSchema>;
 export type CompositionResult = z.infer<typeof CompositionResultSchema>;
 export type EvidenceDeltaEvent = z.infer<typeof EvidenceDeltaEventSchema>;
 export type EvidenceDeltaResult = z.infer<typeof EvidenceDeltaResultSchema>;
+export type DocumentFormat = z.infer<typeof DocumentFormatSchema>;
+export type DocumentIngestionMetadata = z.infer<typeof DocumentIngestionMetadataSchema>;
+export type DocumentIngestionResult = z.infer<typeof DocumentIngestionResultSchema>;
+export type ImpactAction = z.infer<typeof ImpactActionSchema>;
+export type ImpactCandidate = z.infer<typeof ImpactCandidateSchema>;
+export type ImpactDiscoveryInput = z.infer<typeof ImpactDiscoveryInputSchema>;
+export type ImpactDiscoveryResult = z.infer<typeof ImpactDiscoveryResultSchema>;
 export type CodexRunInput = z.infer<typeof CodexRunInputSchema>;

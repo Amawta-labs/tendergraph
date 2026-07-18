@@ -21,8 +21,10 @@ The model composes answers. It does not decide which sources, claims, policies, 
 - Automatic deterministic fallback when the model is unavailable or violates a contract.
 - Separate reader output and a validated six-stage audit trace.
 - A validated, predeclared incremental evidence-delta contract for corroboration, invalidation, and claim supersession.
-- A 23-scenario benchmark and one-property fault-injection tests.
-- A responsive workbench for findings, evidence, review gaps, and gate status.
+- Extensible in-memory ingestion for PDF, DOCX, HTML, JSON, CSV, Markdown, and text, with file hashes, addressable evidence chunks, parser identity, and explicit OCR/unsupported states.
+- GPT-5.6/Codex impact discovery that classifies every active claim against new evidence in shadow mode; six code-owned gates and mandatory human review prevent automatic authority changes.
+- A 23-scenario benchmark, one-property fault-injection tests, and a two-scenario live impact benchmark.
+- A responsive workbench for findings, evidence, review gaps, ingestion, impact proposals, and gate status.
 
 The default case is a frozen public Mercado Público evaluation report. TenderGraph preserves its decision-stage limitation: the source contains a commission recommendation, not proof of a signed final contract. The remaining portability fixtures are synthetic and visibly labelled.
 
@@ -64,12 +66,15 @@ npm test
 npm run eval
 npm run eval:ablation
 npm run eval:codex
+npm run eval:impact
 npm run build
 ```
 
 The evaluation command executes the versioned scenarios in [`evals/scenarios.json`](evals/scenarios.json). The unit suite separately proves that missing claims, wrong routing, incomplete traces, answer omissions, internal leakage, unknown evidence, broken source links, and excess latency are detected.
 
 `npm run eval:codex` performs two representative live Codex runs and writes the session-bearing report to `artifacts/evals/codex-smoke.json`. `npm run eval:live` exercises the optional Responses API adapter and requires separately billed `OPENAI_API_KEY`. `npm run eval:ablation` compares code-owned gates with schema-only admission; it is a credential-free enforcement experiment, not a model-quality or prompt-adherence experiment.
+
+`npm run eval:impact` runs two live GPT-5.6/Codex impact scenarios: independent corroboration and a corrective resolution with two claim supersessions. Both must preserve shadow mode, pass 6/6 code gates, retain a Codex Session ID, and match the versioned reference impact exactly.
 
 ## Harness flow
 
@@ -82,11 +87,17 @@ request + procedure scope
   -> schema, grounding, scope, hygiene and trace gates
   -> accepted reader output OR deterministic fallback
   -> separate six-stage audit trace
+
+new document + active procedure
+  -> format adapter and hashed evidence chunks
+  -> GPT-5.6/Codex claim-by-claim impact proposal
+  -> scope, partition, evidence, action and authority gates
+  -> shadow proposal requiring human review
 ```
 
 Only `eligible` claims may enter an answer plan. Consequential claims additionally require a reviewer and review timestamp. A confidence score never grants runtime authority.
 
-The default public case includes a versioned evidence event declaring that the public selection record affects only the award-recommendation claim; TenderGraph validates that no other claim consumes the added evidence. A separate synthetic correction benchmark validates that a later resolution can supersede the winner and loss explanation while leaving the award rule unchanged. These are predeclared delta contracts, not automatic document ingestion or impact discovery. Open that story directly at `http://localhost:3000/?case=cl-correction-demo`.
+The default public case includes a versioned evidence event declaring that the public selection record affects only the award-recommendation claim. A separate synthetic correction benchmark validates that a later resolution supersedes the winner and loss explanation while leaving the award rule unchanged. The workbench can also ingest a new document and ask GPT-5.6/Codex to discover the affected claim partition automatically. The proposal remains `shadow`: it cannot promote, reject, or rewrite claims without a separate human decision. Open the correction story directly at `http://localhost:3000/?case=cl-correction-demo`.
 
 See [`docs/HARNESS_ENGINEERING_PLAN.md`](docs/HARNESS_ENGINEERING_PLAN.md) for the engineering contract, [`docs/PAPER_ADOPTION_AUDIT.md`](docs/PAPER_ADOPTION_AUDIT.md) for the exact paper mapping and experimental limits, and [`PREPROJECT_TENDERGRAPH.md`](PREPROJECT_TENDERGRAPH.md) for the product baseline.
 The boundary between prior domain exploration and new Build Week work is recorded in [`docs/BUILD_WEEK_PROVENANCE.md`](docs/BUILD_WEEK_PROVENANCE.md).
@@ -108,6 +119,14 @@ Returns `readerOutput` and `trace`. `mode` accepts `auto` or `fallback`.
 ### `POST /api/codex-run`
 
 Accepts `fixtureId` and `question`, invokes the authenticated local Codex CLI with `gpt-5.6-terra`, and applies the same code-owned validation gates. If Codex is unavailable or violates the contract, the endpoint returns a deterministic result with `runtimeWarning`.
+
+### `POST /api/ingest`
+
+Accepts a multipart document plus procedure metadata. It extracts PDF, DOCX, HTML, JSON, CSV, Markdown, or text into hashed evidence anchors. Image-only files are registered as `needs_ocr`; unknown formats are explicit `unsupported` results. Uploaded bytes are processed in memory by the demo route and never become claim authority automatically.
+
+### `POST /api/impact-discovery`
+
+Accepts either a versioned evidence event or an ingested document. It invokes GPT-5.6 Terra through Codex to classify every active claim as impacted or unchanged, then enforces scope, complete claim partition, evidence binding, action semantics, and shadow authority in code. The response always requires human review; a missing Codex runtime produces an explicit validated deterministic fallback.
 
 ### `GET /api/traces/:traceId`
 

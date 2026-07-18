@@ -32,6 +32,7 @@ cp \
 cp \
   "$ROOT_DIR/public/tendergraph-build-week-demo.mp4" \
   "$ROOT_DIR/artifacts/submission/public-workbench.png" \
+  "$ROOT_DIR/artifacts/submission/impact-discovery.png" \
   "$ROOT_DIR/artifacts/submission/correction-diff.png" \
   "$ROOT_DIR/artifacts/submission/verification-evidence.png" \
   "$ROOT_DIR/artifacts/submission/codex-collaboration.png" \
@@ -39,6 +40,7 @@ cp \
   "$PACKAGE_DIR/media/"
 cp \
   "$ROOT_DIR/artifacts/evals/codex-smoke.json" \
+  "$ROOT_DIR/artifacts/evals/impact-smoke.json" \
   "$ROOT_DIR/artifacts/submission/codex-feedback.json" \
   "$ROOT_DIR/artifacts/submission/live-codex-run-anonymized.json" \
   "$ROOT_DIR/logs/submission-freeze-2026-07-16.json" \
@@ -50,6 +52,8 @@ cp \
   "$ROOT_DIR/logs/submission-readiness-audit-2026-07-17.md" \
   "$ROOT_DIR/logs/devpost-copy-claim-audit-2026-07-17.json" \
   "$ROOT_DIR/logs/devpost-copy-claim-audit-2026-07-17.md" \
+  "$ROOT_DIR/logs/ingestion-impact-implementation-2026-07-17.json" \
+  "$ROOT_DIR/logs/ingestion-impact-implementation-2026-07-17.md" \
   "$PACKAGE_DIR/evidence/"
 cp "$ROOT_DIR/artifacts/compliance/dependency-licenses.json" "$PACKAGE_DIR/compliance/"
 

@@ -48,21 +48,30 @@ Upload these 1920x1080 images in this order.
 - Caption: A hash-verified public evaluation with reviewed claims, exact
   evidence anchors, incremental impact, and 15 code-owned validation gates.
 
-### 2. Evidence diff
+### 2. Automatic impact discovery
+
+- File: `artifacts/submission/impact-discovery.png`
+- Title: New evidence, bounded automatic reevaluation
+- Caption: A PDF becomes eight hashed evidence anchors; GPT-5.6/Codex identifies
+  one material claim impact, proves five claims unchanged, passes 6/6 gates,
+  and remains blocked in shadow mode for human review.
+
+### 3. Evidence diff
 
 - File: `artifacts/submission/correction-diff.png`
 - Title: Exact claim supersession after corrective evidence
 - Caption: A visibly synthetic correction benchmark shows which claims were
   replaced, which evidence changed, and which award rule remained unchanged.
 
-### 3. Verification evidence
+### 4. Verification evidence
 
 - File: `artifacts/submission/verification-evidence.png`
 - Title: Verified, not asserted
-- Caption: 32/32 contract tests, 23/23 deterministic scenarios, 2/2 live Codex
-  runs, and an ablation in which the harness rejected all eight injected faults.
+- Caption: 44/44 contract tests, 23/23 deterministic scenarios, 2/2 live
+  composition runs, 2/2 live impact runs, and an ablation in which the harness
+  rejected all eight injected faults.
 
-### 4. Codex collaboration
+### 5. Codex collaboration
 
 - File: `artifacts/submission/codex-collaboration.png`
 - Title: Inspectable Codex collaboration
@@ -114,12 +123,14 @@ explains why the other suppliers were not recommended, and preserves the
 important limitation that an evaluation snapshot is not proof of a signed
 contract.
 
-Its incremental evidence-delta contract records changed evidence and affected
-claim versions, rejects incomplete dependency declarations, computes the
-unchanged complement, and displays the exact before-and-after diff. A visibly
-synthetic correction benchmark demonstrates explicit claim supersession: the
-recommended winner and loss explanation change while the award rule remains
-unchanged.
+Its document pipeline ingests PDF, DOCX, HTML, JSON, CSV, Markdown, and text
+into hashed evidence anchors. GPT-5.6/Codex then compares new evidence with
+every active claim and proposes corroboration, invalidation, supersession,
+review, or an explicit unchanged classification. Six code-owned gates reject
+incomplete partitions, invented evidence, cross-procedure contamination,
+invalid actions, and model authority. A visibly synthetic correction benchmark
+demonstrates automatic supersession discovery: the recommended winner and loss
+explanation change while the award rule remains unchanged.
 
 ### Why this is frontier
 
@@ -138,9 +149,10 @@ commercial, legal, or reputational exposure.
 
 New evidence never triggers an untracked rewrite. It can corroborate,
 invalidate, or supersede a claim, while the unchanged complement remains
-explicit. The claim is not that GPT-5.6 is infallible. It is that frontier
-reasoning can operate inside a testable decision system instead of being
-presented as the system of record.
+explicit. The automatic proposal remains in shadow mode until human review.
+The claim is not that GPT-5.6 is infallible. It is that frontier reasoning can
+operate inside a testable decision system instead of being presented as the
+system of record.
 
 ### How we built it
 
@@ -157,6 +169,12 @@ text, mismatched evidence, missing or duplicated claims, source failures, scope
 contamination, provenance errors, internal leakage, incomplete traces, and
 latency violations. Invalid model output is discarded; deterministic
 composition is the safe fallback.
+
+Format-specific ingestion adapters create file hashes, parser identity,
+document locators, and evidence hashes without granting claim authority.
+GPT-5.6/Codex impact discovery classifies the complete active-claim partition;
+six additional code gates admit only a shadow proposal that requires human
+review.
 
 We also packaged the analysis workflow as a distributable Codex plugin and
 `$tendergraph-analyze` skill. Judges can use the hosted workbench immediately
@@ -205,11 +223,13 @@ not a confirmed signed contract.
 - A working hosted procurement workbench with a hash-verified public case.
 - Exact claim-to-evidence inspection and visible incremental supersession.
 - Fifteen runtime validation gates with deterministic safe fallback.
-- 32 unit and adversarial tests, all passing.
+- 44 unit and adversarial tests, all passing.
 - 23 deterministic evaluation scenarios, all passing.
 - An enforcement ablation that admitted 0 of 8 injected faults while a
   schema-only control admitted all 8.
 - Two live Codex smoke runs, each passing all 15 validation gates.
+- Two live Codex impact runs, each passing all 6 impact gates with exact
+  reference agreement.
 - A public Apache-2.0 repository, reproducible setup, plugin, and hosted demo.
 
 ### What we learned
@@ -230,11 +250,11 @@ exact before-and-after decision diffs.
 
 ### What's next
 
-Next we would add licensed live procurement connectors, automatic document
-ingestion, assisted impact discovery with mandatory review, durable hosted
-trace storage, organization-level access controls, and jurisdiction-specific
-policy packs. These are production extensions; they are not represented as
-implemented in this submission.
+Next we would add licensed live procurement connectors, OCR for scanned
+documents, durable hosted trace and review storage, organization-level access
+controls, and jurisdiction-specific policy packs. Multi-format ingestion and
+assisted impact discovery with mandatory review are implemented in this
+submission; universal live-source coverage is not claimed.
 
 Commercially, the initial wedge is post-opening and post-award intelligence for
 bidder teams, where a public outcome makes value observable. The expansion is
@@ -248,9 +268,11 @@ prompt or exclusive access to one model.
 1. Open https://openaihack.vercel.app.
 2. Inspect the public Chile case, its addressable evidence, and the 15
    validation gates.
-3. Open https://openaihack.vercel.app/?case=cl-correction-demo to inspect the
-   expanded supersession diff.
-4. For the live Codex path, follow the repository README with Node.js 24+,
+3. Upload a supported document in the evidence control plane and inspect its
+   hash, parser, evidence-anchor count, and authority state.
+4. Open https://openaihack.vercel.app/?case=cl-correction-demo to inspect the
+   supersession diff and automatic shadow impact proposal.
+5. For the live Codex path, follow the repository README with Node.js 24+,
    npm 11+, Codex CLI 0.144.0+, and a ChatGPT-authenticated `codex login`
    session. No `OPENAI_API_KEY` is required.
 

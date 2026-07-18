@@ -27,19 +27,22 @@
 | Follow-up filter | The procurement output uses review gaps and evidence inspection rather than generated follow-up questions | Deliberate adaptation |
 | Maintained wiki context | No wiki layer is used; fixtures and promoted claims are small enough to remain the direct authority/context package | Deliberate omission |
 | Incremental source update | Evidence delta events identify affected, invalidated, superseded, replacement, and unchanged claims | TenderGraph extension |
+| Extensible document intake | PDF, DOCX, HTML, JSON, CSV, Markdown, and text adapters produce hashed evidence anchors without granting claim authority | TenderGraph extension |
+| Automatic dependency discovery | GPT-5.6/Codex classifies every active claim against added evidence; code validates the complete partition and keeps the proposal in shadow mode | TenderGraph extension |
 | Raw model-output retention | Rejected/raw candidates are deleted; the retained candidate record contains only hash, character count, and schema-validity status | Implemented |
 
 ## Experimental evidence
 
 | Paper experiment | Current TenderGraph evidence | Claim boundary |
 | --- | --- | --- |
-| Fixed scenarios | 23 deterministic scenarios plus 32 unit/adversarial tests | Contract preservation only; not factual-accuracy proof |
+| Fixed scenarios | 23 deterministic scenarios plus 44 unit/adversarial tests | Contract preservation only; not broad factual-accuracy proof |
 | Fault injection | Eight controlled mutations; harness admits `0/8`, schema-only admits `8/8` | Enforcement sensitivity against schema-only admission |
 | Live composition boundary | Two Codex/GPT-5.6 Terra smoke runs | Proves the Codex boundary works; not model substitution |
+| Live impact boundary | Two Codex/GPT-5.6 Terra runs with 6/6 gates and exact reference agreement | Proves two bounded impact classes; not universal impact recall |
 | RQ2 model substitution | Not replicated | Do not claim multi-model robustness or the paper's 270-run result |
 | RQ3 enforcement-layer ablation | Not replicated | Current ablation is not prompt-only vs external guardrail with a held-fixed live model |
 | Runtime-interface benchmark | Deterministic latency gate and per-run timing | No cache/prewarm comparison or latency distribution claim |
 
 ## Review conclusion
 
-TenderGraph adopts the paper's central engineering mechanism where it matters: source authority, claim admission, deterministic planning, replaceable composition, validation, recovery, and an auditable process trace are application-owned runtime code. The implementation is not a reproduction of the paper's empirical study. Submission material must keep the current deterministic ablation, two-run Codex smoke, and paper RQ2/RQ3 results clearly separate.
+TenderGraph adopts the paper's central engineering mechanism where it matters: source authority, claim admission, deterministic planning, replaceable composition, validation, recovery, and an auditable process trace are application-owned runtime code. The implementation extends that boundary to document ingestion and automatic shadow impact discovery. It is not a reproduction of the paper's empirical study. Submission material must keep the current deterministic ablation, two-run composition smoke, two-run impact smoke, and paper RQ2/RQ3 results clearly separate.

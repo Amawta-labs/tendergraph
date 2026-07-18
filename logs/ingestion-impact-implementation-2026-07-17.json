@@ -1,0 +1,52 @@
+{
+  "contract": "tendergraph-ingestion-impact-implementation.v1",
+  "createdAt": "2026-07-17T20:58:07.202Z",
+  "status": "implemented_and_verified",
+  "claimBoundary": {
+    "implemented": [
+      "extensible multi-format document ingestion",
+      "automatic GPT-5.6/Codex impact discovery",
+      "code-validated shadow proposal",
+      "mandatory human decision before authority changes"
+    ],
+    "notClaimed": [
+      "universal live connector coverage",
+      "OCR for scanned documents",
+      "universal impact recall",
+      "autonomous claim authority"
+    ]
+  },
+  "formats": [
+    "pdf",
+    "docx",
+    "html",
+    "json",
+    "csv",
+    "markdown",
+    "text"
+  ],
+  "verification": {
+    "unitTests": {
+      "passed": 44,
+      "failed": 0
+    },
+    "impactSmoke": {
+      "passed": 2,
+      "failed": 0,
+      "gatesPerRun": 6,
+      "exactReferenceAgreement": true,
+      "sessionIds": [
+        "019f71de-fd65-71b1-bf61-3f509dd1b681",
+        "019f71df-247f-7d33-a30b-f48b5beab9dd"
+      ]
+    },
+    "browserPdfAnchors": 8,
+    "dependencyPackages": 131,
+    "unknownLicenses": 0,
+    "knownVulnerabilities": 0,
+    "video": {
+      "durationSeconds": 177.2,
+      "sha256": "65ad5cc7a51c36b884b6064db070ee36aa57d39d4e0b01afb07c7820932bd080"
+    }
+  }
+}

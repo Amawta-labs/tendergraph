@@ -1,42 +1,40 @@
 {
   "mode": "live",
   "readerOutput": {
-    "title": "StructuredTenderAnswer",
+    "title": "TenderGraph procurement harness",
     "summary": "3 promoted claims answer the request. Every statement below is bound to reviewed evidence by the claim contract.",
-    "status": "official",
-    "decisionStage": "commission_recommendation",
+    "status": "simulated",
+    "decisionStage": "award_decision",
     "sections": [
       {
-        "heading": "Evaluation scores",
-        "body": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
+        "heading": "Award Rule",
+        "body": "The benchmark awards Lot 1 to the admissible offer with the highest corrected total score.",
         "claimIds": [
-          "claim-cl-real-scores"
+          "claim-cl-correction-rule"
         ],
         "evidenceIds": [
-          "ev-cl-real-scores"
+          "ev-cl-correction-criterion"
         ]
       },
       {
-        "heading": "Commission proposal",
-        "body": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
+        "heading": "Corrected Winner",
+        "body": "The corrective benchmark resolution supersedes the original decision and names Andes Clinical Supply as winner of Lot 1 with 94.1 corrected points.",
         "claimIds": [
-          "claim-cl-real-award-recommendation"
+          "claim-cl-correction-winner"
         ],
         "evidenceIds": [
-          "ev-cl-real-recommendation",
-          "ev-cl-real-public-selection"
+          "ev-cl-correction-new-winner"
         ]
       },
       {
-        "heading": "Reason for recommendation",
-        "body": "The other seven suppliers were not recommended because their final evaluated percentages were lower than Comercial Hagelin's 98.33% under the published 90% price and 10% delivery-time weighting.",
+        "heading": "Corrected Comparison",
+        "body": "DemoMed Ltd. is not awarded in the corrected benchmark because its 91.8 corrected points are below Andes Clinical Supply's 94.1 points after the warranty-score formula was fixed.",
         "claimIds": [
-          "claim-cl-real-loss-reason"
+          "claim-cl-correction-loss"
         ],
         "evidenceIds": [
-          "ev-cl-real-criteria",
-          "ev-cl-real-scores",
-          "ev-cl-real-recommendation"
+          "ev-cl-correction-new-winner",
+          "ev-cl-correction-new-loss"
         ]
       }
     ],
@@ -44,34 +42,32 @@
     "recommendation": "Use the cited evidence and unresolved review items before taking a consequential procurement decision."
   },
   "trace": {
-    "traceId": "fdefdc91-dc8c-49c6-90a1-d19aaef047f3",
-    "requestId": "48f15784-d7bb-4f62-af9f-a5b3dc130297",
-    "createdAt": "2026-07-16T06:13:57.409Z",
+    "traceId": "45854601-2a0e-46cf-815e-d487a12242c5",
+    "requestId": "8c75a21d-d5dd-458c-9f5c-e4d328998098",
+    "createdAt": "2026-07-17T20:56:13.533Z",
     "resolvedScope": {
       "jurisdiction": "CL",
-      "procedureId": "5802381-7547UCUK",
-      "lotId": null
+      "procedureId": "CL-CORRECTION-001",
+      "lotId": "LOT-1"
     },
     "sourceManifestIds": [
-      "manifest-cl-real-evaluation",
-      "manifest-cl-real-detail"
+      "manifest-cl-correction-original",
+      "manifest-cl-correction-resolution"
     ],
     "evidenceIds": [
-      "ev-cl-real-scores",
-      "ev-cl-real-recommendation",
-      "ev-cl-real-public-selection",
-      "ev-cl-real-criteria",
-      "ev-cl-real-scores",
-      "ev-cl-real-recommendation"
+      "ev-cl-correction-criterion",
+      "ev-cl-correction-new-winner",
+      "ev-cl-correction-new-winner",
+      "ev-cl-correction-new-loss"
     ],
     "selectedClaimIds": [
-      "claim-cl-real-scores",
-      "claim-cl-real-award-recommendation",
-      "claim-cl-real-loss-reason"
+      "claim-cl-correction-rule",
+      "claim-cl-correction-winner",
+      "claim-cl-correction-loss"
     ],
     "model": "gpt-5.6-terra",
     "compositionSurface": "codex",
-    "codexSessionId": "019f698f-55a0-7801-8461-dbb0fa9c2c13",
+    "codexSessionId": "019f71dd-6e83-7841-ac2c-b834726c5329",
     "compositionMode": "live",
     "validationResults": [
       {
@@ -88,9 +84,9 @@
         "code": null,
         "details": {
           "outputClaimIds": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ]
         }
       },
@@ -100,14 +96,14 @@
         "code": null,
         "details": {
           "expected": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ],
           "actual": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ]
         }
       },
@@ -129,12 +125,10 @@
         "code": null,
         "details": {
           "outputEvidenceIds": [
-            "ev-cl-real-scores",
-            "ev-cl-real-recommendation",
-            "ev-cl-real-public-selection",
-            "ev-cl-real-criteria",
-            "ev-cl-real-scores",
-            "ev-cl-real-recommendation"
+            "ev-cl-correction-criterion",
+            "ev-cl-correction-new-winner",
+            "ev-cl-correction-new-winner",
+            "ev-cl-correction-new-loss"
           ]
         }
       },
@@ -161,14 +155,14 @@
         "code": null,
         "details": {
           "expected": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ],
           "actual": [
-            "claim-cl-real-scores",
-            "claim-cl-real-award-recommendation",
-            "claim-cl-real-loss-reason"
+            "claim-cl-correction-rule",
+            "claim-cl-correction-winner",
+            "claim-cl-correction-loss"
           ]
         }
       },
@@ -177,10 +171,10 @@
         "passed": true,
         "code": null,
         "details": {
-          "expected": "official",
-          "actual": "official",
-          "expectedDecisionStage": "commission_recommendation",
-          "actualDecisionStage": "commission_recommendation"
+          "expected": "simulated",
+          "actual": "simulated",
+          "expectedDecisionStage": "award_decision",
+          "actualDecisionStage": "award_decision"
         }
       },
       {
@@ -209,7 +203,7 @@
         "passed": true,
         "code": null,
         "details": {
-          "elapsedMs": 8519,
+          "elapsedMs": 8702,
           "limitMs": 140000
         }
       },
@@ -242,8 +236,8 @@
     ],
     "fallbackReason": null,
     "timings": {
-      "compositionMs": 8519,
-      "totalMs": 8519
+      "compositionMs": 8702,
+      "totalMs": 8702
     },
     "stages": [
       {
@@ -251,22 +245,23 @@
         "status": "completed",
         "sourceState": null,
         "artifactIds": [
-          "procedure:5802381-7547UCUK"
+          "procedure:CL-CORRECTION-001",
+          "lot:LOT-1"
         ],
         "details": {
           "jurisdiction": "CL",
-          "procedureId": "5802381-7547UCUK",
-          "lotId": null,
+          "procedureId": "CL-CORRECTION-001",
+          "lotId": "LOT-1",
           "routeMethod": "explicit_fixture_scope"
         }
       },
       {
         "stage": "source_collection",
         "status": "completed",
-        "sourceState": "local",
+        "sourceState": "fixture",
         "artifactIds": [
-          "manifest-cl-real-evaluation",
-          "manifest-cl-real-detail"
+          "manifest-cl-correction-original",
+          "manifest-cl-correction-resolution"
         ],
         "details": {
           "eligibleSources": 2,
@@ -278,9 +273,9 @@
         "status": "completed",
         "sourceState": null,
         "artifactIds": [
-          "claim-cl-real-scores",
-          "claim-cl-real-award-recommendation",
-          "claim-cl-real-loss-reason"
+          "claim-cl-correction-rule",
+          "claim-cl-correction-winner",
+          "claim-cl-correction-loss"
         ],
         "details": {
           "selectedClaims": 3,
@@ -292,7 +287,7 @@
         "status": "completed",
         "sourceState": null,
         "artifactIds": [
-          "48f15784-d7bb-4f62-af9f-a5b3dc130297",
+          "8c75a21d-d5dd-458c-9f5c-e4d328998098",
           "structured_tender_answer.v1"
         ],
         "details": {

@@ -11,7 +11,8 @@ before its confirmation exists.
 - Immutable deployment: https://openaihack-iv46gogcf-amawta.vercel.app
 - Anonymized presentation: https://openaihack.vercel.app/?submission=public
 - Video: https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
-- Video SHA-256: `a80fdee4d8e3852057ae7a2365b42c2df605089f7a54e9a16d898f507a407feb`
+- Local video candidate SHA-256: `65ad5cc7a51c36b884b6064db070ee36aa57d39d4e0b01afb07c7820932bd080`
+- Hosted video hash: pending redeployment and unauthenticated verification
 - Video remediation evidence: `logs/video-official-rules-remediation-2026-07-16.md`
 - Submission readiness audit: `logs/submission-readiness-audit-2026-07-17.md`
 - Primary project thread Session ID: `019f615b-8a9a-7be1-bc50-65059c70d511`
@@ -48,7 +49,7 @@ video is public and playable while signed out, then replace
    `docs/COMMERCIAL_FRONTIER_NARRATIVE.md` when checking the market,
    differentiation, commercial wedge, and source links.
 3. Add the Vercel and YouTube URLs plus the confirmed `/feedback` Session ID; the public GitHub URL is already recorded.
-4. Upload the four gallery images in the order and with the captions listed in
+4. Upload the gallery images in the order and with the captions listed in
    `docs/DEVPOST_FORM_COPY.md`.
 5. Confirm entrant eligibility, team members, and the authorized representative.
 6. Submit before July 21, 2026 at 5:00 PM Pacific Time and preserve the confirmation.
