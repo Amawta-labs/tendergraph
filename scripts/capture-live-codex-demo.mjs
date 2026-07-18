@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
-import { mkdir, writeFile } from "node:fs/promises";
-import net from "node:net";
+import { createHash } from "node:crypto";
+import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+
+import { chromium } from "playwright";
 
 function parseArgs(argv) {
   const value = (flag, fallback) => {
@@ -10,256 +12,250 @@ function parseArgs(argv) {
     return index >= 0 ? argv[index + 1] : fallback;
   };
   return {
-    host: value("--host", "127.0.0.1"),
-    port: Number(value("--port", "2828")),
-    url: value("--url", "http://localhost:3000"),
-    outputDir: path.resolve(value("--output-dir", "/tmp/tendergraph-live-capture")),
-    intervalMs: Number(value("--interval-ms", "250")),
-    timeoutMs: Number(value("--timeout-ms", "140000")),
-    settleMs: Number(value("--settle-ms", "1500")),
+    url: value("--url", "http://127.0.0.1:3000"),
+    outputDir: path.resolve(
+      value("--output-dir", "/tmp/tendergraph-chat-first-capture"),
+    ),
+    pdfPath: path.resolve(
+      value(
+        "--pdf",
+        "fixtures/public-snapshots/cl-5802381-7547UCUK/evaluation-report.pdf",
+      ),
+    ),
+    timeoutMs: Number(value("--timeout-ms", "180000")),
   };
 }
 
-class MarionetteClient {
-  constructor(host, port) {
-    this.host = host;
-    this.port = port;
-    this.buffer = Buffer.alloc(0);
-    this.nextId = 1;
-    this.pending = new Map();
-    this.hello = null;
-  }
+const sleep = (milliseconds) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds));
 
-  async connect() {
-    this.socket = net.createConnection({ host: this.host, port: this.port });
-    this.socket.on("data", (chunk) => this.onData(chunk));
-    this.socket.on("error", (error) => this.rejectAll(error));
-    await new Promise((resolve, reject) => {
-      this.socket.once("connect", resolve);
-      this.socket.once("error", reject);
-    });
-    await new Promise((resolve, reject) => {
-      const timeout = setTimeout(
-        () => reject(new Error("Marionette handshake timed out")),
-        5000,
-      );
-      this.onHello = (hello) => {
-        clearTimeout(timeout);
-        this.hello = hello;
-        resolve();
-      };
-    });
-  }
-
-  onData(chunk) {
-    this.buffer = Buffer.concat([this.buffer, chunk]);
-    while (true) {
-      const separator = this.buffer.indexOf(58);
-      if (separator < 0) return;
-      const length = Number(this.buffer.subarray(0, separator).toString("ascii"));
-      if (!Number.isInteger(length)) {
-        this.rejectAll(new Error("Invalid Marionette frame length"));
-        return;
-      }
-      const frameEnd = separator + 1 + length;
-      if (this.buffer.length < frameEnd) return;
-      const message = JSON.parse(
-        this.buffer.subarray(separator + 1, frameEnd).toString("utf8"),
-      );
-      this.buffer = this.buffer.subarray(frameEnd);
-      this.onMessage(message);
-    }
-  }
-
-  onMessage(message) {
-    if (!Array.isArray(message)) {
-      this.onHello?.(message);
-      this.onHello = null;
-      return;
-    }
-    if (message[0] !== 1) return;
-    const [, id, error, result] = message;
-    const pending = this.pending.get(id);
-    if (!pending) return;
-    this.pending.delete(id);
-    if (error) {
-      pending.reject(new Error(`${error.error ?? "Marionette error"}: ${error.message ?? ""}`));
-    } else {
-      pending.resolve(result);
-    }
-  }
-
-  rejectAll(error) {
-    for (const pending of this.pending.values()) pending.reject(error);
-    this.pending.clear();
-  }
-
-  command(name, parameters = {}) {
-    const id = this.nextId++;
-    const message = JSON.stringify([0, id, name, parameters]);
-    this.socket.write(`${Buffer.byteLength(message)}:${message}`);
-    return new Promise((resolve, reject) => {
-      this.pending.set(id, { resolve, reject });
-    });
-  }
-
-  close() {
-    this.socket?.end();
-  }
+async function sha256(filename) {
+  return createHash("sha256")
+    .update(await readFile(filename))
+    .digest("hex");
 }
 
-function resultValue(result) {
-  return result && typeof result === "object" && "value" in result
-    ? result.value
-    : result;
-}
-
-async function execute(client, script) {
-  return resultValue(
-    await client.command("WebDriver:ExecuteScript", {
-      script,
-      args: [],
-    }),
-  );
-}
-
-async function capture(client, outputDir, frameIndex) {
-  const result = await client.command("WebDriver:TakeScreenshot", {
-    full: false,
-    highlights: [],
-  });
-  const base64 = resultValue(result);
-  if (typeof base64 !== "string") throw new Error("Screenshot returned no image");
-  const filename = `frame-${String(frameIndex).padStart(5, "0")}.png`;
-  await writeFile(path.join(outputDir, filename), Buffer.from(base64, "base64"));
+async function screenshot(page, outputDir, name) {
+  const filename = path.join(outputDir, `${name}.png`);
+  await page.screenshot({ path: filename, fullPage: false });
   return filename;
 }
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
+  await rm(options.outputDir, { recursive: true, force: true });
   await mkdir(options.outputDir, { recursive: true });
-  const client = new MarionetteClient(options.host, options.port);
-  await client.connect();
-  let frameIndex = 0;
+
+  const browser = await chromium.launch({ headless: true });
+  const context = await browser.newContext({
+    viewport: { width: 1920, height: 1080 },
+    recordVideo: {
+      dir: options.outputDir,
+      size: { width: 1920, height: 1080 },
+    },
+  });
+  const page = await context.newPage();
+  page.setDefaultTimeout(options.timeoutMs);
+  const video = page.video();
   const startedAt = Date.now();
+  const markers = {};
+
+  const mark = (name) => {
+    markers[name] = Date.now() - startedAt;
+  };
+
   try {
-    await client.command("WebDriver:NewSession", {
-      capabilities: { alwaysMatch: { acceptInsecureCerts: true } },
+    await page.goto(`${options.url}/?submission=public`, {
+      waitUntil: "networkidle",
     });
-    await client.command("WebDriver:SetWindowRect", {
-      x: 0,
-      y: 0,
-      width: 1920,
-      height: 1080,
-    });
-    await client.command("WebDriver:Navigate", { url: options.url });
-    await execute(
-      client,
-      "return new Promise(resolve => { if (document.readyState === 'complete') return resolve(true); addEventListener('load', () => resolve(true), { once: true }); });",
+    await page.locator(".send-button").waitFor();
+    await sleep(1200);
+    mark("publicReady");
+    await screenshot(page, options.outputDir, "public-chat-first");
+
+    await page.locator(".claim-row").nth(1).click();
+    await sleep(900);
+    mark("evidenceOpened");
+    await screenshot(page, options.outputDir, "public-evidence");
+
+    await page
+      .locator("select[aria-label='Analysis runtime']")
+      .selectOption("codex");
+    mark("codexRunStarted");
+    const codexResponsePromise = page.waitForResponse(
+      (response) =>
+        response.url().includes("/api/codex-run") &&
+        response.request().method() === "POST",
     );
-    const hydrationDeadline = Date.now() + 20000;
-    let hydrated = false;
-    while (Date.now() < hydrationDeadline && !hydrated) {
-      hydrated = await execute(client, `
-        const button = document.querySelector('.run-button');
-        return Boolean(
-          button && Object.keys(button).some(key => key.startsWith('__reactProps'))
-        );
-      `);
-      if (!hydrated) await new Promise((resolve) => setTimeout(resolve, 250));
+    await page.locator(".send-button").click();
+    await page.waitForFunction(
+      () =>
+        document.querySelector(".send-button")?.hasAttribute("disabled") ??
+        false,
+    );
+    const codexResponse = await codexResponsePromise;
+    await codexResponse.finished();
+    const codexResult = await codexResponse.json();
+    await page.waitForFunction(
+      () =>
+        !document.querySelector(".send-button")?.hasAttribute("disabled") &&
+        [...document.querySelectorAll(".message-byline")].some((node) =>
+          node.textContent?.includes("GPT-5.6 via Codex"),
+        ),
+    );
+    mark("codexRunCompleted");
+    await sleep(900);
+    await page.getByRole("tab", { name: "Trace" }).click();
+    await page.locator(".trace-session code").waitFor();
+    await sleep(900);
+    mark("traceOpened");
+    await screenshot(page, options.outputDir, "codex-trace");
+
+    await page.locator(".attach-button input").setInputFiles(options.pdfPath);
+    await sleep(700);
+    mark("documentAttached");
+    await page.getByRole("button", { name: "Extract evidence" }).click();
+    await page.getByRole("button", { name: "Analyze impact" }).waitFor();
+    await page.getByRole("tab", { name: "Evidence" }).click();
+    await page.locator(".file-event").waitFor();
+    await sleep(900);
+    mark("documentExtracted");
+    await screenshot(page, options.outputDir, "document-ingestion");
+
+    mark("publicImpactStarted");
+    const [publicImpactResponse] = await Promise.all([
+      page.waitForResponse(
+        (response) =>
+          response.url().includes("/api/impact-discovery") &&
+          response.request().method() === "POST",
+      ),
+      page.getByRole("button", { name: "Analyze verified update" }).click(),
+    ]);
+    await publicImpactResponse.finished();
+    const publicImpact = await publicImpactResponse.json();
+    await page.locator(".impact-message").waitFor();
+    await page.getByRole("tab", { name: "Changes" }).click();
+    await sleep(900);
+    mark("publicImpactCompleted");
+    await screenshot(page, options.outputDir, "public-impact");
+
+    await page.goto(
+      `${options.url}/?case=cl-correction-demo&submission=public`,
+      { waitUntil: "networkidle" },
+    );
+    await page.locator(".send-button").waitFor();
+    await sleep(1000);
+    mark("correctionReady");
+    await page.getByRole("tab", { name: "Changes" }).click();
+    await sleep(700);
+    await screenshot(page, options.outputDir, "correction-diff");
+
+    mark("correctionImpactStarted");
+    const [correctionImpactResponse] = await Promise.all([
+      page.waitForResponse(
+        (response) =>
+          response.url().includes("/api/impact-discovery") &&
+          response.request().method() === "POST",
+      ),
+      page.getByRole("button", { name: "Analyze verified update" }).click(),
+    ]);
+    await correctionImpactResponse.finished();
+    const correctionImpact = await correctionImpactResponse.json();
+    await page.locator(".impact-message").waitFor();
+    await page.getByRole("tab", { name: "Changes" }).click();
+    await sleep(1100);
+    mark("correctionImpactCompleted");
+    await screenshot(page, options.outputDir, "correction-impact");
+
+    if (codexResult.trace?.compositionSurface !== "codex") {
+      throw new Error("Composition did not complete through Codex");
     }
-    if (!hydrated) throw new Error("Workbench did not hydrate before capture");
-    await new Promise((resolve) => setTimeout(resolve, options.settleMs));
-    await capture(client, options.outputDir, frameIndex++);
-    let sawRunningState = false;
-    for (let attempt = 0; attempt < 3 && !sawRunningState; attempt += 1) {
-      const clicked = await execute(client, `
-        const button = document.querySelector('.run-button');
-        if (!button) return false;
-        button.click();
-        return true;
-      `);
-      if (!clicked) throw new Error("Run audit button was not found");
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      sawRunningState = await execute(
-        client,
-        "return Boolean(document.querySelector('.run-button')?.disabled);",
+    if (!codexResult.trace?.codexSessionId) {
+      throw new Error("Composition response has no Codex Session ID");
+    }
+    if (publicImpact.compositionSurface !== "codex") {
+      throw new Error("Public impact discovery did not complete through Codex");
+    }
+    if (publicImpact.items?.length !== 1) {
+      throw new Error(
+        `Expected one public corroboration, received ${publicImpact.items?.length ?? 0}`,
       );
     }
-    if (!sawRunningState) {
-      throw new Error("Run audit button did not enter the running state");
+    if (correctionImpact.compositionSurface !== "codex") {
+      throw new Error(
+        "Correction impact discovery did not complete through Codex",
+      );
+    }
+    if (correctionImpact.items?.length !== 2) {
+      throw new Error(
+        `Expected two correction proposals, received ${correctionImpact.items?.length ?? 0}`,
+      );
     }
 
-    let completed = false;
-    let finishedState = null;
-    while (Date.now() - startedAt < options.timeoutMs) {
-      await new Promise((resolve) => setTimeout(resolve, options.intervalMs));
-      const state = await execute(client, `
-        const button = document.querySelector('.run-button');
-        const session = [...document.querySelectorAll('.trace-meta span')]
-          .find(node => node.textContent.includes('Codex session'))?.textContent ?? '';
-        return {
-          disabled: Boolean(button?.disabled),
-          label: button?.textContent?.trim() ?? '',
-          session,
-          warning: document.querySelector('[role="status"]')?.textContent?.trim() ?? '',
-          error: document.querySelector('.error-banner')?.textContent?.trim() ?? ''
-        };
-      `);
-      sawRunningState ||= state.disabled;
-      await capture(client, options.outputDir, frameIndex++);
-      if (!state.disabled && sawRunningState) {
-        completed = true;
-        if (state.error) throw new Error(`Workbench error: ${state.error}`);
-        if (state.warning) throw new Error(`Codex fell back: ${state.warning}`);
-        if (!state.session) throw new Error("Completed run has no Codex session ID");
-        finishedState = state;
-        break;
-      }
-    }
-    if (!completed) throw new Error("Live Codex run did not complete before timeout");
+    mark("captureCompleted");
+    await page.close();
+    await context.close();
+    const recordedPath = await video.path();
+    const finalVideo = path.join(options.outputDir, "chat-first-system.webm");
+    await copyFile(recordedPath, finalVideo);
 
-    await execute(
-      client,
-      "document.getElementById('trace')?.scrollIntoView({ block: 'center' }); return true;",
-    );
-    for (let index = 0; index < 12; index += 1) {
-      await new Promise((resolve) => setTimeout(resolve, options.intervalMs));
-      await capture(client, options.outputDir, frameIndex++);
-    }
+    const manifest = {
+      contract: "tendergraph-chat-first-capture.v2",
+      capturedAt: new Date().toISOString(),
+      url: `${options.url}/?submission=public`,
+      presentation: "public_anonymized",
+      viewport: { width: 1920, height: 1080 },
+      markers,
+      composition: {
+        model: codexResult.trace.model,
+        codexSessionId: codexResult.trace.codexSessionId,
+        traceId: codexResult.trace.traceId,
+        gatesPassed: codexResult.trace.validationResults.filter(
+          (gate) => gate.passed,
+        ).length,
+        gatesTotal: codexResult.trace.validationResults.length,
+      },
+      publicImpact: {
+        codexSessionId: publicImpact.codexSessionId,
+        gatesPassed: publicImpact.validationResults.filter(
+          (gate) => gate.passed,
+        ).length,
+        gatesTotal: publicImpact.validationResults.length,
+        proposals: publicImpact.items.length,
+      },
+      correctionImpact: {
+        codexSessionId: correctionImpact.codexSessionId,
+        gatesPassed: correctionImpact.validationResults.filter(
+          (gate) => gate.passed,
+        ).length,
+        gatesTotal: correctionImpact.validationResults.length,
+        proposals: correctionImpact.items.length,
+        exactReferenceAgreement:
+          correctionImpact.referenceAgreement?.exact ?? false,
+      },
+      video: {
+        path: path.basename(finalVideo),
+        sha256: await sha256(finalVideo),
+      },
+    };
     await writeFile(
       path.join(options.outputDir, "capture.json"),
-      JSON.stringify(
-        {
-          contract: "tendergraph-live-browser-capture.v1",
-          url: options.url,
-          frames: frameIndex,
-          intervalMs: options.intervalMs,
-          sawRunningState,
-          completed,
-          codexSession: finishedState?.session ?? null,
-          elapsedMs: Date.now() - startedAt,
-        },
-        null,
-        2,
-      ),
+      `${JSON.stringify(manifest, null, 2)}\n`,
     );
     console.log(
       JSON.stringify({
-        event: "tendergraph.capture.completed",
+        event: "tendergraph.chat_first_capture.completed",
         outputDir: options.outputDir,
-        frames: frameIndex,
-        sawRunningState,
-        elapsedMs: Date.now() - startedAt,
+        durationMs: markers.captureCompleted,
+        compositionSessionId: manifest.composition.codexSessionId,
+        publicImpactSessionId: manifest.publicImpact.codexSessionId,
+        correctionImpactSessionId: manifest.correctionImpact.codexSessionId,
       }),
     );
   } finally {
-    try {
-      await client.command("WebDriver:DeleteSession");
-    } catch {
-      // The browser may already be closing.
-    }
-    client.close();
+    if (!page.isClosed()) await page.close().catch(() => {});
+    await context.close().catch(() => {});
+    await browser.close();
   }
 }
 

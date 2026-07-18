@@ -49,7 +49,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 ## Video
 
-- [x] Rerender the 2:57 demo with the implemented ingestion and impact-discovery scene at `public/tendergraph-build-week-demo.mp4`.
+- [x] Render the 2:41 chat-first demo with live composition, ingestion, impact discovery, and correction flows at `public/tendergraph-build-week-chat-first-demo.mp4`.
 - [x] Keep the video under three minutes.
 - [x] Show what was built and how Codex and GPT-5.6 were used.
 - [x] Anonymize real buyer and supplier display names while preserving scores, scope, evidence anchors, and hashes.

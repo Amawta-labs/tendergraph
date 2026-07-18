@@ -11,9 +11,10 @@ before its confirmation exists.
 - Production: https://openaihack.vercel.app
 - Immutable deployment: https://openaihack-cnzwcbkdy-amawta.vercel.app
 - Anonymized presentation: https://openaihack.vercel.app/?submission=public
-- Video: https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
-- Local and hosted video SHA-256:
-  `65ad5cc7a51c36b884b6064db070ee36aa57d39d4e0b01afb07c7820932bd080`
+- Video: https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
+- Local video SHA-256:
+  `89b9b3430f88c210fbf6ce9b16cbe8652ea6dc23bddab4f83d3945ec013dd0eb`
+- Hosted hash verification: pending the deployment of this freeze candidate.
 - Production runtime verification:
   `logs/production-runtime-verification-2026-07-17.md`
 - Final requirement-by-requirement audit:
@@ -34,7 +35,7 @@ before its confirmation exists.
 
 ## YouTube publication
 
-Upload `public/tendergraph-build-week-demo.mp4` using the title, description,
+Upload `public/tendergraph-build-week-chat-first-demo.mp4` using the title, description,
 chapters, thumbnail, and settings in `docs/YOUTUBE_UPLOAD.md`. Verify that the
 video is public and playable while signed out, then replace
 `TODO_PUBLIC_YOUTUBE_URL` in `docs/DEVPOST_SUBMISSION.md`.

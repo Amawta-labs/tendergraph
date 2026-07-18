@@ -1037,6 +1037,12 @@ export function Workbench({
               <div><span>Model</span><strong>{result.trace.model ?? "None"}</strong></div>
               <div><span>Total</span><strong>{result.trace.timings.totalMs} ms</strong></div>
             </div>
+            {result.trace.codexSessionId && (
+              <div className="trace-session">
+                <span>Codex Session ID</span>
+                <code>{result.trace.codexSessionId}</code>
+              </div>
+            )}
             <div className="trace-section">
               <h3>Validation gates</h3>
               {result.trace.validationResults.map((gate) => (

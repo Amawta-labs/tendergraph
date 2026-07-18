@@ -1334,6 +1334,27 @@ code {
   white-space: nowrap;
 }
 
+.trace-session {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--soft-line);
+  display: grid;
+  gap: 6px;
+}
+
+.trace-session span {
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+.trace-session code {
+  overflow-wrap: anywhere;
+  color: var(--green);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
 .trace-section {
   padding: 15px 0;
   border-bottom: 1px solid var(--soft-line);

@@ -2,45 +2,55 @@
 
 ## Primary video
 
-- File: `../../public/tendergraph-build-week-demo.mp4`
-- Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-demo.mp4`
-- Hosted hash verified against the local file on 2026-07-17
-- Duration: 177.200 seconds
-- Video: H.264, 1920x1080
+- File: `../../public/tendergraph-build-week-chat-first-demo.mp4`
+- Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4`
+- Duration: 161.600 seconds
+- Video: H.264, 1920x1080, 30 fps
 - Audio: AAC, mono, 48 kHz
-- Integrated loudness: -17.7 LUFS
-- True peak: -1.7 dBFS
-- SHA-256: `65ad5cc7a51c36b884b6064db070ee36aa57d39d4e0b01afb07c7820932bd080`
+- Integrated loudness: -17.6 LUFS
+- True peak: -1.5 dBFS
+- SHA-256: `89b9b3430f88c210fbf6ce9b16cbe8652ea6dc23bddab4f83d3945ec013dd0eb`
 
-The video contains eight narrated chapters: product/problem, public evidence
-chain, Codex runtime and validation gates, document ingestion and automatic
-impact discovery, correction benchmark, supersession diff, verification
-metrics, and Codex collaboration evidence. The runtime
-chapter contains a real authenticated localhost click, running state, completed
-answer, 15/15 gates, and full Codex Session ID. The public presentation replaces
-buyer and supplier display names with stable aliases while preserving scope,
-scores, evidence anchors, and hashes. It contains no music or third-party brand
-footage.
+The eight narrated chapters cover the problem, evidence-bound answers, a live
+Codex/GPT-5.6 composition, document ingestion, automatic impact discovery, a
+corrective-resolution benchmark, verified enforcement, and the judging
+criteria. The capture contains three fresh authenticated Codex runs:
 
-The verified live browser segment is retained as
-`live-codex-run-anonymized.mp4` with SHA-256
-`c3f9b316ec89aeaa20316e2aac69488c6897f56dfb5d275e893474585bea86a8`.
+- Composition: `019f739d-808a-78d1-aceb-344baf1e16f7`
+- Public impact: `019f739d-b33a-7382-a906-f0750884a549`
+- Correction impact: `019f739d-dda3-7133-bfa7-9be5805e97f9`
 
-## Still images
+The public presentation replaces buyer and supplier display names with stable
+aliases while preserving scope, scores, evidence anchors, hashes, and
+decision-stage boundaries. The correction benchmark is visibly synthetic. The
+video contains no music or third-party brand footage.
 
-- `public-workbench.png`: public Chile evaluation workbench.
-- `impact-discovery.png`: anonymized multi-format ingestion and shadow impact proposal.
-- `correction-diff.png`: visibly synthetic correction benchmark.
-- `verification-evidence.png`: test, evaluation, and Codex session evidence.
-- `codex-collaboration.png`: dated commits and retained Codex Session IDs.
+## Chat-first still images
+
+- `chat-first-workbench.png`: complete public workbench.
+- `chat-first-evidence.png`: addressable evidence inspector.
+- `chat-first-codex-trace.png`: model, live mode, Session ID, and 15 gates.
+- `chat-first-ingestion.png`: official PDF with eight extracted anchors.
+- `chat-first-public-impact.png`: one shadow corroboration proposal.
+- `chat-first-correction-impact.png`: two shadow supersession proposals.
+- `chat-first-verification.png`: current tests, gates, and fresh Session IDs.
+- `chat-first-closing.png`: judging criteria and dated Build Week history.
+- `chat-first-capture.json`: machine-readable capture contract and markers.
 
 ## Reproduction
 
-First run `scripts/capture-live-codex-demo.mjs` against an authenticated localhost
-workbench with Firefox Marionette enabled. Then run
-`scripts/render-submission-video.sh` with `LIVE_CAPTURE_DIR`, `DEMO_URL`,
-`PIPER_BIN`, and `VOICE_MODEL` pointing to the verified capture, localhost demo,
-Piper 1.2 binary, and English voice. The renderer rejects a capture that did not
-observe both running and completed states, creates all scenes, masters the audio,
-encodes H.264/AAC, and rejects videos without audio or with a duration of 180
-seconds or longer.
+Start the authenticated local workbench, then run:
+
+```bash
+DEMO_URL=http://127.0.0.1:3001/?submission=public \
+  node scripts/capture-live-codex-demo.mjs
+
+CAPTURE_DIR=/tmp/tendergraph-chat-first-capture \
+PIPER_PYTHON=/path/to/piper-python \
+VOICE_MODEL=/path/to/en_US-lessac-medium.onnx \
+  scripts/render-submission-video.sh
+```
+
+The capturer rejects missing live Codex composition, Session IDs, validation
+gates, or expected impact proposals. The renderer rejects a non-anonymized
+capture, missing audio, and a runtime of 180 seconds or longer.

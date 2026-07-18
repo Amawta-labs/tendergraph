@@ -4,70 +4,66 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUTPUT_DIR="${OUTPUT_DIR:-$ROOT_DIR/artifacts/submission}"
-WORK_DIR="${WORK_DIR:-/tmp/tendergraph-submission-video}"
-PIPER_BIN="${PIPER_BIN:-/tmp/tendergraph-video-tools/piper/piper}"
+WORK_DIR="${WORK_DIR:-/tmp/tendergraph-chat-first-render}"
+CAPTURE_DIR="${CAPTURE_DIR:-/tmp/tendergraph-chat-first-capture}"
+CAPTURE_MANIFEST="${CAPTURE_MANIFEST:-$CAPTURE_DIR/capture.json}"
+CAPTURE_VIDEO="${CAPTURE_VIDEO:-$CAPTURE_DIR/chat-first-system.webm}"
+PIPER_PYTHON="${PIPER_PYTHON:-/tmp/tendergraph-piper-venv/bin/python}"
 VOICE_MODEL="${VOICE_MODEL:-/tmp/tendergraph-video-tools/en_US-lessac-medium.onnx}"
-DEMO_URL="${DEMO_URL:-https://openaihack.vercel.app}"
-LIVE_CAPTURE_DIR="${LIVE_CAPTURE_DIR:-}"
-LIVE_CODEX_VIDEO="${LIVE_CODEX_VIDEO:-$OUTPUT_DIR/live-codex-run-anonymized.mp4}"
-LIVE_CODEX_MANIFEST="${LIVE_CODEX_MANIFEST:-$OUTPUT_DIR/live-codex-run-anonymized.json}"
-IMPACT_SCREENSHOT="${IMPACT_SCREENSHOT:-$OUTPUT_DIR/impact-discovery.png}"
+FINAL_VIDEO="${VIDEO_OUTPUT:-$ROOT_DIR/public/tendergraph-build-week-chat-first-demo.mp4}"
 
-if [[ ! -x "$PIPER_BIN" || ! -f "$VOICE_MODEL" ]]; then
-  echo "Piper and its voice model are required. Set PIPER_BIN and VOICE_MODEL." >&2
-  exit 1
-fi
-
-for command in firefox ffmpeg ffprobe magick node; do
+for command in ffmpeg ffprobe magick node; do
   command -v "$command" >/dev/null || {
     echo "Missing required command: $command" >&2
     exit 1
   }
 done
 
-mkdir -p "$OUTPUT_DIR"
-
-if [[ ! -f "$LIVE_CODEX_VIDEO" ]]; then
-  if [[ -z "$LIVE_CAPTURE_DIR" || ! -f "$LIVE_CAPTURE_DIR/capture.json" ]]; then
-    echo "A verified live browser capture is required. Set LIVE_CAPTURE_DIR or LIVE_CODEX_VIDEO." >&2
-    exit 1
-  fi
-  capture_complete="$(node -e 'const c=require(process.argv[1]); process.stdout.write(String(c.completed && c.sawRunningState))' "$LIVE_CAPTURE_DIR/capture.json")"
-  capture_interval="$(node -e 'const c=require(process.argv[1]); process.stdout.write(String(c.intervalMs))' "$LIVE_CAPTURE_DIR/capture.json")"
-  if [[ "$capture_complete" != "true" ]]; then
-    echo "Live capture did not prove both running and completed states." >&2
-    exit 1
-  fi
-  capture_rate="$(awk -v value="$capture_interval" 'BEGIN { printf "%.6f", 1000 / value }')"
-  ffmpeg -hide_banner -loglevel error -y \
-    -framerate "$capture_rate" -i "$LIVE_CAPTURE_DIR/frame-%05d.png" \
-    -vf 'fps=30,scale=1920:1080:flags=lanczos,format=yuv420p' \
-    -c:v libx264 -preset medium -crf 20 \
-    "$LIVE_CODEX_VIDEO"
+if [[ ! -x "$PIPER_PYTHON" || ! -f "$VOICE_MODEL" ]]; then
+  echo "Piper 1.4 and en_US-lessac-medium are required." >&2
+  echo "Set PIPER_PYTHON and VOICE_MODEL to local paths." >&2
+  exit 1
 fi
 
-if [[ ! -f "$LIVE_CODEX_MANIFEST" ]]; then
-  echo "A live browser manifest is required. Set LIVE_CODEX_MANIFEST." >&2
+for required in \
+  "$CAPTURE_MANIFEST" \
+  "$CAPTURE_VIDEO" \
+  "$CAPTURE_DIR/public-chat-first.png" \
+  "$CAPTURE_DIR/public-evidence.png" \
+  "$CAPTURE_DIR/codex-trace.png" \
+  "$CAPTURE_DIR/document-ingestion.png" \
+  "$CAPTURE_DIR/public-impact.png" \
+  "$CAPTURE_DIR/correction-diff.png" \
+  "$CAPTURE_DIR/correction-impact.png"; do
+  if [[ ! -s "$required" ]]; then
+    echo "Missing capture artifact: $required" >&2
+    exit 1
+  fi
+done
+
+capture_contract="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.contract)' "$CAPTURE_MANIFEST")"
+capture_presentation="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.presentation)' "$CAPTURE_MANIFEST")"
+if [[ "$capture_contract" != "tendergraph-chat-first-capture.v2" ]]; then
+  echo "Unexpected capture contract: $capture_contract" >&2
   exit 1
 fi
-if [[ ! -f "$IMPACT_SCREENSHOT" ]]; then
-  echo "The anonymized impact-discovery screenshot is required: $IMPACT_SCREENSHOT" >&2
+if [[ "$capture_presentation" != "public_anonymized" ]]; then
+  echo "The video capture must use the anonymized public presentation." >&2
   exit 1
 fi
-live_capture_url="$(node -e 'const r=require(process.argv[1]); process.stdout.write(r.url)' "$LIVE_CODEX_MANIFEST")"
-if [[ "$live_capture_url" != *"submission=public"* ]]; then
-  echo "The live browser segment must use the anonymized submission view." >&2
-  exit 1
-fi
-if [[ -z "${BROWSER_CODEX_SESSION:-}" ]]; then
-  BROWSER_CODEX_SESSION="$(node -e 'const r=require(process.argv[1]); process.stdout.write(r.codexSessionId)' "$LIVE_CODEX_MANIFEST")"
-fi
-smoke_sessions="$(node -e 'const r=require(process.argv[1]); process.stdout.write(r.runs.map(x => x.codexSessionId).join("\n"))' "$ROOT_DIR/artifacts/evals/codex-smoke.json")"
-smoke_session_one="$(printf '%s\n' "$smoke_sessions" | sed -n '1p')"
-smoke_session_two="$(printf '%s\n' "$smoke_sessions" | sed -n '2p')"
-impact_sessions="$(node -e 'const r=require(process.argv[1]); process.stdout.write(r.runs.map(x => x.codexSessionId).join("\n"))' "$ROOT_DIR/artifacts/evals/impact-smoke.json")"
-impact_session_one="$(printf '%s\n' "$impact_sessions" | sed -n '1p')"
-impact_session_two="$(printf '%s\n' "$impact_sessions" | sed -n '2p')"
+
+marker() {
+  node -e \
+    'const x=require(process.argv[1]);const v=x.markers[process.argv[2]];if(typeof v!=="number")process.exit(2);process.stdout.write((v/1000).toFixed(3))' \
+    "$CAPTURE_MANIFEST" "$1"
+}
+
+codex_session="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.composition.codexSessionId)' "$CAPTURE_MANIFEST")"
+public_impact_session="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.publicImpact.codexSessionId)' "$CAPTURE_MANIFEST")"
+correction_impact_session="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.correctionImpact.codexSessionId)' "$CAPTURE_MANIFEST")"
+smoke_session_one="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.runs[0].codexSessionId)' "$ROOT_DIR/artifacts/evals/codex-smoke.json")"
+smoke_session_two="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.runs[1].codexSessionId)' "$ROOT_DIR/artifacts/evals/codex-smoke.json")"
+
 commit_one="$(git -C "$ROOT_DIR" log -1 --date=short --format='%h  %ad  %s')"
 commit_two="$(git -C "$ROOT_DIR" log -2 --date=short --format='%h  %ad  %s' | sed -n '2p')"
 commit_three="$(git -C "$ROOT_DIR" log -3 --date=short --format='%h  %ad  %s' | sed -n '3p')"
@@ -75,129 +71,134 @@ commit_four="$(git -C "$ROOT_DIR" log -4 --date=short --format='%h  %ad  %s' | s
 commit_five="$(git -C "$ROOT_DIR" log -5 --date=short --format='%h  %ad  %s' | sed -n '5p')"
 
 rm -rf "$WORK_DIR"
-mkdir -p "$WORK_DIR" "$OUTPUT_DIR"
+mkdir -p "$WORK_DIR" "$OUTPUT_DIR" "$(dirname "$FINAL_VIDEO")"
 
-capture() {
-  local name="$1"
-  local url="$2"
-  local profile="$WORK_DIR/profile-$name"
-  mkdir -p "$profile"
-  timeout 30 firefox \
-    --headless \
-    --profile "$profile" \
-    --window-size 1920,1080 \
-    --screenshot "$WORK_DIR/$name.png" \
-    "$url" >"$WORK_DIR/firefox-$name.log" 2>&1
-  test -s "$WORK_DIR/$name.png"
-}
-
-capture "public" "$DEMO_URL/?submission=public"
-capture "correction" "$DEMO_URL/?case=cl-correction-demo&submission=public"
-
-magick "$WORK_DIR/public.png" \
-  -crop 850x720+1020+290 +repage \
-  -resize '1920x1080^' -gravity center -extent 1920x1080 \
-  "$WORK_DIR/public-evidence.png"
-
-magick "$WORK_DIR/public.png" \
-  -crop 1680x650+225+110 +repage \
-  -resize '1920x1080' -background '#f4f7f5' -gravity center -extent 1920x1080 \
-  "$WORK_DIR/public-runtime.png"
-
-magick "$WORK_DIR/correction.png" \
-  -crop 1680x650+225+130 +repage \
-  -resize '1920x1080' -background '#f4f7f5' -gravity center -extent 1920x1080 \
-  "$WORK_DIR/correction-diff.png"
-
-magick -size 1920x1080 xc:'#f4f7f5' \
-  -fill '#14231f' -draw 'rectangle 0,0 330,1080' \
-  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 44 -fill white \
-  -annotate +54+92 'TenderGraph' \
-  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 24 -fill '#a8bbb3' \
-  -annotate +54+145 'BUILD WEEK EVIDENCE' \
-  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 62 -fill '#17211e' \
-  -annotate +410+130 'Verified, not asserted' \
-  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 28 -fill '#66736e' \
-  -annotate +414+184 'Code-owned contracts around GPT-5.6 Terra' \
-  -fill white -stroke '#d7e0dc' -strokewidth 2 \
-  -draw 'roundrectangle 410,250 815,500 8,8' \
-  -draw 'roundrectangle 850,250 1255,500 8,8' \
-  -draw 'roundrectangle 1290,250 1695,500 8,8' \
-  -stroke none -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 70 -fill '#11724f' \
-  -annotate +475+375 '44/44' -annotate +925+375 '23/23' -annotate +1372+375 '4/4' \
-  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 24 -fill '#66736e' \
-  -annotate +475+440 'contract tests' \
-  -annotate +925+440 'contract scenarios' \
-  -annotate +1372+440 'live Codex runs' \
-  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 34 -fill '#17211e' \
-  -annotate +410+610 'Enforcement ablation' \
-  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 28 -fill '#66736e' \
-  -annotate +410+666 'Harness admitted 0 of 8 injected faults' \
-  -annotate +410+712 'Schema-only control admitted 8 of 8' \
-  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 34 -fill '#17211e' \
-  -annotate +410+795 'Live runtime evidence' \
-  -font /usr/share/fonts/noto/NotoSansMono-Regular.ttf -pointsize 17 -fill '#236b53' \
-  -annotate +410+835 "browser:            $BROWSER_CODEX_SESSION" \
-  -annotate +410+870 "composition public: $smoke_session_one" \
-  -annotate +410+905 "composition change: $smoke_session_two" \
-  -annotate +410+940 "impact public:      $impact_session_one" \
-  -annotate +410+975 "impact correction:  $impact_session_two" \
-  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 22 -fill '#66736e' \
-  -annotate +410+1030 'Validated trace schema  |  recoverable local trace ledgers' \
+magick -size 1920x1080 xc:'#f5f7f6' \
+  -fill '#071411' -draw 'rectangle 0,0 310,1080' \
+  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 42 -fill white \
+  -annotate +46+82 'TenderGraph' \
+  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 20 -fill '#89a098' \
+  -annotate +46+125 'VERIFIED BUILD WEEK RESULTS' \
+  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 58 -fill '#151a18' \
+  -annotate +380+118 'A working system, not a prompt demo' \
+  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 25 -fill '#66716c' \
+  -annotate +384+168 'Code-owned contracts around GPT-5.6 and Codex' \
+  -fill white -stroke '#dce2df' -strokewidth 2 \
+  -draw 'roundrectangle 380,235 760,455 7,7' \
+  -draw 'roundrectangle 790,235 1170,455 7,7' \
+  -draw 'roundrectangle 1200,235 1580,455 7,7' \
+  -draw 'roundrectangle 380,490 760,710 7,7' \
+  -draw 'roundrectangle 790,490 1170,710 7,7' \
+  -draw 'roundrectangle 1200,490 1580,710 7,7' \
+  -stroke none -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 58 -fill '#087a4d' \
+  -annotate +450+345 '44/44' -annotate +860+345 '23/23' -annotate +1275+345 '15/15' \
+  -annotate +458+600 '6/6' -annotate +855+600 '0/8' -annotate +1260+600 '3 LIVE' \
+  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 20 -fill '#66716c' \
+  -annotate +455+402 'contract tests' \
+  -annotate +855+402 'golden scenarios' \
+  -annotate +1260+402 'composition gates' \
+  -annotate +455+657 'impact gates' \
+  -annotate +855+657 'faults admitted' \
+  -annotate +1260+657 'new Codex runs' \
+  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 27 -fill '#151a18' \
+  -annotate +380+800 'Retained runtime evidence' \
+  -font /usr/share/fonts/noto/NotoSansMono-Regular.ttf -pointsize 16 -fill '#087a4d' \
+  -annotate +380+846 "composition:       $codex_session" \
+  -annotate +380+884 "public impact:     $public_impact_session" \
+  -annotate +380+922 "correction impact: $correction_impact_session" \
+  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 20 -fill '#66716c' \
+  -annotate +380+1000 'All model output remains subordinate to source, claim, and authority contracts.' \
   "$WORK_DIR/proof.png"
 
-magick -size 1920x1080 xc:'#f4f7f5' \
-  -fill '#14231f' -draw 'rectangle 0,0 330,1080' \
-  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 44 -fill white \
-  -annotate +54+92 'TenderGraph' \
-  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 24 -fill '#a8bbb3' \
-  -annotate +54+145 'BUILD WEEK EVIDENCE' \
-  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 58 -fill '#17211e' \
-  -annotate +410+130 'Codex collaboration, inspectable' \
-  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 27 -fill '#66736e' \
-  -annotate +414+184 'Dated implementation history and retained runtime sessions' \
-  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 28 -fill '#17211e' \
-  -annotate +410+270 'Build history' \
-  -font /usr/share/fonts/noto/NotoSansMono-Regular.ttf -pointsize 20 -fill '#236b53' \
-  -annotate +410+325 "$commit_one" \
-  -annotate +410+375 "$commit_two" \
-  -annotate +410+425 "$commit_three" \
-  -annotate +410+475 "$commit_four" \
-  -annotate +410+525 "$commit_five" \
-  -fill white -stroke '#d7e0dc' -strokewidth 2 \
-  -draw 'roundrectangle 410,590 1695,930 8,8' \
-  -stroke none -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 28 -fill '#17211e' \
-  -annotate +455+650 'Retained Codex runtime sessions' \
-  -font /usr/share/fonts/noto/NotoSansMono-Regular.ttf -pointsize 17 -fill '#236b53' \
-  -annotate +455+705 "browser:            $BROWSER_CODEX_SESSION" \
-  -annotate +455+750 "composition public: $smoke_session_one" \
-  -annotate +455+795 "composition change: $smoke_session_two" \
-  -annotate +455+840 "impact public:      $impact_session_one" \
-  -annotate +455+885 "impact correction:  $impact_session_two" \
-  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 24 -fill '#66736e' \
-  -annotate +410+980 'Codex accelerated delivery; product and truth-boundary decisions remained human-owned.' \
-  "$WORK_DIR/collaboration.png"
-
-declare -a IMAGES=(
-  "$WORK_DIR/public.png"
-  "$WORK_DIR/public-evidence.png"
-  "$WORK_DIR/public-runtime.png"
-  "$IMPACT_SCREENSHOT"
-  "$WORK_DIR/correction.png"
-  "$WORK_DIR/correction-diff.png"
-  "$WORK_DIR/proof.png"
-  "$WORK_DIR/collaboration.png"
-)
+magick -size 1920x1080 xc:'#f5f7f6' \
+  -fill '#071411' -draw 'rectangle 0,0 310,1080' \
+  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 42 -fill white \
+  -annotate +46+82 'TenderGraph' \
+  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 20 -fill '#89a098' \
+  -annotate +46+125 'WHY THIS CAN WIN' \
+  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 55 -fill '#151a18' \
+  -annotate +380+115 'Frontier reasoning with operational control' \
+  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 25 -fill '#087a4d' \
+  -annotate +390+238 'TECHNOLOGICAL IMPLEMENTATION' \
+  -annotate +1050+238 'COMPLETE PRODUCT DESIGN' \
+  -annotate +390+485 'CREDIBLE UNIVERSAL IMPACT' \
+  -annotate +1050+485 'DIFFERENTIATED IDEA' \
+  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 22 -fill '#39433f' \
+  -annotate +390+280 'Codex and GPT-5.6 execute inside' \
+  -annotate +390+314 'typed, adversarially tested contracts.' \
+  -annotate +1050+280 'Chat-first workflow, evidence inspector,' \
+  -annotate +1050+314 'document ingestion, diffs, and trace.' \
+  -annotate +390+527 'Every jurisdiction publishes changing' \
+  -annotate +390+561 'tender documents and award records.' \
+  -annotate +1050+527 'A procurement decision-state compiler,' \
+  -annotate +1050+561 'not another document chatbot.' \
+  -stroke '#dce2df' -strokewidth 2 \
+  -draw 'line 380,385 1580,385' -draw 'line 380,635 1580,635' \
+  -stroke none -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 26 -fill '#151a18' \
+  -annotate +380+725 'Inspectable Build Week history' \
+  -font /usr/share/fonts/noto/NotoSansMono-Regular.ttf -pointsize 17 -fill '#087a4d' \
+  -annotate +380+770 "$commit_one" \
+  -annotate +380+808 "$commit_two" \
+  -annotate +380+846 "$commit_three" \
+  -annotate +380+884 "$commit_four" \
+  -annotate +380+922 "$commit_five" \
+  -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 21 -fill '#66716c' \
+  -annotate +380+1000 'Evidence changes. Claims are re-evaluated. Human authority remains explicit.' \
+  "$WORK_DIR/closing.png"
 
 declare -a NARRATION=(
-  "Procurement teams do not need another tender chatbot. They need to know who was recommended, why competitors lost, which document proves each statement, and what changes when a new resolution arrives. TenderGraph is an auditable procurement decision compiler built with Codex and GPT five point six."
-  "This is a hash-verified public Chilean evaluation. TenderGraph reports the commission recommendation and preserves the boundary that this is not proof of a signed contract. Every factual finding is an admitted claim bound to reviewed evidence, and each answer section reproduces the admitted claim text verbatim. The reader view stays clean while the evidence panel retains page, section, parser version, source URL, and content hash."
-  "The workbench invokes a ChatGPT-authenticated Codex session with GPT five point six Terra; it does not require an API key. Here is the real click, running state, completed answer, fifteen passed gates, and full Codex session identifier. GPT composes only from the selected claim contract. Code-owned gates reject invented text, evidence swaps, missing claims, scope contamination, false source status, leakage, and incomplete traces."
-  "This is the frontier workflow. TenderGraph ingests common procurement formats into hashed, addressable evidence without granting authority. GPT five point six through Codex compares the new evidence with every active claim and discovers material corroboration, invalidation, or supersession. Six code-owned gates verify scope, the complete claim partition, evidence identity, action semantics, and shadow authority. Nothing changes until human review."
-  "This visibly synthetic correction benchmark tests a harder transition. Automatic impact discovery identifies two supersessions: the original winner and loss reason are replaced, while the award rule remains unchanged. The live Codex result matches the versioned reference exactly and still cannot modify authority."
-  "The diff shows the exact before and after statements and evidence anchors instead of silently regenerating everything. New evidence can corroborate one claim, invalidate a claim, or create an explicit supersession. Unrelated conclusions remain stable and auditable."
-  "The repository includes forty-four adversarial and contract tests, twenty-three deterministic scenarios, two live composition runs, and two live impact runs. The enforcement ablation blocks all eight injected faults while the schema-only control admits all eight."
-  "The dated repository history distinguishes the Build Week implementation. Retained session identifiers prove live GPT five point six composition and impact discovery through Codex. Codex accelerated implementation, source verification, testing, and browser review. We retained the product, governance, and truth-boundary decisions."
+  "Public procurement decisions are scattered across notices, evaluation tables, supplier files, and later amendments. Teams still reconstruct who was recommended, why others lost, and what changed. TenderGraph turns that fragmented record into an auditable decision state, built with Codex and GPT five point six."
+  "Most AI products stop at summarization. Here, every answer is assembled from promoted claims bound to exact evidence. The chat stays usable while the inspector exposes source, page, quoted text, parser, authority, URL, and content hash. A commission recommendation is never misrepresented as a signed contract."
+  "Now I run the question through a ChatGPT-authenticated Codex session, with no API key. GPT five point six composes only from the admitted claim contract. The trace retains the model and full session identifier, while fifteen code-owned gates reject invention, evidence swaps, scope contamination, leakage, and incomplete output."
+  "Next I attach the official PDF. TenderGraph extracts eight hashed evidence anchors without granting them authority. Codex then compares a later public selection record with every active claim and finds one material corroboration. Six independent gates validate scope, the complete claim partition, evidence identity, action semantics, and shadow authority. Nothing changes until human review."
+  "The harder test is a later corrective resolution. TenderGraph identifies two supersessions: the original winner and loss explanation are replaced, while the award rule remains unchanged. The result matches the versioned reference exactly and still cannot promote itself into official truth."
+  "This is not generic retrieval augmented generation. TenderGraph maintains a decision graph across source versions, evidence dependencies, reviewed claims, and explicit supersession. The same contracts already run across Chilean, European, and United Kingdom tender structures and common procurement document formats."
+  "The repository proves the enforcement layer: forty-four contract and adversarial tests, twenty-three golden scenarios, fifteen composition gates, six impact gates, and zero of eight injected faults admitted. The new capture retains three fresh Codex session identifiers for composition and impact discovery."
+  "Codex accelerated implementation, source verification, testing, and this complete product redesign. The idea is deliberately different: not a chatbot that summarizes a tender, but an auditable procurement decision compiler that shows what changed, why it changed, and which evidence earns trust."
+)
+
+declare -a SCENE_KIND=(
+  "still"
+  "still"
+  "clip"
+  "clip"
+  "clip"
+  "still"
+  "still"
+  "still"
+)
+
+declare -a SCENE_SOURCE=(
+  "$CAPTURE_DIR/public-chat-first.png"
+  "$CAPTURE_DIR/public-evidence.png"
+  "$CAPTURE_VIDEO"
+  "$CAPTURE_VIDEO"
+  "$CAPTURE_VIDEO"
+  "$CAPTURE_DIR/correction-impact.png"
+  "$WORK_DIR/proof.png"
+  "$WORK_DIR/closing.png"
+)
+
+declare -a CLIP_START=(
+  "0"
+  "0"
+  "$(marker codexRunStarted)"
+  "$(marker documentAttached)"
+  "$(marker correctionReady)"
+  "0"
+  "0"
+  "0"
+)
+
+declare -a CLIP_END=(
+  "0"
+  "0"
+  "$(marker documentAttached)"
+  "$(marker correctionReady)"
+  "$(marker captureCompleted)"
+  "0"
+  "0"
+  "0"
 )
 
 segment_files=()
@@ -205,26 +206,33 @@ for index in "${!NARRATION[@]}"; do
   number="$(printf '%02d' "$((index + 1))")"
   audio="$WORK_DIR/$number.wav"
   segment="$WORK_DIR/$number.mp4"
-  printf '%s\n' "${NARRATION[$index]}" | \
-    "$PIPER_BIN" --model "$VOICE_MODEL" --output_file "$audio" >/dev/null
-  duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$audio")"
-  padded_duration="$(awk -v value="$duration" 'BEGIN { printf "%.3f", value + 0.6 }')"
+  "$PIPER_PYTHON" -m piper \
+    -m "$VOICE_MODEL" \
+    -f "$audio" \
+    --sentence-silence 0.12 \
+    -- "${NARRATION[$index]}" >/dev/null
+  audio_duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$audio")"
+  padded_duration="$(awk -v value="$audio_duration" 'BEGIN { printf "%.3f", value + 0.55 }')"
   frames="$(awk -v value="$padded_duration" 'BEGIN { printf "%d", (value * 30) + 1 }')"
-  if [[ "$index" -eq 2 ]]; then
+
+  if [[ "${SCENE_KIND[$index]}" == "clip" ]]; then
+    start="${CLIP_START[$index]}"
+    end="${CLIP_END[$index]}"
+    clip_duration="$(awk -v start="$start" -v end="$end" 'BEGIN { printf "%.3f", end - start }')"
     ffmpeg -hide_banner -loglevel error -y \
-      -i "$LIVE_CODEX_VIDEO" -i "$audio" \
+      -ss "$start" -t "$clip_duration" -i "${SCENE_SOURCE[$index]}" -i "$audio" \
       -filter_complex \
-        "[0:v]scale=1920:1080:flags=lanczos,fps=30,tpad=stop_mode=clone:stop_duration=180,trim=duration=$padded_duration,setpts=PTS-STARTPTS,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=11:TP=-1.5,apad=pad_dur=0.6[a]" \
+        "[0:v]scale=1920:1080:flags=lanczos,fps=30,tpad=stop_mode=clone:stop_duration=180,trim=duration=$padded_duration,setpts=PTS-STARTPTS,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=8:TP=-1.5,apad=pad_dur=0.55[a]" \
       -map '[v]' -map '[a]' -t "$padded_duration" \
-      -c:v libx264 -preset medium -crf 21 -c:a aac -b:a 160k \
+      -c:v libx264 -preset medium -crf 20 -c:a aac -b:a 160k \
       "$segment"
   else
     ffmpeg -hide_banner -loglevel error -y \
-      -loop 1 -i "${IMAGES[$index]}" -i "$audio" \
+      -loop 1 -i "${SCENE_SOURCE[$index]}" -i "$audio" \
       -filter_complex \
-        "[0:v]scale=1920:1080,zoompan=z='min(zoom+0.00005,1.025)':d=$frames:s=1920x1080:fps=30,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=11:TP=-1.5,apad=pad_dur=0.6[a]" \
+        "[0:v]scale=1920:1080,zoompan=z='min(zoom+0.00004,1.018)':d=$frames:s=1920x1080:fps=30,format=yuv420p[v];[1:a]loudnorm=I=-16:LRA=8:TP=-1.5,apad=pad_dur=0.55[a]" \
       -map '[v]' -map '[a]' -t "$padded_duration" \
-      -c:v libx264 -preset medium -crf 21 -c:a aac -b:a 160k \
+      -c:v libx264 -preset medium -crf 20 -c:a aac -b:a 160k \
       "$segment"
   fi
   segment_files+=("$segment")
@@ -236,18 +244,17 @@ for segment in "${segment_files[@]}"; do
   printf "file '%s'\n" "$segment" >>"$concat_file"
 done
 
-final_video="${VIDEO_OUTPUT:-$ROOT_DIR/public/tendergraph-build-week-demo.mp4}"
-mkdir -p "$(dirname "$final_video")"
 ffmpeg -hide_banner -loglevel error -y \
   -f concat -safe 0 -i "$concat_file" \
-  -c:v libx264 -preset medium -crf 20 -pix_fmt yuv420p \
-  -af 'volume=-1.2dB,alimiter=limit=0.84:level=false' \
+  -c:v libx264 -preset medium -crf 19 -pix_fmt yuv420p \
+  -af 'volume=-1.0dB,alimiter=limit=0.84:level=false' \
   -c:a aac -b:a 160k -ar 48000 \
-  -metadata title='TenderGraph - OpenAI Build Week Demo' \
-  "$final_video"
+  -movflags +faststart \
+  -metadata title='TenderGraph - Auditable Procurement Decision Compiler' \
+  "$FINAL_VIDEO"
 
-duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$final_video")"
-audio_streams="$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$final_video" | wc -l)"
+duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$FINAL_VIDEO")"
+audio_streams="$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$FINAL_VIDEO" | wc -l)"
 if ! awk -v value="$duration" 'BEGIN { exit !(value > 0 && value < 180) }'; then
   echo "Video duration is outside the required range: $duration seconds" >&2
   exit 1
@@ -257,10 +264,15 @@ if [[ "$audio_streams" -lt 1 ]]; then
   exit 1
 fi
 
-cp "$WORK_DIR/public.png" "$OUTPUT_DIR/public-workbench.png"
-cp "$WORK_DIR/correction.png" "$OUTPUT_DIR/correction-diff.png"
-cp "$WORK_DIR/proof.png" "$OUTPUT_DIR/verification-evidence.png"
-cp "$WORK_DIR/collaboration.png" "$OUTPUT_DIR/codex-collaboration.png"
+cp "$CAPTURE_DIR/public-chat-first.png" "$OUTPUT_DIR/chat-first-workbench.png"
+cp "$CAPTURE_DIR/public-evidence.png" "$OUTPUT_DIR/chat-first-evidence.png"
+cp "$CAPTURE_DIR/codex-trace.png" "$OUTPUT_DIR/chat-first-codex-trace.png"
+cp "$CAPTURE_DIR/document-ingestion.png" "$OUTPUT_DIR/chat-first-ingestion.png"
+cp "$CAPTURE_DIR/public-impact.png" "$OUTPUT_DIR/chat-first-public-impact.png"
+cp "$CAPTURE_DIR/correction-impact.png" "$OUTPUT_DIR/chat-first-correction-impact.png"
+cp "$WORK_DIR/proof.png" "$OUTPUT_DIR/chat-first-verification.png"
+cp "$WORK_DIR/closing.png" "$OUTPUT_DIR/chat-first-closing.png"
+cp "$CAPTURE_MANIFEST" "$OUTPUT_DIR/chat-first-capture.json"
 
 printf 'Rendered %s seconds with %s audio stream(s): %s\n' \
-  "$duration" "$audio_streams" "$final_video"
+  "$duration" "$audio_streams" "$FINAL_VIDEO"

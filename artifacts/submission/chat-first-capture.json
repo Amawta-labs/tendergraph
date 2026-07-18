@@ -1,0 +1,49 @@
+{
+  "contract": "tendergraph-chat-first-capture.v2",
+  "capturedAt": "2026-07-18T05:06:01.558Z",
+  "url": "http://127.0.0.1:3001/?submission=public",
+  "presentation": "public_anonymized",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "markers": {
+    "publicReady": 1928,
+    "evidenceOpened": 2971,
+    "codexRunStarted": 3063,
+    "codexRunCompleted": 12081,
+    "traceOpened": 13936,
+    "documentAttached": 14759,
+    "documentExtracted": 15963,
+    "publicImpactStarted": 16049,
+    "publicImpactCompleted": 24358,
+    "correctionReady": 26078,
+    "correctionImpactStarted": 26908,
+    "correctionImpactCompleted": 35139,
+    "captureCompleted": 35224
+  },
+  "composition": {
+    "model": "gpt-5.6-terra",
+    "codexSessionId": "019f739d-808a-78d1-aceb-344baf1e16f7",
+    "traceId": "c009d94f-eb4e-4e7f-8bc2-08e8b3dc63a1",
+    "gatesPassed": 15,
+    "gatesTotal": 15
+  },
+  "publicImpact": {
+    "codexSessionId": "019f739d-b33a-7382-a906-f0750884a549",
+    "gatesPassed": 6,
+    "gatesTotal": 6,
+    "proposals": 1
+  },
+  "correctionImpact": {
+    "codexSessionId": "019f739d-dda3-7133-bfa7-9be5805e97f9",
+    "gatesPassed": 6,
+    "gatesTotal": 6,
+    "proposals": 2,
+    "exactReferenceAgreement": true
+  },
+  "video": {
+    "path": "chat-first-system.webm",
+    "sha256": "1cb90533d4d0bcab09d985d11b1cca38be89e6ebe3081c1af61c3d54fa730846"
+  }
+}

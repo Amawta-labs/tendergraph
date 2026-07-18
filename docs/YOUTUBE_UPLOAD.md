@@ -2,67 +2,68 @@
 
 ## Source files
 
-- Video: `public/tendergraph-build-week-demo.mp4`
-- Local submission asset: `public/tendergraph-build-week-demo.mp4`
-- Hosted transfer URL: https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
-- Thumbnail: `artifacts/submission/verification-evidence.png`
-- Duration: 2:57.200
+- Video: `public/tendergraph-build-week-chat-first-demo.mp4`
+- Hosted transfer URL: https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
+- Thumbnail: `artifacts/submission/chat-first-verification.png`
+- Duration: 2:41.600
+- Resolution: 1920x1080
 - Language: English
 
 ## Title
 
-TenderGraph - Auditable Procurement Intelligence with Codex and GPT-5.6
+TenderGraph - The Auditable Procurement Decision Compiler | OpenAI Build Week
 
 ## Description
 
-TenderGraph is an auditable procurement decision compiler for bidder and
-procurement teams, built for OpenAI Build Week.
+TenderGraph turns fragmented tender records into an auditable decision state:
+who was recommended, why competitors lost, which evidence proves every claim,
+and what changed when later records or corrective resolutions arrived.
 
-It reconstructs opening and award decisions from addressable evidence records,
-human-reviewed claims, and code-owned validation contracts. The demo uses a
-hash-verified public Chilean evaluation and a visibly synthetic correction
-benchmark to show multi-format evidence ingestion, automatic shadow impact
-discovery, and claim supersession.
-Buyer and supplier display names in the public case are anonymized for the
-submission video; procedure scope, scores, evidence anchors, and hashes remain
-visible.
+This is not a generic document chatbot. The working product combines a
+chat-first workflow, addressable evidence, multi-format document ingestion,
+automatic impact discovery, explicit claim supersession, human review, and a
+complete audit trace.
 
-Live demo: https://openaihack.vercel.app
-Supersession story: https://openaihack.vercel.app/?case=cl-correction-demo
+Built with Codex and GPT-5.6 for OpenAI Build Week.
 
-Runtime evidence:
-- GPT-5.6 Terra through ChatGPT-authenticated Codex
-- 15 code-owned validation gates
+Live demo: https://openaihack.vercel.app/?submission=public
+Correction benchmark: https://openaihack.vercel.app/?case=cl-correction-demo&submission=public
+Code: https://github.com/Amawta-labs/tendergraph
+
+Verified in the demo:
 - 44/44 contract and adversarial tests
-- 23/23 deterministic contract scenarios
-- 2/2 live Codex smoke runs
-- 2/2 live Codex impact runs with 6/6 gates and exact reference agreement
-- 1 recorded live browser run with a full Codex Session ID
-- 0/8 injected faults admitted by the harness
+- 23/23 deterministic golden scenarios
+- 15/15 composition gates
+- 6/6 impact-discovery gates
+- 0/8 injected faults admitted by the enforcement harness
+- Three fresh, retained Codex Session IDs
+
+The public presentation anonymizes buyer and supplier display names while
+preserving scope, scores, evidence anchors, hashes, and decision-stage
+boundaries. The Chile correction case is visibly synthetic. The narration is
+AI-assisted; the video contains no music or third-party brand footage.
 
 Chapters:
-00:00 Product and problem
-00:16 Public evidence chain
-00:40 Live Codex runtime and validation gates
-01:08 Evidence ingestion and automatic impact discovery
-01:35 Corrective resolution benchmark
-01:57 Claim supersession diff
-02:12 Verification metrics
-02:27 Codex collaboration evidence
+00:00 The procurement decision problem
+00:21 Evidence-bound answers
+00:41 Live Codex and GPT-5.6 runtime
+01:02 Document ingestion and impact discovery
+01:27 Corrective resolution
+01:44 The decision graph
+02:03 Verified enforcement
+02:23 Why TenderGraph can win
 
 ## Upload settings
 
 - Visibility: **Public**
 - Audience: **No, it is not made for kids**
 - Video language: **English**
-- Recording date: **July 15, 2026**
+- Recording date: **July 18, 2026**
 - Category: **Science & Technology**
 - License: **Standard YouTube License**
-- Comments: optional
 - Paid promotion: **No**
-- Altered content disclosure: answer according to YouTube's current policy;
-  the narration is synthetic and the video description should not imply a
-  human voice recording.
+- Altered content disclosure: disclose the AI-assisted narration according to
+  YouTube's current policy.
 
-After publication, replace `TODO_PUBLIC_YOUTUBE_URL` in
-`docs/DEVPOST_SUBMISSION.md` and add the final URL to Devpost.
+After publication, verify playback while signed out, then replace
+`TODO_PUBLIC_YOUTUBE_URL` in `docs/DEVPOST_SUBMISSION.md`.

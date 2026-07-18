@@ -8,8 +8,8 @@
 - **Repository:** https://github.com/Amawta-labs/tendergraph
 - **Hosted demo:** https://openaihack.vercel.app
 - **Video:** `TODO_PUBLIC_YOUTUBE_URL`
-- **Prepared local video asset:** `public/tendergraph-build-week-demo.mp4`
-- **Hosted video asset:** https://openaihack.vercel.app/tendergraph-build-week-demo.mp4
+- **Prepared local video asset:** `public/tendergraph-build-week-chat-first-demo.mp4`
+- **Hosted video asset:** https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
 - **Primary Codex /feedback session:** `019f615b-8a9a-7be1-bc50-65059c70d511`
 
 ## What TenderGraph does

@@ -1,6 +1,6 @@
 {
   "contract": "tendergraph-enforcement-ablation.v1",
-  "createdAt": "2026-07-18T03:36:58.064Z",
+  "createdAt": "2026-07-18T05:11:15.489Z",
   "note": "Controlled fault ablation against schema-only admission; this measures enforcement, not model quality or prompt adherence.",
   "faults": 8,
   "harnessViolationsAdmitted": 0,
