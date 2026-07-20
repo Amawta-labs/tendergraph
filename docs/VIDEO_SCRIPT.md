@@ -1,6 +1,7 @@
 # TenderGraph Dynamic Demo Script
 
-Final runtime: **2:17.267**. Narration and on-screen labels are in English.
+Final runtime: **2:20.133**. Narration, burned captions, and on-screen labels
+are in English.
 The video contains no music or third-party brand footage. The public case uses
 stable supplier aliases while preserving procedure scope, scores, evidence
 anchors, hashes, and decision-stage boundaries.
@@ -11,20 +12,19 @@ with `scripts/capture-live-codex-demo.mjs`, then render with
 `scripts/render-submission-video.sh`. The renderer expects Python Piper 1.4 and
 the `en_US-lessac-medium` voice through `PIPER_PYTHON` and `VOICE_MODEL`.
 
-## 0:00-0:20 - Problem and product
+## 0:00-0:19 - Enterprise risk and product
 
 **Screen:** Complete workbench. The capture cycles through findings, evidence,
 and the registered public event instead of holding a static overview.
 
 **Narration:**
 
-"Procurement decisions are scattered across notices, evaluation tables,
-supplier files, and later amendments. Teams must reconstruct who was
-recommended, why others lost, and what changed. TenderGraph compiles that
-fragmented record into an auditable decision state with Codex and GPT five
-point six."
+"Companies want agents to reason across fragmented tender records. But a
+hallucination, a superseded source, or an unauthorized inference cannot become
+a business decision. TenderGraph lets GPT five point six reason while evidence,
+authority, claims, changes, and human approval remain separate and verifiable."
 
-## 0:20-0:37 - Evidence-bound answers
+## 0:19-0:37 - Evidence-bound answers
 
 **Screen:** The inspector advances through source anchors while the camera
 removes the sidebar and keeps both claims and evidence legible.
@@ -36,7 +36,7 @@ bound to exact evidence. The inspector exposes source, page, quotation, parser,
 authority, URL, and hash, while preserving a critical boundary: a commission
 recommendation is not a signed contract."
 
-## 0:37-0:57 - Live Codex runtime
+## 0:37-0:56 - Live Codex runtime
 
 **Action:** Run the public question through the ChatGPT-authenticated Codex
 surface. The camera holds the active composer during execution, then moves to
@@ -49,7 +49,7 @@ an API key. GPT five point six composes only from admitted claims. The trace
 retains the model and Session ID; fifteen code-owned gates reject invention,
 evidence swaps, scope contamination, leakage, and incomplete output."
 
-## 0:57-1:16 - Ingestion and impact discovery
+## 0:56-1:16 - Ingestion and impact discovery
 
 **Action:** Attach the official PDF, extract eight anchors, navigate the new
 evidence, run impact discovery, and inspect the admitted shadow proposal.
@@ -62,7 +62,7 @@ active claim and finds one corroboration. Six independent gates validate scope,
 evidence, action semantics, and shadow authority. Nothing changes before human
 review."
 
-## 1:16-1:31 - Corrective resolution
+## 1:16-1:30 - Corrective resolution
 
 **Action:** Open the visibly synthetic Chile correction benchmark, inspect the
 registered diff, and run live impact discovery.
@@ -74,7 +74,7 @@ the original winner and loss explanation change, while the award rule stays
 stable. The result matches the versioned reference and cannot promote itself
 into official truth."
 
-## 1:31-1:47 - Decision graph
+## 1:30-1:47 - Decision graph
 
 **Screen:** Move between both supersession proposals and their evidence
 dependencies.
@@ -97,16 +97,16 @@ capture Session IDs.
 fifteen composition gates, six impact gates, and zero of eight injected faults
 admitted. This capture retains three fresh Codex Session IDs."
 
-## 2:01-2:17 - Why this can win
+## 2:01-2:20 - Why this can win
 
 **Screen:** Judging-criteria alignment and dated Build Week Git history.
 
 **Narration:**
 
 "Codex accelerated implementation, verification, testing, and this redesign.
-TenderGraph is deliberately different: not a chatbot that summarizes a tender,
-but an auditable decision compiler showing what changed, why, and which
-evidence earns trust."
+TenderGraph does not merely answer procurement questions. It controls what AI
+is allowed to conclude and how those conclusions may change when evidence
+changes. GPT five point six can reason. It cannot become authority."
 
 ## Editing contract
 
@@ -127,3 +127,7 @@ evidence earns trust."
 - The correction benchmark is visibly synthetic.
 - No music, third-party logos, or copyrighted footage is used.
 - The narration is English and the final video must be public on YouTube.
+- English subtitles are burned into the video. The MP4 intentionally contains
+  no selectable subtitle track, preventing duplicate captions in players that
+  enable embedded subtitles automatically. The matching upload sidecar is
+  `artifacts/submission/tendergraph-build-week-chat-first-demo.en.srt`.

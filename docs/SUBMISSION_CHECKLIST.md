@@ -35,33 +35,33 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] README explains installation, testing, Codex collaboration, product decisions, runtime use of GPT-5.6, and fallback behavior.
 - [x] Judges can test https://openaihack.vercel.app without rebuilding or authentication.
 - [x] Local live-Codex and plugin instructions are documented.
-- [x] Redeploy the final video and confirm its hosted hash is accessible without login; recheck it through the judging period.
+- [ ] Redeploy the final video and confirm its hosted hash is accessible without login; recheck it through the judging period.
 - [x] Run the final command set for the new freeze candidate: typecheck, 44 tests, deterministic eval, ablation, Codex composition smoke, Codex impact smoke, build, and dependency audit.
 
 ## Devpost fields
 
 - [ ] Select **Work & Productivity**.
 - [ ] Paste and proofread the English description from `docs/DEVPOST_SUBMISSION.md`.
-- [ ] Add the final repository URL.
-- [ ] Add the final hosted demo URL and testing instructions.
-- [ ] Add the primary `/feedback` Codex session ID.
+- [x] Prepare the final repository URL in `docs/DEVPOST_FORM_COPY.md`.
+- [x] Prepare the final hosted demo URL and testing instructions in `docs/DEVPOST_FORM_COPY.md`.
+- [x] Prepare the primary `/feedback` Codex session ID in `docs/DEVPOST_FORM_COPY.md`.
 - [ ] Verify all team members and the authorized representative are correct.
 
 ## Video
 
-- [x] Render the 2:17 dynamic chat-first demo with live composition, ingestion, impact discovery, and correction flows at `public/tendergraph-build-week-chat-first-demo.mp4`.
+- [x] Render the 2:20 dynamic chat-first demo with live composition, ingestion, impact discovery, correction flows, English TTS, burned captions, and no duplicate selectable subtitle track at `public/tendergraph-build-week-chat-first-demo.mp4`.
 - [x] Keep the video under three minutes.
 - [x] Show what was built and how Codex and GPT-5.6 were used.
 - [x] Anonymize real buyer and supplier display names while preserving scores, scope, evidence anchors, and hashes.
 - [x] Show dated Build Week commits and retained Codex Session IDs in the closing chapter.
-- [ ] Upload publicly to YouTube and add the URL to Devpost.
+- [x] Upload publicly to YouTube and record the verified URL in the submission documents.
 - [x] Use no music or unlicensed third-party footage.
 - [x] Use English narration throughout.
 - [x] Prepare YouTube title, description, chapters, thumbnail, and settings in `docs/YOUTUBE_UPLOAD.md`.
 
 ## Final freeze
 
-- [ ] Replace every `TODO_` marker in submission documents.
+- [x] Replace every active submission placeholder; historical logs retain their original state.
 - [ ] Verify the Devpost draft before the deadline; no substantive edits are guaranteed after submission closes.
 - [ ] Tag the submitted commit and preserve its deployment.
 - [ ] Export final screenshots, video, test report, Codex smoke report, and Devpost confirmation.

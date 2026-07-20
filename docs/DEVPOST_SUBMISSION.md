@@ -4,25 +4,25 @@
 
 - **Project:** TenderGraph
 - **Track:** Work & Productivity
-- **Tagline:** Decision intelligence for tender markets: who won, why, and what changed; compiled from evidence, not guessed by AI.
+- **Tagline:** An auditable procurement agent that shows exactly what new evidence changes, what remains valid, and the source behind every claim.
 - **Repository:** https://github.com/Amawta-labs/tendergraph
 - **Hosted demo:** https://openaihack.vercel.app
-- **Video:** `TODO_PUBLIC_YOUTUBE_URL`
+- **Video:** https://www.youtube.com/watch?v=G0XekMloa4c
 - **Prepared local video asset:** `public/tendergraph-build-week-chat-first-demo.mp4`
 - **Hosted video asset:** https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
 - **Primary Codex /feedback session:** `019f615b-8a9a-7be1-bc50-65059c70d511`
 
 ## What TenderGraph does
 
-**TenderGraph is the decision-change control plane for the multi-trillion-dollar tender economy.** It helps bidder and procurement teams reconstruct opening and award decisions from source documents without turning model prose into authority. It compiles source manifests, addressable evidence records, reviewed claims, policy decisions, and a reader-facing answer into one auditable run.
+TenderGraph grew out of a real procurement analysis project in Chile. We were asked to examine a tender at the opening stage. By the time we completed the review, Chile's public procurement portal already showed the procedure as awarded. The documents remained relevant, but the process had moved to a new decision state while our analysis was tied to the earlier one.
 
-The market is material and the problem is structural. Public procurement represented [12.7% of OECD GDP and 29.9% of total government expenditure in 2023](https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/size-of-public-procurement_6979cd47.html), while the [World Bank estimated USD 11 trillion in global public procurement](https://blogs.worldbank.org/en/developmenttalk/how-large-public-procurement) in 2018. OECD research identifies [complex procedures, administrative burden, and extensive documentation](https://www.oecd.org/en/publications/smes-in-public-procurement_9789264307476-en.html) as persistent barriers for suppliers. TenderGraph addresses the intelligence gap after discovery: who was recommended, why competitors lost, which evidence proves it, and what changed later.
+**TenderGraph is an auditable procurement agent that controls how a decision is allowed to change across versioned evidence.** Public procurement represented [12.7% of OECD GDP and 29.9% of total government expenditure in 2023](https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/size-of-public-procurement_6979cd47.html), yet opening, evaluation, award, and correction decisions remain fragmented across portals, spreadsheets, PDFs, and attachments.
 
-The default case is a hash-verified public Chilean evaluation. TenderGraph identifies the commission's award recommendation, compares evaluated scores, explains why the other suppliers were not recommended, and preserves the source limitation that the snapshot is not proof of a signed contract.
+The default case is a hash-verified public Chilean evaluation. TenderGraph identifies the commission's recommendation, compares evaluated scores, explains why the other suppliers were not recommended, and preserves the source limitation that the evaluation report is not proof of a signed contract.
 
-The differentiating workflow is a validated evidence-change pipeline. TenderGraph ingests PDF, DOCX, HTML, JSON, CSV, Markdown, and text into hashed evidence anchors. GPT-5.6/Codex then compares the new evidence with every active claim and proposes corroboration, invalidation, supersession, review, or an explicit unchanged classification. Six code-owned gates reject scope contamination, incomplete claim partitions, invented evidence, invalid action semantics, and any attempt to grant model authority. The result remains in shadow mode until human review.
+When new evidence arrives, GPT-5.6/Codex compares it with every active claim and proposes corroboration, invalidation, supersession, review, or an explicit unchanged classification. Six code-owned gates validate scope, partition completeness, evidence identity, action semantics, and shadow authority. Only a human can approve the proposed change.
 
-A public event demonstrates independent corroboration of one claim. A separate, visibly synthetic correction benchmark demonstrates two automatic supersession detections: the winner changes, the loss explanation reverses, and the award rule remains unchanged. Both live impact evaluations matched their versioned references exactly.
+A public event demonstrates one corroboration and five unchanged classifications. A separate, visibly synthetic correction benchmark demonstrates two supersessions while one claim remains unchanged under the admitted evidence. Both live impact evaluations matched their versioned references exactly.
 
 ## Why this is frontier
 

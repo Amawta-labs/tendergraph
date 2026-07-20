@@ -1,8 +1,6 @@
 # Devpost Form Copy
 
-Paste only the block requested by the corresponding Devpost field. The public
-YouTube URL remains intentionally unset until the exact final video is
-published and verified while signed out.
+Paste only the block requested by the corresponding Devpost field.
 
 ## General info
 
@@ -12,8 +10,8 @@ TenderGraph
 
 ### Elevator pitch
 
-Decision intelligence for tender markets: who won, why, and what changed;
-compiled from evidence, not guessed by AI.
+An auditable procurement agent that shows exactly what new evidence changes,
+what remains valid, and the source behind every claim.
 
 ### Category
 
@@ -31,7 +29,7 @@ https://github.com/Amawta-labs/tendergraph
 
 ### Demo video
 
-`TODO_PUBLIC_YOUTUBE_URL`
+https://www.youtube.com/watch?v=G0XekMloa4c
 
 ## Built with
 
@@ -41,42 +39,44 @@ Codex, GPT-5.6, Next.js, React, TypeScript, Zod, Vitest, Playwright, Vercel
 
 Upload these 1920x1080 images in this order.
 
-### 1. Public workbench
+### 1. Auditable workbench
 
-- File: `artifacts/submission/public-workbench.png`
-- Title: Auditable public procurement workbench
-- Caption: A hash-verified public evaluation with reviewed claims, exact
-  evidence anchors, incremental impact, and 15 code-owned validation gates.
+- File: `artifacts/submission/devpost-media/01-auditable-workbench.png`
+- Title: Procurement decisions, reconstructed and reviewable
+- Caption: TenderGraph turns a hash-verified public evaluation into reviewed
+  findings, exact citations, a visible evidence-change event, and a proposal
+  that remains under human control.
 
-### 2. Automatic impact discovery
+### 2. Exact evidence
 
-- File: `artifacts/submission/impact-discovery.png`
-- Title: New evidence, bounded automatic reevaluation
-- Caption: A PDF becomes eight hashed evidence anchors; GPT-5.6/Codex identifies
-  one material claim impact, proves five claims unchanged, passes 6/6 gates,
-  and remains blocked in shadow mode for human review.
+- File: `artifacts/submission/devpost-media/02-exact-evidence.png`
+- Title: Every reviewed claim leads back to its source
+- Caption: The evidence inspector exposes source, page, section, quoted passage,
+  parser identity, content hash, and authority status instead of asking judges
+  to trust generated prose.
 
-### 3. Evidence diff
+### 3. Decision change
 
-- File: `artifacts/submission/correction-diff.png`
-- Title: Exact claim supersession after corrective evidence
-- Caption: A visibly synthetic correction benchmark shows which claims were
-  replaced, which evidence changed, and which award rule remained unchanged.
+- File: `artifacts/submission/devpost-media/03-decision-change.png`
+- Title: New evidence changes claims, not history
+- Caption: A visibly synthetic corrective resolution produces two shadow
+  supersession proposals while one reviewed claim remains unchanged. No
+  conclusion is promoted without human review.
 
-### 4. Verification evidence
+### 4. Live Codex trace
 
-- File: `artifacts/submission/verification-evidence.png`
-- Title: Verified, not asserted
-- Caption: 44/44 contract tests, 23/23 deterministic scenarios, 2/2 live
-  composition runs, 2/2 live impact runs, and an ablation in which the harness
-  rejected all eight injected faults.
+- File: `artifacts/submission/devpost-media/04-live-codex-trace.png`
+- Title: GPT-5.6 reasoning inside code-owned contracts
+- Caption: The live trace retains the GPT-5.6 Terra model, Codex Session ID,
+  runtime stages, and 15 passed composition gates.
 
-### 5. Codex collaboration
+### 5. Verified enforcement
 
-- File: `artifacts/submission/codex-collaboration.png`
-- Title: Inspectable Codex collaboration
-- Caption: Dated implementation history and retained runtime Session IDs make
-  both the development workflow and live Codex execution inspectable.
+- File: `artifacts/submission/devpost-media/05-verified-enforcement.png`
+- Title: A working system, not a prompt demo
+- Caption: 44/44 tests, 23/23 deterministic scenarios, 15/15 composition gates,
+  6/6 impact gates, 0/8 controlled faults admitted, and three fresh retained
+  Codex runs.
 
 ## Project story
 
@@ -99,205 +99,166 @@ as persistent supplier barriers.
 
 ### Inspiration
 
-Public procurement alone represented
+TenderGraph grew out of a real procurement analysis project in Chile. We were
+asked to examine a tender at the opening stage. By the time we completed the
+review, Chile's public procurement portal already showed the procedure as
+awarded.
+
+The documents were still relevant, but the procurement process had moved to a
+new decision state while our analysis remained tied to the earlier one. That
+was a narrow instance of a broader pattern: procurement teams build conclusions
+from a valid set of records, and later publications, amendments, or corrections
+change what those conclusions mean.
+
+The highest-risk version of that pattern is a corrective resolution. A team has
+already briefed leadership on an award recommendation. A correction then
+arrives, but conventional document assistants do not enforce which prior
+conclusions must change, which remain supported by the admitted evidence, or
+who is authorized to approve the update.
+
+The scale is substantial. Public procurement represented
 [12.7% of OECD GDP and 29.9% of government expenditure in
 2023](https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/size-of-public-procurement_6979cd47.html),
-yet critical opening, evaluation, award, and correction decisions are still
-fragmented across portals, spreadsheets, PDFs, and attachments.
+yet opening, evaluation, award, and correction records remain spread
+across portals, spreadsheets, PDFs, and attachments.
 
-Procurement teams do not need another chatbot that summarizes one PDF. They
-need to know who was recommended, why each competitor lost, which exact passage
-supports every conclusion, whether a later correction changed the decision,
-and which prior conclusions remain valid. This is a temporal decision problem,
-not just a document problem. The
 [Open Contracting Data Standard](https://standard.open-contracting.org/latest/en/guidance/map/amendments/)
-treats procurement information as a sequence of new releases, updates, and
-amendments. TenderGraph makes that changing decision state inspectable rather
-than silently generating a fresh answer.
+models procurement as a sequence of releases, updates, and amendments. We built
+TenderGraph to make that changing decision state visible and reviewable,
+without allowing a newly generated answer to silently replace an approved
+conclusion.
 
 ### What it does
 
-TenderGraph is a decision-change control plane for tender markets. It
-reconstructs opening and award decisions from source documents without treating
-model prose as authority. It compiles source manifests, addressable evidence
-records, human-reviewed claims, policy decisions, and a reader-facing answer
-into one auditable run.
+TenderGraph is an auditable procurement agent. It reconstructs who was
+recommended, why competitors were not recommended, and which exact source
+passage supports each reviewed claim.
 
 The default case is a hash-verified public Chilean evaluation. TenderGraph
-identifies the commission's award recommendation, compares evaluated scores,
-explains why the other suppliers were not recommended, and preserves the
-important limitation that an evaluation snapshot is not proof of a signed
-contract.
+compares the evaluated scores, identifies the commission's recommendation, and
+preserves an essential limitation: an evaluation report is not proof of a
+signed contract.
 
-Its document pipeline ingests PDF, DOCX, HTML, JSON, CSV, Markdown, and text
-into hashed evidence anchors. GPT-5.6/Codex then compares new evidence with
-every active claim and proposes corroboration, invalidation, supersession,
-review, or an explicit unchanged classification. Six code-owned gates reject
-incomplete partitions, invented evidence, cross-procedure contamination,
-invalid actions, and model authority. A visibly synthetic correction benchmark
-demonstrates automatic supersession discovery: the recommended winner and loss
-explanation change while the award rule remains unchanged.
+When new evidence arrives, TenderGraph checks every active claim instead of
+rewriting the whole answer. GPT-5.6/Codex proposes corroboration, invalidation,
+supersession, review, or an explicit unchanged classification. Six code-owned
+gates validate scope, partition completeness, evidence identity, action
+semantics, and shadow authority. Only a human can approve the proposed change.
 
-### Why this is frontier
+A clearly labeled synthetic correction benchmark makes this visible: two
+claims are superseded, one remains unchanged under the admitted evidence, and
+the complete before-and-after history remains inspectable.
 
-An older-model product could summarize a PDF. TenderGraph's unit of work is a
-controlled decision-state transition across versioned sources, evidence,
-reviewed claims, GPT-5.6/Codex composition, code-owned admission gates, and an
-audit trace.
-
-[OpenAI's agent guidance](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/)
-identifies complex decisions, difficult-to-maintain rules, and heavy
-unstructured data as workflows where agents add value, while emphasizing
-guardrails and human intervention for high-risk actions. TenderGraph applies
-that pattern directly: the model's freedom is concentrated in semantic
-synthesis, while its authority is removed wherever an error could create
-commercial, legal, or reputational exposure.
-
-New evidence never triggers an untracked rewrite. It can corroborate,
-invalidate, or supersede a claim, while the unchanged complement remains
-explicit. The automatic proposal remains in shadow mode until human review.
-The claim is not that GPT-5.6 is infallible. It is that frontier reasoning can
-operate inside a testable decision system instead of being presented as the
-system of record.
+An older application could summarize a PDF. TenderGraph controls how a
+decision is allowed to change across versioned evidence. GPT-5.6 can reason
+over the record; it cannot become authority.
 
 ### How we built it
 
-TenderGraph is a Next.js and TypeScript workbench backed by typed Zod
-contracts. Source manifests bind artifacts to jurisdiction, procedure, lot,
-retrieval time, canonical URL, content hash, eligibility status, and runtime
-policy. Exact evidence records retain document locators, extracted text,
-parser version, and evidence hashes. Consequential claims require a named
-human reviewer and timestamp before they can be selected.
+TenderGraph is a Next.js and TypeScript workbench built around typed Zod
+contracts. Source manifests bind every artifact to a jurisdiction, procedure,
+lot, retrieval time, canonical URL, content hash, eligibility status, and
+runtime policy. Evidence records retain exact document locators, extracted
+text, parser identity, and evidence hashes. Consequential claims require a
+named human reviewer and review timestamp.
 
-Codex invokes GPT-5.6 Terra to compose a structured answer only from selected
-claims and evidence. Fifteen code-owned validation gates reject altered claim
-text, mismatched evidence, missing or duplicated claims, source failures, scope
-contamination, provenance errors, internal leakage, incomplete traces, and
-latency violations. Invalid model output is discarded; deterministic
-composition is the safe fallback.
+The ingestion pipeline converts PDF, DOCX, HTML, JSON, CSV, Markdown, and text
+into hashed, addressable evidence without granting it claim authority. Codex
+then invokes GPT-5.6 Terra to compose from selected claims and evidence.
+Fifteen code-owned gates reject altered claims, evidence swaps, omissions,
+duplication, invalid sources, scope contamination, provenance failures,
+internal leakage, incomplete traces, and latency violations. Invalid output is
+discarded and replaced by deterministic safe composition.
 
-Format-specific ingestion adapters create file hashes, parser identity,
-document locators, and evidence hashes without granting claim authority.
-GPT-5.6/Codex impact discovery classifies the complete active-claim partition;
-six additional code gates admit only a shadow proposal that requires human
-review.
+For evidence changes, GPT-5.6/Codex classifies the complete active-claim
+partition. Six additional gates validate the resulting shadow proposal before
+it can reach human review. This adopts the central lesson of
+[*From Prompts to Contracts*](https://arxiv.org/abs/2607.08028): guarantees that
+matter must be owned and enforced by code, not merely requested in a prompt.
 
-We also packaged the analysis workflow as a distributable Codex plugin and
-`$tendergraph-analyze` skill. Judges can use the hosted workbench immediately
-or run the ChatGPT-authenticated Codex path locally without an OpenAI API key.
+Codex was also our development collaborator. It helped map the research
+architecture into contracts, implement the harness and chat-first workbench,
+generate adversarial tests, verify the public case, diagnose serverless
+failures, run browser and deployment checks, and review the submission media.
+We retained the product and governance decisions.
 
-### How we used Codex and GPT-5.6
-
-Codex was both our development collaborator and a product runtime surface. It
-did not merely autocomplete code. It inspected and separated the prior domain
-work, mapped a new research paper into application contracts, implemented the
-typed harness and workbench, generated and challenged adversarial tests,
-retrieved and hash-checked a public procurement snapshot, ran browser and
-deployment verification, reviewed the submission media, and converted
-findings into bounded engineering commits.
-
-We retained the key product and governance decisions: focus on bidder-facing
-opening and award intelligence; distinguish public facts from synthetic
-benchmarks; require human approval for consequential claims; preserve the
-difference between a recommendation and a signed contract; and treat changed
-evidence as a dependency update rather than a full-answer rewrite.
-
-At runtime, GPT-5.6 Terra performs structured composition. It cannot choose
-authoritative sources, promote claims, rewrite evidence, decide source status,
-or bypass validation. The required Codex `/feedback` upload was completed with
-logs for the primary project thread. The same workflow is packaged as a Codex
-Skill that reports the model, Session ID, audit trace, validation gates, and
-retained result artifact. Dated commits and retained sessions make both the
-build process and product runtime inspectable.
+The workflow is also packaged as a Codex plugin and
+`$tendergraph-analyze` skill. The authenticated runtime uses Codex with GPT-5.6
+through the user's ChatGPT session and does not require an OpenAI API key.
 
 ### Challenges we ran into
 
-The central challenge was establishing an authority boundary strong enough to
-survive adversarial model output. A schema-valid response can still alter
-claim text, cite the wrong evidence, omit an affected dependency, or leak
-internal metadata. We therefore validate semantic identity and provenance in
-code rather than trusting format compliance.
+The hardest problem was that schema-valid is not authority-valid. A model can
+produce valid JSON while altering claim text, citing the wrong evidence,
+omitting an affected dependency, or exposing internal metadata. We therefore
+validate semantic identity, provenance, completeness, and scope in code.
 
-Another challenge was demonstrating a real procurement case without
-overclaiming what the frozen public snapshot proves. The product explicitly
-separates public evidence from synthetic portability and correction
-benchmarks, and it labels the public outcome as an evaluation recommendation,
-not a confirmed signed contract.
+We also needed a real procurement case without overstating what its source
+proved. TenderGraph separates the hash-verified public evaluation from
+synthetic correction and portability benchmarks. The public result remains an
+evaluation recommendation, not a confirmed contract.
 
-Production packaging exposed a third class of problem: code that worked locally
-could still fail inside a serverless function. Public probes revealed missing
-PDF geometry globals, an untraced PDF.js worker, and a read-only runtime path.
-We added explicit canvas polyfills, output-file tracing, and request-scoped
-temporary storage, then reran the real PDF and impact workflows against the
-deployed endpoints.
+Deployment exposed failures that local tests missed: PDF geometry globals,
+PDF.js worker tracing, and read-only serverless storage. We added explicit
+canvas polyfills, output-file tracing, and request-scoped temporary storage,
+then reran the real PDF and impact workflows against production.
 
-Finally, a hosted Vercel function cannot inherit a developer's
-ChatGPT-authenticated Codex session. We made that boundary visible instead of
-hiding it: authenticated GPT-5.6/Codex runs execute locally or through the
-plugin, while the hosted demo returns a validated deterministic fallback when
-the Codex runtime is unavailable.
+Finally, Vercel cannot inherit a developer's ChatGPT-authenticated Codex
+session. The hosted demo therefore uses a validated deterministic fallback
+when Codex is unavailable, while authenticated GPT-5.6 runs execute locally or
+through the plugin.
 
 ### Accomplishments that we're proud of
 
-- A working hosted procurement workbench with a hash-verified public case.
-- Production PDF ingestion with 4 pages, 8 addressable evidence anchors, parser
-  identity, locators, and a stable source hash.
-- Exact claim-to-evidence inspection and visible incremental supersession,
-  including a correction benchmark with 2/2 expected supersessions.
-- Fifteen runtime validation gates with deterministic safe fallback.
-- 44 unit and adversarial tests, all passing.
-- 23 deterministic evaluation scenarios, all passing.
-- An enforcement ablation that admitted 0 of 8 injected faults while a
-  schema-only control admitted all 8.
-- Two live Codex smoke runs, each passing all 15 validation gates.
-- Two live Codex impact runs, each passing all 6 impact gates with exact
-  reference agreement.
-- A reusable Codex plugin and `$tendergraph-analyze` skill that run through
-  ChatGPT-authenticated Codex without requiring an API key.
-- A public Apache-2.0 repository, dated Build Week history, reproducible setup,
-  hosted demo, and hash-verified submission package.
-
-The corresponding machine-readable reports are retained at
-`artifacts/evals/deterministic-eval.json`,
-`artifacts/evals/enforcement-ablation.json`,
-`artifacts/evals/codex-smoke.json`, and
-`artifacts/evals/impact-smoke.json`.
+- In a controlled enforcement ablation, the full harness admitted 0/8 injected
+  faults while schema-only admission accepted 8/8.
+- Two live Codex composition runs passed 15/15 gates.
+- Two live Codex impact runs passed 6/6 gates and matched their versioned
+  references exactly.
+- The synthetic correction benchmark found 2/2 expected supersessions while
+  preserving the explicitly unchanged claim.
+- All 44 unit and adversarial tests and all 23 deterministic contract scenarios
+  pass.
+- Production PDF ingestion converts the four-page public evaluation into eight
+  addressable evidence anchors with stable hashes and locators.
+- The working product includes exact claim-to-evidence inspection, visible
+  decision changes, deterministic fallback, and mandatory human review.
+- The public Apache-2.0 repository includes the reusable Codex plugin and skill,
+  dated Build Week history, reproducible setup, and a hash-verified submission
+  package.
 
 ### What we learned
 
-Reliable agentic systems need a distinction between generation and authority.
-The model can help compose and explain, but source eligibility, claim approval,
-evidence identity, dependency completeness, and output admission must remain
-explicit, testable contracts. We also learned that incremental reevaluation is
-most useful when the unchanged complement is proven, not merely when a new
-answer is displayed.
+Reliable agents require a strict distinction between generation and authority.
+A model can reason, compose, and explain, but source eligibility, claim
+approval, evidence identity, dependency completeness, and output admission
+must remain explicit, testable contracts.
 
-We learned to treat production probes as part of the reasoning harness. Passing
-unit tests did not prove that a PDF worker, native geometry dependency, or
-temporary filesystem would survive serverless packaging. End-to-end deployment
+Incremental reevaluation is useful only when the complete claim set is checked.
+Showing which reviewed conclusions remain unchanged under the admitted
+evidence is as important as identifying the affected claims.
+
+We also learned that production probes belong inside the reasoning harness.
+Passing unit tests did not prove that PDF workers, native dependencies, or
+temporary storage would survive serverless packaging. End-to-end deployment
 checks found failures that local execution could not.
-
-This matches the central result of
-[*From Prompts to Contracts*](https://arxiv.org/abs/2607.08028):
-code-owned guarantees are load-bearing and are not reproduced by prompt
-instructions alone. TenderGraph extends that architecture with procurement
-scope, human-reviewed award claims, evidence-delta events, supersession, and
-exact before-and-after decision diffs.
 
 ### What's next for TenderGraph
 
 Next we will add licensed live procurement connectors, OCR for scanned
 documents, durable hosted trace and review storage, organization-level access
 controls, and jurisdiction-specific policy packs. Multi-format ingestion and
-assisted impact discovery with mandatory review are implemented in this
-submission; universal live-source coverage is not claimed.
+assisted impact discovery with mandatory review are implemented today;
+universal live-source coverage is not claimed.
 
-Commercially, the initial wedge is post-opening and post-award intelligence for
-bidder teams, where a public outcome makes value observable. The expansion is
-continuous opening and award monitoring, organization-specific review policy,
-portfolio-level competitor intelligence, and private RFPs. The defensible
-asset is the customer's accumulated decision graph and review history, not a
-prompt or exclusive access to one model.
+The initial commercial wedge is post-opening and post-award intelligence for
+bidder teams, where public outcomes make value observable. From there,
+TenderGraph can expand into continuous award monitoring, organization-specific
+review policies, portfolio-level competitor intelligence, and private RFPs.
+
+The moat is the customer's accumulated decision graph: every source, reviewed
+claim, evidence dependency, correction event, and approved outcome preserved
+over time.
 
 ## Testing instructions
 
@@ -315,6 +276,64 @@ prompt or exclusive access to one model.
 The hosted environment may use the deterministic composer because local
 ChatGPT authentication is never copied into Vercel. The public case is a frozen
 snapshot; correction and portability fixtures are explicitly synthetic.
+
+## Plugin or developer-tool instructions
+
+TenderGraph includes a Codex plugin and the `$tendergraph-analyze` skill.
+
+**Supported platforms**
+
+- Hosted workbench: modern desktop browsers on Linux, macOS, and Windows.
+- Local Codex/plugin path: tested on Linux x64.
+- Requirements: Node.js 24+, npm 11+, Codex CLI 0.144.0+, Git, and a
+  ChatGPT-authenticated `codex login` session.
+- No `OPENAI_API_KEY` is required for the Codex/plugin path.
+
+**Installation**
+
+```bash
+git clone https://github.com/Amawta-labs/tendergraph.git
+cd tendergraph
+npm install
+codex login
+codex plugin marketplace add /absolute/path/to/tendergraph
+codex plugin add tendergraph@tendergraph-local
+```
+
+Start Codex from the repository and invoke:
+
+```text
+Use $tendergraph-analyze to audit the Chile public evaluation case and publish
+its trace.
+```
+
+**Testing**
+
+```bash
+npm test
+npm run eval
+npm run eval:ablation
+npm run eval:codex
+npm run eval:impact
+npm run dev
+```
+
+Expected results for the submitted version:
+
+- 44/44 unit and adversarial tests.
+- 23/23 deterministic contract scenarios.
+- Enforcement harness admits 0/8 controlled injected faults; schema-only
+  admission accepts 8/8.
+- Two live composition runs pass 15/15 gates.
+- Two live impact runs pass 6/6 gates and match their versioned references.
+
+Judges can test the product without rebuilding it at
+https://openaihack.vercel.app/?submission=public and inspect the correction
+benchmark at
+https://openaihack.vercel.app/?case=cl-correction-demo&submission=public.
+The hosted deployment cannot inherit a local ChatGPT login, so it returns the
+validated deterministic fallback when Codex is unavailable. Live GPT-5.6/Codex
+testing uses the documented local plugin path.
 
 ## Codex feedback Session ID
 

@@ -1,0 +1,77 @@
+[
+  {
+    "spokenText": "Companies want agents to reason across fragmented tender records. But a hallucination, a superseded source, or an unauthorized inference cannot become a business decision. TenderGraph lets GPT five point six reason while evidence, authority, claims, changes, and human approval remain separate and verifiable.",
+    "captions": [
+      "Companies want agents to reason across fragmented tender records.",
+      "But a hallucination, a superseded source, or an unauthorized inference",
+      "cannot become a business decision.",
+      "TenderGraph lets GPT-5.6 reason.",
+      "Evidence, authority, claims, changes, and human approval remain separate and verifiable."
+    ]
+  },
+  {
+    "spokenText": "This goes beyond summarization. Every answer is assembled from promoted claims bound to exact evidence. The inspector exposes source, page, quotation, parser, authority, URL, and hash, while preserving a critical boundary: a commission recommendation is not a signed contract.",
+    "captions": [
+      "This goes beyond summarization.",
+      "Every answer is assembled from promoted claims bound to exact evidence.",
+      "The inspector exposes source, page, quotation, parser, authority, URL, and hash.",
+      "A commission recommendation is not a signed contract."
+    ]
+  },
+  {
+    "spokenText": "Here the question runs through a ChatGPT-authenticated Codex session without an API key. GPT five point six composes only from admitted claims. The trace retains the model and Session ID; fifteen code-owned gates reject invention, evidence swaps, scope contamination, leakage, and incomplete output.",
+    "captions": [
+      "The question runs through a ChatGPT-authenticated Codex session without an API key.",
+      "GPT-5.6 composes only from admitted claims.",
+      "The trace retains the model and Session ID.",
+      "Fifteen code-owned gates reject invention, evidence swaps, and scope contamination.",
+      "They also reject leakage and incomplete output."
+    ]
+  },
+  {
+    "spokenText": "I attach the official PDF. TenderGraph extracts eight hashed anchors without granting authority. Codex compares a later public selection record with every active claim and finds one corroboration. Six independent gates validate scope, evidence, action semantics, and shadow authority. Nothing changes before human review.",
+    "captions": [
+      "I attach the official PDF.",
+      "TenderGraph extracts eight hashed anchors without granting authority.",
+      "Codex compares a later public record with every active claim and finds one corroboration.",
+      "Six independent gates validate scope, evidence, action semantics, and shadow authority.",
+      "Nothing changes before human review."
+    ]
+  },
+  {
+    "spokenText": "A later corrective resolution is harder. TenderGraph finds two supersessions: the original winner and loss explanation change, while the award rule stays stable. The result matches the versioned reference and cannot promote itself into official truth.",
+    "captions": [
+      "A later corrective resolution is harder.",
+      "The original winner and loss explanation change, while the award rule stays stable.",
+      "The result matches the versioned reference and cannot promote itself into official truth."
+    ]
+  },
+  {
+    "spokenText": "This is a decision graph, not generic RAG: versioned sources, evidence dependencies, reviewed claims, and explicit supersession. The same contracts already run across Chilean, European, and UK tender structures and common procurement formats.",
+    "captions": [
+      "This is a decision graph, not generic RAG.",
+      "It connects versioned sources, evidence dependencies, and reviewed claims.",
+      "It also records explicit supersession.",
+      "The same contracts run across Chilean, European, and UK tender structures",
+      "and common procurement formats."
+    ]
+  },
+  {
+    "spokenText": "The enforcement is measured: forty-four tests, twenty-three golden scenarios, fifteen composition gates, six impact gates, and zero of eight injected faults admitted. This capture retains three fresh Codex Session IDs.",
+    "captions": [
+      "The enforcement is measured: 44 tests and 23 golden scenarios.",
+      "It includes 15 composition gates and 6 impact gates.",
+      "The harness admitted 0 of 8 injected faults.",
+      "This capture retains three fresh Codex Session IDs."
+    ]
+  },
+  {
+    "spokenText": "Codex accelerated implementation, verification, testing, and this redesign. TenderGraph does not merely answer procurement questions. It controls what AI is allowed to conclude and how those conclusions may change when evidence changes. GPT five point six can reason. It cannot become authority.",
+    "captions": [
+      "Codex accelerated implementation, verification, testing, and this redesign.",
+      "TenderGraph controls what AI is allowed to conclude",
+      "and how those conclusions may change when evidence changes.",
+      "GPT-5.6 can reason. It cannot become authority."
+    ]
+  }
+]

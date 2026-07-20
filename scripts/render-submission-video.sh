@@ -11,6 +11,8 @@ CAPTURE_VIDEO="${CAPTURE_VIDEO:-$CAPTURE_DIR/chat-first-system.webm}"
 PIPER_PYTHON="${PIPER_PYTHON:-/tmp/tendergraph-piper-venv/bin/python}"
 VOICE_MODEL="${VOICE_MODEL:-/tmp/tendergraph-video-tools/en_US-lessac-medium.onnx}"
 FINAL_VIDEO="${VIDEO_OUTPUT:-$ROOT_DIR/public/tendergraph-build-week-chat-first-demo.mp4}"
+NARRATION_SCRIPT="$ROOT_DIR/scripts/video-narration.json"
+FINAL_SUBTITLES="${SUBTITLE_OUTPUT:-$WORK_DIR/tendergraph-build-week-chat-first-demo.en.srt}"
 
 for command in ffmpeg ffprobe magick node; do
   command -v "$command" >/dev/null || {
@@ -22,6 +24,10 @@ done
 if [[ ! -x "$PIPER_PYTHON" || ! -f "$VOICE_MODEL" ]]; then
   echo "Piper 1.4 and en_US-lessac-medium are required." >&2
   echo "Set PIPER_PYTHON and VOICE_MODEL to local paths." >&2
+  exit 1
+fi
+if [[ ! -s "$NARRATION_SCRIPT" ]]; then
+  echo "Missing narration contract: $NARRATION_SCRIPT" >&2
   exit 1
 fi
 
@@ -71,7 +77,7 @@ commit_four="$(git -C "$ROOT_DIR" log -4 --date=short --format='%h  %ad  %s' | s
 commit_five="$(git -C "$ROOT_DIR" log -5 --date=short --format='%h  %ad  %s' | sed -n '5p')"
 
 rm -rf "$WORK_DIR"
-mkdir -p "$WORK_DIR" "$OUTPUT_DIR" "$(dirname "$FINAL_VIDEO")"
+mkdir -p "$WORK_DIR" "$OUTPUT_DIR" "$(dirname "$FINAL_VIDEO")" "$(dirname "$FINAL_SUBTITLES")"
 
 magick -size 1920x1080 xc:'#f5f7f6' \
   -fill '#071411' -draw 'rectangle 0,0 310,1080' \
@@ -116,8 +122,8 @@ magick -size 1920x1080 xc:'#f5f7f6' \
   -annotate +46+82 'TenderGraph' \
   -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 20 -fill '#89a098' \
   -annotate +46+125 'WHY THIS CAN WIN' \
-  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 55 -fill '#151a18' \
-  -annotate +380+115 'Frontier reasoning with operational control' \
+  -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 51 -fill '#151a18' \
+  -annotate +380+115 'GPT-5.6 can reason. It cannot become authority.' \
   -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 25 -fill '#087a4d' \
   -annotate +390+238 'TECHNOLOGICAL IMPLEMENTATION' \
   -annotate +1050+238 'COMPLETE PRODUCT DESIGN' \
@@ -130,8 +136,8 @@ magick -size 1920x1080 xc:'#f5f7f6' \
   -annotate +1050+314 'document ingestion, diffs, and trace.' \
   -annotate +390+527 'Every jurisdiction publishes changing' \
   -annotate +390+561 'tender documents and award records.' \
-  -annotate +1050+527 'A procurement decision-state compiler,' \
-  -annotate +1050+561 'not another document chatbot.' \
+  -annotate +1050+527 'Controls what AI may conclude and' \
+  -annotate +1050+561 'how conclusions change with evidence.' \
   -stroke '#dce2df' -strokewidth 2 \
   -draw 'line 380,385 1580,385' -draw 'line 380,635 1580,635' \
   -stroke none -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 26 -fill '#151a18' \
@@ -146,16 +152,15 @@ magick -size 1920x1080 xc:'#f5f7f6' \
   -annotate +380+1000 'Evidence changes. Claims are re-evaluated. Human authority remains explicit.' \
   "$WORK_DIR/closing.png"
 
-declare -a NARRATION=(
-  "Procurement decisions are scattered across notices, evaluation tables, supplier files, and later amendments. Teams must reconstruct who was recommended, why others lost, and what changed. TenderGraph compiles that fragmented record into an auditable decision state with Codex and GPT five point six."
-  "This goes beyond summarization. Every answer is assembled from promoted claims bound to exact evidence. The inspector exposes source, page, quotation, parser, authority, URL, and hash, while preserving a critical boundary: a commission recommendation is not a signed contract."
-  "Here the question runs through a ChatGPT-authenticated Codex session without an API key. GPT five point six composes only from admitted claims. The trace retains the model and Session ID; fifteen code-owned gates reject invention, evidence swaps, scope contamination, leakage, and incomplete output."
-  "I attach the official PDF. TenderGraph extracts eight hashed anchors without granting authority. Codex compares a later public selection record with every active claim and finds one corroboration. Six independent gates validate scope, evidence, action semantics, and shadow authority. Nothing changes before human review."
-  "A later corrective resolution is harder. TenderGraph finds two supersessions: the original winner and loss explanation change, while the award rule stays stable. The result matches the versioned reference and cannot promote itself into official truth."
-  "This is a decision graph, not generic RAG: versioned sources, evidence dependencies, reviewed claims, and explicit supersession. The same contracts already run across Chilean, European, and UK tender structures and common procurement formats."
-  "The enforcement is measured: forty-four tests, twenty-three golden scenarios, fifteen composition gates, six impact gates, and zero of eight injected faults admitted. This capture retains three fresh Codex Session IDs."
-  "Codex accelerated implementation, verification, testing, and this redesign. TenderGraph is deliberately different: not a chatbot that summarizes a tender, but an auditable decision compiler showing what changed, why, and which evidence earns trust."
+mapfile -t NARRATION < <(
+  node -e \
+    'const x=require(process.argv[1]);for(const scene of x)console.log(scene.spokenText)' \
+    "$NARRATION_SCRIPT"
 )
+if [[ "${#NARRATION[@]}" -ne 8 ]]; then
+  echo "Expected eight narration scenes, received ${#NARRATION[@]}" >&2
+  exit 1
+fi
 
 declare -a SCENE_KIND=(
   "clip"
@@ -213,6 +218,8 @@ declare -a SCENE_FRAME_FILTER=(
 )
 
 segment_files=()
+durations_file="$WORK_DIR/scene-durations.txt"
+: >"$durations_file"
 for index in "${!NARRATION[@]}"; do
   number="$(printf '%02d' "$((index + 1))")"
   audio="$WORK_DIR/$number.wav"
@@ -224,6 +231,7 @@ for index in "${!NARRATION[@]}"; do
     -- "${NARRATION[$index]}" >/dev/null
   audio_duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$audio")"
   padded_duration="$(awk -v value="$audio_duration" 'BEGIN { printf "%.3f", value + 0.55 }')"
+  printf '%s\n' "$padded_duration" >>"$durations_file"
   frames="$(awk -v value="$padded_duration" 'BEGIN { printf "%d", (value * 30) + 1 }')"
 
   if [[ "${SCENE_KIND[$index]}" == "clip" ]]; then
@@ -257,6 +265,7 @@ for segment in "${segment_files[@]}"; do
   printf "file '%s'\n" "$segment" >>"$concat_file"
 done
 
+base_video="$WORK_DIR/tendergraph-without-subtitles.mp4"
 ffmpeg -hide_banner -loglevel error -y \
   -f concat -safe 0 -i "$concat_file" \
   -c:v libx264 -preset medium -crf 19 -pix_fmt yuv420p \
@@ -264,16 +273,37 @@ ffmpeg -hide_banner -loglevel error -y \
   -c:a aac -b:a 160k -ar 48000 \
   -movflags +faststart \
   -metadata title='TenderGraph - Auditable Procurement Decision Compiler' \
+  "$base_video"
+
+node "$ROOT_DIR/scripts/generate-video-subtitles.mjs" \
+  --script "$NARRATION_SCRIPT" \
+  --durations "$durations_file" \
+  --output "$FINAL_SUBTITLES"
+
+ffmpeg -hide_banner -loglevel error -y \
+  -i "$base_video" \
+  -filter_complex \
+    "[0:v]subtitles=filename='$FINAL_SUBTITLES':fontsdir=/usr/share/fonts/noto:force_style='FontName=Noto Sans,FontSize=15,PrimaryColour=&H00FFFFFF,OutlineColour=&H00202020,BackColour=&HAA000000,BorderStyle=3,Outline=1,Shadow=0,Alignment=2,MarginV=28'[v]" \
+  -map '[v]' -map 0:a:0 \
+  -c:v libx264 -preset medium -crf 19 -pix_fmt yuv420p \
+  -c:a copy \
+  -movflags +faststart \
+  -metadata title='TenderGraph - Auditable Procurement Decision Compiler' \
   "$FINAL_VIDEO"
 
 duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$FINAL_VIDEO")"
 audio_streams="$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$FINAL_VIDEO" | wc -l)"
+subtitle_streams="$(ffprobe -v error -select_streams s -show_entries stream=index -of csv=p=0 "$FINAL_VIDEO" | wc -l)"
 if ! awk -v value="$duration" 'BEGIN { exit !(value > 0 && value < 180) }'; then
   echo "Video duration is outside the required range: $duration seconds" >&2
   exit 1
 fi
 if [[ "$audio_streams" -lt 1 ]]; then
   echo "The rendered video has no audio stream" >&2
+  exit 1
+fi
+if [[ "$subtitle_streams" -ne 0 ]]; then
+  echo "The rendered video contains a selectable subtitle stream in addition to burned captions" >&2
   exit 1
 fi
 
@@ -286,6 +316,7 @@ cp "$CAPTURE_DIR/correction-impact.png" "$OUTPUT_DIR/chat-first-correction-impac
 cp "$WORK_DIR/proof.png" "$OUTPUT_DIR/chat-first-verification.png"
 cp "$WORK_DIR/closing.png" "$OUTPUT_DIR/chat-first-closing.png"
 cp "$CAPTURE_MANIFEST" "$OUTPUT_DIR/chat-first-capture.json"
+cp "$FINAL_SUBTITLES" "$OUTPUT_DIR/tendergraph-build-week-chat-first-demo.en.srt"
 
-printf 'Rendered %s seconds with %s audio stream(s): %s\n' \
+printf 'Rendered %s seconds with %s audio stream(s), burned captions, and sidecar subtitles: %s\n' \
   "$duration" "$audio_streams" "$FINAL_VIDEO"

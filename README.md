@@ -6,6 +6,8 @@ The model composes answers. It does not decide which sources, claims, policies, 
 
 **Public demo:** https://openaihack.vercel.app
 
+**Demo video:** https://www.youtube.com/watch?v=G0XekMloa4c
+
 **Repository:** https://github.com/Amawta-labs/tendergraph
 
 **Supersession story:** https://openaihack.vercel.app/?case=cl-correction-demo

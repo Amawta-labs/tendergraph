@@ -1,9 +1,9 @@
 {
   "contract": "tendergraph-eval.v1",
-  "createdAt": "2026-07-18T05:11:15.231Z",
+  "createdAt": "2026-07-20T18:14:40.668Z",
   "scenarios": 23,
   "passed": 23,
   "failed": 0,
-  "maxDeterministicRuntimeMs": 2,
+  "maxDeterministicRuntimeMs": 3,
   "failures": []
 }

@@ -4,7 +4,7 @@ This file contains the remaining account-bound steps after the verified local
 freeze and Vercel deployment. It does not mark an external action complete
 before its confirmation exists.
 
-## Verified chat-first video freeze
+## Prior deployed chat-first video freeze
 
 - Deployed video freeze: `6647ba992484e51639bf5a15d041310c81d57b36`
 - Deployment ID: `dpl_EpiU73rtcFag2x83z1VEnSuhKtVH`
@@ -24,6 +24,24 @@ before its confirmation exists.
 - `/feedback` state: **submitted with logs**; receipt preserved at
   `artifacts/submission/codex-feedback.json`.
 
+## Final public video
+
+- File: `public/tendergraph-build-week-chat-first-demo.mp4`
+- YouTube: https://www.youtube.com/watch?v=G0XekMloa4c
+- Duration: **2:20.133**
+- Video SHA-256:
+  `ecf41f57aee84332a2ead51d21872567edfed770d9389b1bb57fad25c4930e79`
+- English subtitle sidecar:
+  `artifacts/submission/tendergraph-build-week-chat-first-demo.en.srt`
+- Subtitle SHA-256:
+  `8a2ab4e0bfd1b918aae773c95c0d9958b1c246ec8ea74a58b43b05e34c3b7c84`
+- Captions: burned into the picture; the MP4 has no selectable subtitle track
+  that could duplicate them. Use the sidecar only for the YouTube caption upload.
+- Runtime evidence: fresh composition and two impact-discovery Codex sessions
+  preserved in `artifacts/submission/chat-first-capture.json`.
+- YouTube publication: **public and playable while signed out**.
+- Production asset deployment: **pending final repository sync**.
+
 ## GitHub publication
 
 - Repository: https://github.com/Amawta-labs/tendergraph
@@ -34,10 +52,10 @@ before its confirmation exists.
 
 ## YouTube publication
 
-Upload `public/tendergraph-build-week-chat-first-demo.mp4` using the title, description,
-chapters, thumbnail, and settings in `docs/YOUTUBE_UPLOAD.md`. Verify that the
-video is public and playable while signed out, then replace
-`TODO_PUBLIC_YOUTUBE_URL` in `docs/DEVPOST_SUBMISSION.md`.
+- Public video: https://www.youtube.com/watch?v=G0XekMloa4c
+- Verification: YouTube oEmbed metadata and signed-out HTTP access confirmed on
+  July 20, 2026.
+- Upload copy and settings: `docs/YOUTUBE_UPLOAD.md`.
 
 ## Codex feedback
 
