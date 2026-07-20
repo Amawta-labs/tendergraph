@@ -25,15 +25,15 @@ share the same document-heavy decision pattern.
 The supplier problem is not a shortage of tender portals. OECD research
 identifies complex procedures, administrative burden, extensive documentation,
 limited information, and weak feedback as persistent barriers, especially for
-smaller suppliers. A bidder can find an opportunity and still lack a reliable
-answer to the commercially important questions:
+smaller suppliers. A bidder can find an opportunity and still lack reliable
+answers to the commercially important questions:
 
-1. Who was actually recommended, at which decision stage?
-2. Why did each competing offer lose?
-3. Which document and exact passage support each conclusion?
-4. Did a later clarification, score correction, or resolution change the
-   decision?
-5. Which prior conclusions remain valid?
+1. Does this opportunity fit the company well enough to invest bid resources?
+2. Which requirements are current, covered, changed, or still incomplete?
+3. What must each person prepare, and which tasks are blocked by dependencies?
+4. Did a later clarification or amendment invalidate existing work?
+5. Is the package compliant, and who is authorized to approve or submit it?
+6. What did the final outcome teach the team for the next opportunity?
 
 TenderGraph is designed around those questions.
 
@@ -56,13 +56,17 @@ sector sales team. The working product spans the full operating loop:
   silently rewriting unrelated conclusions.
 
 The current Build Week system includes a visibly synthetic active-bid benchmark
-covering all seven stages and a hash-verified public outcome case. It ingests PDF, DOCX, HTML, JSON, CSV, Markdown,
-and text into hashed, addressable evidence, then asks GPT-5.6/Codex to discover
-which active claims may be corroborated, invalidated, superseded, or require
-review. The proposal is validated in code and remains in shadow mode until a
-human decision. This is extensible multi-format ingestion, not a claim of
-universal connector coverage. The next expansion is continuous monitoring,
-licensed jurisdiction connectors, organization-specific review policies,
+covering all seven stages and a hash-verified public outcome case. It ranks
+three opportunities, requires human qualification, builds a dependency-aware
+bid plan, keeps unresolved compliance blocked, and evaluates a shortened
+delivery window against all five requirements: one changes and four remain
+valid. It also ingests PDF, DOCX, HTML, JSON, CSV, Markdown, and text into
+hashed, addressable evidence, then asks GPT-5.6/Codex to discover which active
+claims may be corroborated, invalidated, superseded, or require review. The
+proposal is validated in code and remains in shadow mode until a human
+decision. This is extensible multi-format ingestion, not a claim of universal
+connector coverage. The next expansion is continuous monitoring, licensed
+jurisdiction connectors, organization-specific review policies,
 portfolio-level competitor intelligence, OCR, and private RFPs.
 
 ## Why this is a frontier system
@@ -192,6 +196,8 @@ case, and product experience.
 The moat is not a prompt or exclusive access to a model. It is the accumulated,
 versioned decision graph:
 
+- opportunity histories and company-specific qualification decisions;
+- current requirements, task dependencies, amendments, and approvals;
 - jurisdiction-specific source and policy contracts;
 - claim-evidence histories across openings, awards, and corrections;
 - organization-specific review decisions;

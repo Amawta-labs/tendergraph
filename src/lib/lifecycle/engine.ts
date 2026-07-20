@@ -245,36 +245,83 @@ function buildStages(
   ];
 }
 
-function validateWorkspace(
+export function validateLifecycleWorkspace(
   workspace: Omit<LifecycleWorkspace, "validationResults">,
 ): LifecycleWorkspace["validationResults"] {
   const evidenceIds = new Set(workspace.evidence.map((item) => item.id));
+  const currentEvidenceIds = new Set(
+    workspace.evidence.filter((item) => item.current).map((item) => item.id),
+  );
   const requirementIds = new Set(
     workspace.requirements.map((requirement) => requirement.id),
   );
   const taskIds = new Set(workspace.bidTasks.map((task) => task.id));
+  const tasksById = new Map(workspace.bidTasks.map((task) => [task.id, task]));
+  const qualificationApproved =
+    workspace.approvals.find((approval) => approval.id === "qualification")
+      ?.status === "approved";
   const validTaskDependencies = workspace.bidTasks.every((task) =>
     task.dependsOn.every(
       (dependency) =>
         dependency === "approval-qualification" || taskIds.has(dependency),
     ),
   );
+  const runnableTasksHaveSatisfiedDependencies = workspace.bidTasks.every(
+    (task) =>
+      task.status === "blocked" ||
+      task.dependsOn.every((dependency) =>
+        dependency === "approval-qualification"
+          ? qualificationApproved
+          : tasksById.get(dependency)?.status === "complete",
+      ),
+  );
   const changed = workspace.requirements.filter(
     (requirement) => requirement.status === "changed",
   );
+  const sourceGroups = Map.groupBy(
+    workspace.evidence,
+    (item) => item.sourceId,
+  );
+  const validChangePartitions = workspace.changes.every((change) => {
+    const combined = [
+      ...change.affectedRequirementIds,
+      ...change.unchangedRequirementIds,
+    ];
+    const partition = new Set(combined);
+    return (
+      combined.length === partition.size &&
+      partition.size === requirementIds.size &&
+      [...requirementIds].every((id) => partition.has(id)) &&
+      change.affectedRequirementIds.every(
+        (id) =>
+          workspace.requirements.find((requirement) => requirement.id === id)
+            ?.status === "changed",
+      ) &&
+      change.unchangedRequirementIds.every(
+        (id) =>
+          workspace.requirements.find((requirement) => requirement.id === id)
+            ?.status !== "changed",
+      )
+    );
+  });
 
   return [
     {
       gate: "current_source_set",
       passed:
         workspace.evidence.some((item) => item.current) &&
-        workspace.evidence.every((item) => item.contentHash.length === 64),
+        workspace.evidence.every((item) => item.contentHash.length === 64) &&
+        [...sourceGroups.values()].every(
+          (versions) => versions.filter((item) => item.current).length === 1,
+        ),
       details: "Current and superseded document versions remain explicit.",
     },
     {
       gate: "requirement_evidence_binding",
-      passed: workspace.requirements.every((requirement) =>
-        requirement.evidenceIds.every((id) => evidenceIds.has(id)),
+      passed: workspace.requirements.every(
+        (requirement) =>
+          requirement.evidenceIds.every((id) => evidenceIds.has(id)) &&
+          requirement.evidenceIds.some((id) => currentEvidenceIds.has(id)),
       ),
       details: "Every requirement resolves only to registered evidence.",
     },
@@ -293,6 +340,7 @@ function validateWorkspace(
       gate: "task_dependency_graph",
       passed:
         validTaskDependencies &&
+        runnableTasksHaveSatisfiedDependencies &&
         workspace.bidTasks.every((task) =>
           task.requirementIds.every((id) => requirementIds.has(id)),
         ),
@@ -300,11 +348,7 @@ function validateWorkspace(
     },
     {
       gate: "change_impact_completeness",
-      passed:
-        changed.length > 0 &&
-        workspace.changes.every((change) =>
-          change.affectedRequirementIds.every((id) => requirementIds.has(id)),
-        ),
+      passed: changed.length > 0 && validChangePartitions,
       details: "The amendment identifies affected and unchanged requirements.",
     },
     {
@@ -430,6 +474,6 @@ export function runLifecycleWorkspace(input: {
 
   return LifecycleWorkspaceSchema.parse({
     ...withoutValidation,
-    validationResults: validateWorkspace(withoutValidation),
+    validationResults: validateLifecycleWorkspace(withoutValidation),
   });
 }

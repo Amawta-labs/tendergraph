@@ -27,9 +27,15 @@ Public procurement represented [12.7% of OECD GDP and 29.9% of total government 
 The current release proves the complete workflow through a bounded synthetic
 active-bid workspace and proves the underlying evidence layer through a
 hash-verified public Chilean evaluation. The synthetic workspace ranks
-opportunities, gates qualification, reconstructs requirement readiness,
-creates a dependency-aware bid plan, blocks incomplete compliance, monitors
-amendments, and reserves submission for a human.
+three opportunities as select, review, or pass; gates qualification;
+reconstructs requirement readiness; creates a dependency-aware bid plan;
+blocks incomplete compliance; monitors amendments; and reserves submission for
+a human.
+
+The benchmark shortens the delivery window from 15 to 10 days. TenderGraph
+classifies one requirement as changed and four as unchanged, replans the
+affected tasks, and keeps compliance blocked until the delivery and certificate
+issues are reviewed.
 
 The default case is a hash-verified public Chilean evaluation. TenderGraph identifies the commission's recommendation, compares evaluated scores, explains why the other suppliers were not recommended, and preserves the source limitation that the evaluation report is not proof of a signed contract.
 
@@ -39,7 +45,10 @@ A public event demonstrates one corroboration and five unchanged classifications
 
 ## Why this is frontier
 
-An older-model application could summarize a PDF. TenderGraph's unit of work is a controlled decision-state transition across versioned sources, evidence, reviewed claims, GPT-5.6/Codex composition, code-owned admission gates, and an audit trace.
+An older-model application could summarize a PDF. TenderGraph's unit of work is
+a controlled operational lifecycle: opportunity qualification, current
+requirements, task dependencies, compliance state, amendment impact, human
+approvals, outcome evidence, and a complete audit trace.
 
 [OpenAI's agent guidance](https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/) identifies complex decisions, difficult-to-maintain rules, and heavy unstructured data as workflows where agents add value, while emphasizing guardrails and human intervention. TenderGraph concentrates model freedom in semantic synthesis and removes model authority where errors create exposure. New evidence can corroborate, invalidate, or supersede a claim; unrelated conclusions remain explicit and stable.
 
@@ -84,6 +93,8 @@ coverage or autonomous submission.
 - A working seven-stage tender operating workspace with ranked opportunities,
   human qualification, requirement readiness, bid dependencies, compliance
   blockers, amendment monitoring, and outcome learning.
+- A complete amendment partition with one changed requirement, four explicitly
+  unchanged requirements, and affected bid tasks reopened.
 - A public evaluation case and synthetic portability/correction benchmarks.
 - A ChatGPT-authenticated Codex runtime path that does not require an API key.
 - A distributable TenderGraph Codex plugin and `$tendergraph-analyze` skill.

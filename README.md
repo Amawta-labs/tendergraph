@@ -123,6 +123,11 @@ npm run build
 
 The evaluation command executes the versioned scenarios in [`evals/scenarios.json`](evals/scenarios.json). The unit suite separately proves that missing claims, wrong routing, incomplete traces, answer omissions, internal leakage, unknown evidence, broken source links, and excess latency are detected.
 
+The submitted lifecycle release passes 49/49 unit and adversarial tests. Its
+six lifecycle gates additionally cover current-source selection,
+requirement-to-evidence binding, complete requirement classification, valid
+task dependencies, complete amendment impact, and human-only submission.
+
 `npm run eval:codex` performs two representative live Codex runs and writes the session-bearing report to `artifacts/evals/codex-smoke.json`. `npm run eval:live` exercises the optional Responses API adapter and requires separately billed `OPENAI_API_KEY`. `npm run eval:ablation` compares code-owned gates with schema-only admission; it is a credential-free enforcement experiment, not a model-quality or prompt-adherence experiment.
 
 `npm run eval:impact` runs two live GPT-5.6/Codex impact scenarios: independent corroboration and a corrective resolution with two claim supersessions. Both must preserve shadow mode, pass 6/6 code gates, retain a Codex Session ID, and match the versioned reference impact exactly.

@@ -2,6 +2,11 @@
 
 ## Agentic Procurement Intelligence for Bidders
 
+> Historical baseline: this document records the original preproject scope.
+> The Build Week implementation now includes the seven-stage agentic tender
+> lifecycle described in `README.md` and `docs/DEVPOST_FORM_COPY.md`, while
+> retaining opening and award analysis as its evidence-backed outcome module.
+
 | Field | Value |
 | --- | --- |
 | Document | Product, technical, evaluation, and hackathon pre-project |

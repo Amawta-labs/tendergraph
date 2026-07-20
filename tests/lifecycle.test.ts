@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { runLifecycleWorkspace } from "../src/lib/lifecycle/engine";
+import {
+  runLifecycleWorkspace,
+  validateLifecycleWorkspace,
+} from "../src/lib/lifecycle/engine";
 import { LifecycleWorkspaceSchema } from "../src/lib/lifecycle/schemas";
 
 describe("agentic tender lifecycle", () => {
@@ -19,6 +22,16 @@ describe("agentic tender lifecycle", () => {
     expect(workspace.evidence.some((item) => !item.current)).toBe(true);
     expect(workspace.evidence.some((item) => item.current)).toBe(true);
     expect(workspace.validationResults.every((gate) => gate.passed)).toBe(true);
+
+    const { validationResults: _, ...candidate } = structuredClone(workspace);
+    candidate.evidence.find(
+      (item) => item.id === "evidence-requirements-v1",
+    )!.current = true;
+    expect(
+      validateLifecycleWorkspace(candidate).find(
+        (gate) => gate.gate === "current_source_set",
+      )?.passed,
+    ).toBe(false);
   });
 
   it("keeps bid preparation blocked before human qualification approval", () => {
@@ -63,6 +76,16 @@ describe("agentic tender lifecycle", () => {
         (task) => task.id === "task-technical-response",
       )?.status,
     ).toBe("in_progress");
+
+    const { validationResults: _, ...candidate } = structuredClone(workspace);
+    candidate.approvals.find(
+      (approval) => approval.id === "qualification",
+    )!.status = "ready";
+    expect(
+      validateLifecycleWorkspace(candidate).find(
+        (gate) => gate.gate === "task_dependency_graph",
+      )?.passed,
+    ).toBe(false);
   });
 
   it("preserves a complete requirement partition when an amendment changes one item", () => {
@@ -89,6 +112,14 @@ describe("agentic tender lifecycle", () => {
         currentValue: "10 calendar days",
       }),
     );
+
+    const { validationResults: _, ...candidate } = structuredClone(workspace);
+    candidate.changes[0].unchangedRequirementIds.pop();
+    expect(
+      validateLifecycleWorkspace(candidate).find(
+        (gate) => gate.gate === "change_impact_completeness",
+      )?.passed,
+    ).toBe(false);
   });
 
   it("never grants agents submission authority", () => {

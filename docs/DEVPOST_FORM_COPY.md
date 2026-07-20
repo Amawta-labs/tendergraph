@@ -104,200 +104,265 @@ as persistent supplier barriers.
 
 ### Inspiration
 
-Our goal is to let companies compete in tenders with agents, not merely ask
-questions about procurement PDFs. That requires more than autonomous prose.
-Before an agent prepares or monitors a bid, it must know which documents are
-current, which requirements changed, which conclusions remain supported, and
-who is authorized to approve the next action.
+We were asked to examine a tender at the opening stage. By the time we
+completed the review, Chile's public procurement portal already showed the
+procedure as awarded.
 
-TenderGraph grew out of a real procurement analysis project in Chile. We were
-asked to examine a tender at the opening stage. By the time we completed the
-review, Chile's public procurement portal already showed the procedure as
-awarded.
+The documents were still relevant, but the procurement process had advanced
+while our analysis remained tied to an earlier stage. That exposed a broader
+problem: bidder teams work across opportunities, requirements, spreadsheets,
+attachments, amendments, deadlines, and outcomes, but the state of a tender
+keeps changing while the work is underway.
 
-The documents were still relevant, but the procurement process had moved to a
-new decision state while our analysis remained tied to the earlier one. That
-was a narrow instance of a broader pattern: procurement teams build conclusions
-from a valid set of records, and later publications, amendments, or corrections
-change what those conclusions mean.
+A new opportunity must first be qualified. Requirements must be traced to the
+current documents. People need to know what to prepare, what remains missing,
+and whether the bid is still commercially viable. An amendment can then alter
+one requirement, invalidate existing work, or create a new compliance blocker
+days before submission.
 
-The highest-risk version of that pattern is a corrective resolution. A team has
-already briefed leadership on an award recommendation. A correction then
-arrives, but conventional document assistants do not enforce which prior
-conclusions must change, which remain supported by the admitted evidence, or
-who is authorized to approve the update.
+Most teams manage this lifecycle across disconnected portals, email,
+spreadsheets, shared folders, and document assistants that only answer
+questions about the file currently in front of them.
 
 The scale is substantial. Public procurement represented
 [12.7% of OECD GDP and 29.9% of government expenditure in
-2023](https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/size-of-public-procurement_6979cd47.html),
-yet opening, evaluation, award, and correction records remain spread
-across portals, spreadsheets, PDFs, and attachments.
+2023](https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/size-of-public-procurement_6979cd47.html).
 
+The
 [Open Contracting Data Standard](https://standard.open-contracting.org/latest/en/guidance/map/amendments/)
-models procurement as a sequence of releases, updates, and amendments. We built
-TenderGraph to make that changing decision state visible and reviewable,
-without allowing a newly generated answer to silently replace an approved
-conclusion.
+models procurement as a sequence of releases, updates, and amendments. We
+built TenderGraph to coordinate that changing lifecycle while keeping
+evidence, approvals, and submission authority explicit.
 
 ### What it does
 
-TenderGraph coordinates seven bounded agents across the bidding lifecycle:
-opportunity discovery, qualification, requirements, bid preparation,
-compliance, monitoring, and outcome learning.
+TenderGraph is an agentic tender operating system for bidder teams.
 
-The default workspace contains a clearly labelled synthetic opportunity inbox.
-It ranks three opportunities, selects a regional clinic tender, and exposes its
-fit score, deadline, blockers, and source state. A human qualification approval
-unlocks the dependency-aware bid plan. The requirements agent separates covered
-items from blockers, the compliance agent refuses approval while evidence is
-missing, and the monitoring agent classifies a delivery amendment against
-every active requirement. Submission authority remains human-only.
+It coordinates seven stages of the bidding lifecycle:
 
-This is a bounded working release, not a claim of universal live discovery.
-The opportunity inbox and active-bid case are synthetic so the complete flow is
-reproducible without private bidder data. Licensed live connectors remain a
-next step.
+- opportunity discovery;
+- qualification;
+- requirements analysis;
+- bid preparation;
+- compliance;
+- amendment monitoring;
+- outcome learning.
 
-The outcome module is grounded in a hash-verified public Chilean evaluation.
-TenderGraph reconstructs who was recommended, why competitors were not
-recommended, and which exact source passage supports each reviewed claim.
+The default workspace begins with three clearly labeled synthetic
+opportunities. TenderGraph ranks them using fit scores, highlights blockers,
+and recommends whether each opportunity should be selected, reviewed, or
+passed.
 
-The default case is a hash-verified public Chilean evaluation. TenderGraph
-compares the evaluated scores, identifies the commission's recommendation, and
-preserves an essential limitation: an evaluation report is not proof of a
-signed contract.
+Selecting an opportunity does not automatically commit team resources. A bid
+manager must approve qualification before the preparation plan is unlocked.
 
-When new evidence arrives, TenderGraph checks every active claim instead of
-rewriting the whole answer. GPT-5.6/Codex proposes corroboration, invalidation,
-supersession, review, or an explicit unchanged classification. Six code-owned
-gates validate scope, partition completeness, evidence identity, action
-semantics, and shadow authority. Only a human can approve the proposed change.
+TenderGraph then organizes the current requirements, connects each one to
+versioned evidence, assigns readiness states, and generates a dependency-aware
+bid plan with responsible human owners. Requirements can be covered, changed,
+incomplete, or waiting for review.
 
-A clearly labeled synthetic correction benchmark makes this visible: two
-claims are superseded, one remains unchanged under the admitted evidence, and
-the complete before-and-after history remains inspectable.
+Compliance remains blocked while unresolved gaps exist. The final submission
+package can never be released by an agent; submission authority remains
+human-only.
 
-An older application could summarize a PDF. TenderGraph controls how a
-decision is allowed to change across versioned evidence. GPT-5.6 can reason
-over the record; it cannot become authority.
+When an amendment arrives, TenderGraph evaluates it against the complete
+requirement set. It identifies which requirements changed, which remain valid,
+which tasks must be reopened, and which compliance decisions require review.
+
+The current benchmark demonstrates this flow with a shortened delivery window.
+One requirement changes, four remain unchanged, affected tasks are replanned,
+and the submission stays blocked until the team resolves the new delivery and
+certificate issues.
+
+TenderGraph also includes a hash-verified public Chilean evaluation case. It
+reconstructs the commission's recommendation, compares evaluated scores,
+explains why other suppliers were not recommended, and links each reviewed
+claim to exact evidence. It preserves the source limitation that an evaluation
+recommendation is not proof of a signed contract.
+
+GPT-5.6 can reason, classify, compose, and propose actions. It cannot approve
+qualification, compliance, consequential claims, or final submission.
 
 ### How we built it
 
-TenderGraph is a Next.js and TypeScript workbench built around typed Zod
-contracts. Source manifests bind every artifact to a jurisdiction, procedure,
-lot, retrieval time, canonical URL, content hash, eligibility status, and
-runtime policy. Evidence records retain exact document locators, extracted
-text, parser identity, and evidence hashes. Consequential claims require a
-named human reviewer and review timestamp.
+TenderGraph is a Next.js and TypeScript application built around typed Zod
+contracts.
 
-The ingestion pipeline converts PDF, DOCX, HTML, JSON, CSV, Markdown, and text
-into hashed, addressable evidence without granting it claim authority. Codex
-then invokes GPT-5.6 Terra to compose from selected claims and evidence.
-Fifteen code-owned gates reject altered claims, evidence swaps, omissions,
-duplication, invalid sources, scope contamination, provenance failures,
-internal leakage, incomplete traces, and latency violations. Invalid output is
-discarded and replaced by deterministic safe composition.
+The lifecycle engine models opportunities, agent stages, current and
+superseded sources, requirements, bid tasks, approvals, amendments, compliance
+blockers, and submission authority.
 
-For evidence changes, GPT-5.6/Codex classifies the complete active-claim
-partition. Six additional gates validate the resulting shadow proposal before
-it can reach human review. This adopts the central lesson of
+Each source record includes its procedure, jurisdiction, version, current
+status, and content hash. Requirements remain connected to the exact evidence
+used to establish their current value. Bid tasks reference both requirements
+and upstream dependencies.
+
+Six lifecycle gates run in application code:
+
+- current source validation;
+- requirement-to-evidence binding;
+- complete requirement classification;
+- valid task dependencies;
+- complete amendment-impact coverage;
+- human-only submission authority.
+
+These gates prevent an agent from working from an obsolete document, inventing
+a requirement, omitting part of an amendment's impact, starting blocked tasks,
+or approving its own submission.
+
+The deeper evidence harness supports PDF, DOCX, HTML, JSON, CSV, Markdown, and
+plain text. It converts documents into hashed, addressable evidence records
+without granting them authority merely because they were ingested.
+
+Codex invokes GPT-5.6 Terra to compose answers from selected claims and
+evidence. Fifteen additional runtime gates reject altered claim text, evidence
+swaps, omissions, duplicated claims, invalid sources, scope contamination,
+provenance failures, internal leakage, incomplete traces, and latency
+violations.
+
+For evidence changes, GPT-5.6/Codex evaluates the complete active-claim set.
+Six impact gates validate scope, evidence identity, partition completeness,
+action semantics, and the rule that model proposals remain subject to human
+review.
+
+This work applies a central lesson from
 [*From Prompts to Contracts*](https://arxiv.org/abs/2607.08028): guarantees that
-matter must be owned and enforced by code, not merely requested in a prompt.
+matter should be enforced by application code rather than left as instructions
+inside a prompt.
 
-The new `tender-lifecycle.v1` contract connects seven stage agents to a shared
-versioned workspace. Six additional lifecycle gates validate current sources,
-requirement-to-evidence bindings, complete change partitions, task
-dependencies, amendment coverage, and human-only submission authority.
+Codex was also our development collaborator. It helped us:
 
-Codex was also our development collaborator. It helped map the research
-architecture into contracts, implement the harness and chat-first workbench,
-generate adversarial tests, verify the public case, diagnose serverless
-failures, run browser and deployment checks, and review the submission media.
-We retained the product and governance decisions.
+- translate the research architecture into procurement contracts;
+- implement the lifecycle engine and chat-first workspace;
+- build the evidence harness and validation gates;
+- generate adversarial tests;
+- verify the public Chilean case;
+- diagnose serverless deployment failures;
+- run browser, responsive, and production checks;
+- review the submission media and documentation.
 
-The workflow is also packaged as a Codex plugin and
-`$tendergraph-analyze` skill. The authenticated runtime uses Codex with GPT-5.6
-through the user's ChatGPT session and does not require an OpenAI API key.
+The product and governance decisions remained ours: the bidder-team audience,
+the seven-stage lifecycle, the public-versus-synthetic evidence boundary,
+mandatory approval for consequential actions, and permanent human authority
+over bid submission.
+
+The analysis workflow is also packaged as a Codex plugin and
+`$tendergraph-analyze` skill. The authenticated local runtime uses a
+ChatGPT-authenticated Codex session and does not require a separate OpenAI API
+key.
 
 ### Challenges we ran into
 
-The hardest problem was that schema-valid is not authority-valid. A model can
-produce valid JSON while altering claim text, citing the wrong evidence,
-omitting an affected dependency, or exposing internal metadata. We therefore
-validate semantic identity, provenance, completeness, and scope in code.
+The first challenge was expanding from document analysis into a coherent
+operational workflow.
 
-We also needed a real procurement case without overstating what its source
-proved. TenderGraph separates the hash-verified public evaluation from
-synthetic correction and portability benchmarks. The public result remains an
-evaluation recommendation, not a confirmed contract.
+A useful tender agent cannot simply summarize an opportunity. It must know
+whether the opportunity fits the company, which documents are current, what
+work is blocked, which requirements changed, and whether the organization has
+approved the next action.
 
-Deployment exposed failures that local tests missed: PDF geometry globals,
-PDF.js worker tracing, and read-only serverless storage. We added explicit
-canvas polyfills, output-file tracing, and request-scoped temporary storage,
-then reran the real PDF and impact workflows against production.
+We therefore modeled the lifecycle as connected stages rather than a set of
+unrelated AI features. Qualification approval unlocks preparation.
+Requirements drive tasks. Task dependencies drive readiness. Compliance blocks
+submission. Amendments can reopen earlier work.
+
+The second challenge was that schema-valid output was not authority-valid.
+
+A model can return valid JSON while changing claim text, citing evidence from
+the wrong source, omitting an affected requirement, duplicating a
+classification, or proposing an action it is not authorized to perform. We
+validate semantic identity, provenance, completeness, scope, and authority in
+code.
+
+We also needed to demonstrate an end-to-end bidding workflow without
+presenting fictional opportunities as live procurement records. The active-bid
+inbox is therefore clearly labeled as a reproducible synthetic benchmark. The
+public Chilean evaluation remains separate and hash-verified.
+
+Deployment exposed failures that local tests missed in PDF rendering, worker
+packaging, and serverless storage. We added the required canvas polyfills,
+output-file tracing, and request-scoped temporary storage, then reran the real
+ingestion and impact workflows against production.
 
 Finally, Vercel cannot inherit a developer's ChatGPT-authenticated Codex
-session. The hosted demo therefore uses a validated deterministic fallback
-when Codex is unavailable, while authenticated GPT-5.6 runs execute locally or
+session. The hosted application uses a validated deterministic fallback when
+Codex is unavailable, while authenticated GPT-5.6 runs execute locally or
 through the plugin.
 
 ### Accomplishments that we're proud of
 
-- In a controlled enforcement ablation, the full harness admitted 0/8 injected
-  faults while schema-only admission accepted 8/8.
-- A working seven-stage lifecycle turns three ranked opportunities into a
-  governed bid plan with explicit qualification, compliance, and submission
-  authority.
-- Six lifecycle gates pass while unresolved evidence correctly blocks
-  compliance and submission.
-- Two live Codex composition runs passed 15/15 gates.
-- Two live Codex impact runs passed 6/6 gates and matched their versioned
-  references exactly.
-- The synthetic correction benchmark found 2/2 expected supersessions while
-  preserving the explicitly unchanged claim.
-- All 49 unit and adversarial tests and all 23 deterministic contract scenarios
-  pass.
-- Production PDF ingestion converts the four-page public evaluation into eight
-  addressable evidence anchors with stable hashes and locators.
-- The working product includes exact claim-to-evidence inspection, visible
-  decision changes, deterministic fallback, and mandatory human review.
-- The public Apache-2.0 repository includes the reusable Codex plugin and skill,
-  dated Build Week history, reproducible setup, and a hash-verified submission
+- A working seven-stage tender lifecycle covering discovery, qualification,
+  requirements, bid preparation, compliance, monitoring, and outcome learning.
+- Three ranked opportunities with fit scores, blockers, and select, review, or
+  pass recommendations.
+- Human qualification approval that unlocks the bid plan.
+- Versioned requirements linked to current source evidence.
+- Dependency-aware tasks with named human owners.
+- Compliance that remains blocked while gaps are unresolved.
+- Amendment analysis across the complete requirement set.
+- Permanent human-only authority over final submission.
+- Six lifecycle gates enforced in application code.
+- A clearly labeled synthetic active-bid benchmark and a separate
+  hash-verified public Chilean case.
+- All 49 unit and adversarial tests passing.
+- All 23 deterministic contract scenarios passing.
+- In a controlled enforcement ablation, the full harness admitted 0 of 8
+  injected faults while schema-only admission accepted all 8.
+- Live Codex composition and impact runs with retained Session IDs.
+- Exact agreement on the corrective impact benchmark.
+- Production PDF ingestion with stable, addressable evidence anchors.
+- Desktop and mobile verification with no console errors.
+- A public Apache-2.0 repository with reproducible setup, a reusable Codex
+  plugin and skill, dated Build Week history, and a hash-verified submission
   package.
 
 ### What we learned
 
-Reliable agents require a strict distinction between generation and authority.
-A model can reason, compose, and explain, but source eligibility, claim
-approval, evidence identity, dependency completeness, and output admission
-must remain explicit, testable contracts.
+The most important lesson was that agentic work requires both autonomy and
+authority boundaries.
 
-Incremental reevaluation is useful only when the complete claim set is checked.
-Showing which reviewed conclusions remain unchanged under the admitted
-evidence is as important as identifying the affected claims.
+Agents can discover opportunities, calculate fit, organize requirements,
+generate work plans, monitor amendments, and propose updates. They should not
+silently allocate company resources, approve unresolved compliance, or release
+a legally consequential submission.
 
-We also learned that production probes belong inside the reasoning harness.
-Passing unit tests did not prove that PDF workers, native dependencies, or
-temporary storage would survive serverless packaging. End-to-end deployment
-checks found failures that local execution could not.
+We also learned that procurement automation must preserve the connection
+between operational work and evidence. A task is not trustworthy because an
+agent created it. It is trustworthy when it can be traced to a current
+requirement, a valid source, and an approved decision.
+
+Amendment monitoring also requires checking the full requirement set.
+Identifying what changed is only half of the task. Teams need to know which
+requirements were checked and remain valid.
+
+Finally, production probes became part of the reasoning harness. Passing unit
+tests did not establish that document workers, native dependencies, temporary
+storage, or responsive interfaces would survive the deployed environment.
 
 ### What's next for TenderGraph
 
-Next we will replace the synthetic opportunity inbox with licensed live
-procurement connectors, add OCR for scanned documents, persist organizational
-workspaces and approvals, and introduce jurisdiction-specific policy packs.
-Multi-format ingestion, lifecycle orchestration, requirement readiness,
-dependency-aware bid planning, monitored change impact, and mandatory review
-are implemented today; universal live-source coverage is not claimed.
+The next steps are licensed live procurement connectors, OCR for scanned
+documents, durable hosted workspaces and review history, organization-level
+access controls, jurisdiction-specific policy packs, and secure integrations
+with document and bid-submission systems.
 
-The initial buyer is a bidder team that needs to move from opportunity to
-review-ready proposal without losing control of evidence or authority. Public
-outcomes then close the loop: every award, loss reason, correction, and reviewed
-decision becomes reusable memory for the next bid.
+The current release demonstrates the full operational lifecycle through a
+reproducible synthetic active-bid benchmark. It does not claim universal
+live-source discovery or autonomous submission.
 
-The moat is the customer's accumulated decision graph: every source, reviewed
-claim, evidence dependency, correction event, and approved outcome preserved
-over time.
+From this foundation, TenderGraph can expand into continuous opportunity
+monitoring, company-specific qualification policies, assisted bid drafting,
+reusable compliance libraries, pricing workflows, portfolio intelligence, and
+private RFPs.
+
+The long-term product is an increasingly autonomous tender operation in which
+agents handle discovery, analysis, preparation, monitoring, and learning,
+while consequential commercial and legal authority remains with the
+organization.
+
+The moat is the customer's accumulated decision graph: every opportunity,
+source, requirement, task dependency, amendment, reviewed claim, approval, and
+outcome preserved over time.
 
 ## Testing instructions
 
