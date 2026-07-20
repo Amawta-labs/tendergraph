@@ -35,7 +35,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] README explains installation, testing, Codex collaboration, product decisions, runtime use of GPT-5.6, and fallback behavior.
 - [x] Judges can test https://openaihack.vercel.app without rebuilding or authentication.
 - [x] Local live-Codex and plugin instructions are documented.
-- [ ] Redeploy the final video and confirm its hosted hash is accessible without login; recheck it through the judging period.
+- [x] Redeploy the final video and confirm its hosted hash is accessible without login; recheck it through the judging period.
 - [x] Run the final command set for the new freeze candidate: typecheck, 44 tests, deterministic eval, ablation, Codex composition smoke, Codex impact smoke, build, and dependency audit.
 
 ## Devpost fields
@@ -63,5 +63,5 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 - [x] Replace every active submission placeholder; historical logs retain their original state.
 - [ ] Verify the Devpost draft before the deadline; no substantive edits are guaranteed after submission closes.
-- [ ] Tag the submitted commit and preserve its deployment.
+- [x] Tag the deployed submission commit and preserve its production deployment.
 - [ ] Export final screenshots, video, test report, Codex smoke report, and Devpost confirmation.

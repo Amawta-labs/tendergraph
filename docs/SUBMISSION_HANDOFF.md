@@ -40,7 +40,10 @@ before its confirmation exists.
 - Runtime evidence: fresh composition and two impact-discovery Codex sessions
   preserved in `artifacts/submission/chat-first-capture.json`.
 - YouTube publication: **public and playable while signed out**.
-- Production asset deployment: **pending final repository sync**.
+- Production asset deployment: **verified against the local SHA-256**.
+- Deployment ID: `dpl_8Xf2ASZ1QK3EtRWFkoyCejVXL8nC`
+- Immutable deployment: https://openaihack-do8xy9ypz-amawta.vercel.app
+- Production alias: https://openaihack.vercel.app
 
 ## GitHub publication
 
@@ -48,7 +51,8 @@ before its confirmation exists.
 - Visibility: **Public**
 - Default branch: `main`
 - License detected by GitHub: **Apache-2.0**
-- Verified presentation freeze on `origin/main`: `0591971`
+- Deployed submission commit: `c57007b5a5fa146c1df6924fd8a8e217d0714764`
+- Submission tag: `build-week-submission-2026-07-20`
 
 ## YouTube publication
 

@@ -5,7 +5,7 @@
 - File: `../../public/tendergraph-build-week-chat-first-demo.mp4`
 - Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4`
 - Public YouTube URL: `https://www.youtube.com/watch?v=G0XekMloa4c`
-- Deployment status: public on YouTube; final hosted copy pending repository sync
+- Deployment status: public on YouTube and hash-verified on the production alias
 - English subtitles:
   `tendergraph-build-week-chat-first-demo.en.srt`, burned into the picture and
   provided separately for upload; the MP4 has no selectable subtitle track
