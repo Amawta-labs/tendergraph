@@ -7,7 +7,7 @@
 - **Tagline:** An agentic tender operating system that turns changing procurement evidence into reviewable decisions.
 - **Repository:** https://github.com/Amawta-labs/tendergraph
 - **Hosted demo:** https://openaihack.vercel.app
-- **Video:** https://www.youtube.com/watch?v=G0XekMloa4c
+- **Video:** https://youtu.be/08tWuzAmOcs
 - **Prepared local video asset:** `public/tendergraph-build-week-chat-first-demo.mp4`
 - **Hosted video asset:** https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
 - **Primary Codex /feedback session:** `019f615b-8a9a-7be1-bc50-65059c70d511`

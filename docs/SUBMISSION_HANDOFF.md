@@ -24,12 +24,11 @@ before its confirmation exists.
 - `/feedback` state: **submitted with logs**; receipt preserved at
   `artifacts/submission/codex-feedback.json`.
 
-## Current replacement video candidate
+## Final public video
 
 - File: `public/tendergraph-build-week-chat-first-demo.mp4`
-- Current YouTube publication to replace: https://www.youtube.com/watch?v=G0XekMloa4c
-- Upload state: **the new operational cut is rendered locally and still needs
-  its public YouTube upload**
+- YouTube: https://youtu.be/08tWuzAmOcs
+- Upload state: **public and verified through YouTube oEmbed metadata**
 - Duration: **2:37.380**
 - Video SHA-256:
   `e63ebf57a953b86e93abf05d9b015af474d6b683e80cfb6848e0c43999d7c387`
@@ -41,7 +40,7 @@ before its confirmation exists.
   that could duplicate them. Use the sidecar only for the YouTube caption upload.
 - Runtime evidence: fresh composition and two impact-discovery Codex sessions
   preserved in `artifacts/submission/chat-first-capture.json`.
-- YouTube publication: **pending replacement upload**.
+- YouTube publication: **public and playable without project credentials**.
 - Production asset deployment: **verified against the local SHA-256**.
 - Deployment ID: `dpl_DjfNadMqm9DbdxsY6V33KdmgEYb7`
 - Immutable deployment: https://openaihack-eaykrr6px-amawta.vercel.app
@@ -58,7 +57,7 @@ before its confirmation exists.
 
 ## YouTube publication
 
-- Public video: https://www.youtube.com/watch?v=G0XekMloa4c
+- Public video: https://youtu.be/08tWuzAmOcs
 - Verification: YouTube oEmbed metadata and signed-out HTTP access confirmed on
   July 20, 2026.
 - Upload copy and settings: `docs/YOUTUBE_UPLOAD.md`.

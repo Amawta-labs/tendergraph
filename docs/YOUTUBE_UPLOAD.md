@@ -3,9 +3,8 @@
 ## Source files
 
 - Video: `public/tendergraph-build-week-chat-first-demo.mp4`
-- Current public YouTube URL: https://www.youtube.com/watch?v=G0XekMloa4c
-- Action required: upload the regenerated lifecycle video and replace this URL
-  in Devpost, README, and submission docs.
+- Current public YouTube URL: https://youtu.be/08tWuzAmOcs
+- Publication status: verified public through YouTube oEmbed metadata.
 - Hosted transfer URL: https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
 - Thumbnail: `artifacts/submission/chat-first-verification.png`
 - English captions: burned into the MP4 and available as

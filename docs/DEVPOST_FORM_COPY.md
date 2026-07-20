@@ -29,7 +29,7 @@ https://github.com/Amawta-labs/tendergraph
 
 ### Demo video
 
-https://www.youtube.com/watch?v=G0XekMloa4c
+https://youtu.be/08tWuzAmOcs
 
 ## Built with
 

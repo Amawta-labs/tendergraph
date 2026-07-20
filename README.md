@@ -13,7 +13,7 @@ policies, approvals, or validations are authoritative.
 
 **Public demo:** https://openaihack.vercel.app
 
-**Demo video:** https://www.youtube.com/watch?v=G0XekMloa4c
+**Demo video:** https://youtu.be/08tWuzAmOcs
 
 **Repository:** https://github.com/Amawta-labs/tendergraph
 

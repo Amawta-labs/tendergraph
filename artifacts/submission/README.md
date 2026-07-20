@@ -4,9 +4,9 @@
 
 - File: `../../public/tendergraph-build-week-chat-first-demo.mp4`
 - Hosted copy: `https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4`
-- Current public YouTube URL: `https://www.youtube.com/watch?v=G0XekMloa4c`
-- Upload status: the regenerated lifecycle video still needs a new public
-  YouTube upload; the local and hosted filenames are unchanged.
+- Current public YouTube URL: `https://youtu.be/08tWuzAmOcs`
+- Upload status: verified public through YouTube oEmbed metadata; the local and
+  hosted filenames remain unchanged.
 - English subtitles:
   `tendergraph-build-week-chat-first-demo.en.srt`, burned into the picture and
   provided separately for upload; the MP4 has no selectable subtitle track
