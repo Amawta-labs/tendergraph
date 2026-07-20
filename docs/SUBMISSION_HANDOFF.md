@@ -42,7 +42,10 @@ before its confirmation exists.
 - Runtime evidence: fresh composition and two impact-discovery Codex sessions
   preserved in `artifacts/submission/chat-first-capture.json`.
 - YouTube publication: **pending replacement upload**.
-- Production asset deployment: **pending this change set**.
+- Production asset deployment: **verified against the local SHA-256**.
+- Deployment ID: `dpl_DjfNadMqm9DbdxsY6V33KdmgEYb7`
+- Immutable deployment: https://openaihack-eaykrr6px-amawta.vercel.app
+- Production alias: https://openaihack.vercel.app
 
 ## GitHub publication
 
