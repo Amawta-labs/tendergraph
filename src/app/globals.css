@@ -2320,6 +2320,22 @@ code {
     display: none;
   }
 
+  .opportunity-row {
+    min-height: 68px;
+    grid-template-columns: 32px minmax(0, 1fr) 58px;
+  }
+
+  .lifecycle-row.opportunity-row > .opportunity-fit {
+    display: grid;
+  }
+
+  .opportunity-row strong,
+  .opportunity-row small {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
   .monitoring-change {
     grid-template-columns: 34px minmax(0, 1fr);
   }
