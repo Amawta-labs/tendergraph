@@ -10,42 +10,61 @@ import {
 const hash = (value: string) =>
   createHash("sha256").update(value).digest("hex");
 
-const evidence: LifecycleWorkspace["evidence"] = [
-  {
-    id: "evidence-opportunity-notice",
-    sourceId: "source-opportunity-notice",
-    label: "Opportunity notice",
-    version: "2026-07-18",
-    current: true,
-    contentHash: hash("tg-active-bid-demo:opportunity-notice:v1"),
-  },
-  {
-    id: "evidence-requirements-v1",
-    sourceId: "source-requirements",
-    label: "Technical and administrative requirements",
-    version: "v1",
-    current: false,
-    contentHash: hash("tg-active-bid-demo:requirements:v1"),
-  },
-  {
-    id: "evidence-requirements-v2",
-    sourceId: "source-requirements",
-    label: "Requirements amendment",
-    version: "v2 current",
-    current: true,
-    contentHash: hash("tg-active-bid-demo:requirements:v2"),
-  },
-  {
-    id: "evidence-capability-pack",
-    sourceId: "source-supplier-capabilities",
-    label: "Supplier capability pack",
-    version: "2026-Q3",
-    current: true,
-    contentHash: hash("tg-active-bid-demo:capabilities:2026-q3"),
-  },
-];
+const opportunityNotice: LifecycleWorkspace["evidence"][number] = {
+  id: "evidence-opportunity-notice",
+  sourceId: "source-opportunity-notice",
+  label: "Opportunity notice",
+  version: "2026-07-18",
+  current: true,
+  contentHash: hash("tg-active-bid-demo:opportunity-notice:v1"),
+};
 
-const requirements: LifecycleWorkspace["requirements"] = [
+const capabilityPack: LifecycleWorkspace["evidence"][number] = {
+  id: "evidence-capability-pack",
+  sourceId: "source-supplier-capabilities",
+  label: "Supplier capability pack",
+  version: "2026-Q3",
+  current: true,
+  contentHash: hash("tg-active-bid-demo:capabilities:2026-q3"),
+};
+
+function buildEvidence(
+  amendmentDetected: boolean,
+): LifecycleWorkspace["evidence"] {
+  return [
+    opportunityNotice,
+    {
+      id: "evidence-requirements-v1",
+      sourceId: "source-requirements",
+      label: "Technical and administrative requirements",
+      version: "v1",
+      current: !amendmentDetected,
+      contentHash: hash("tg-active-bid-demo:requirements:v1"),
+    },
+    ...(amendmentDetected
+      ? [
+          {
+            id: "evidence-requirements-v2",
+            sourceId: "source-requirements",
+            label: "Requirements amendment",
+            version: "v2 current",
+            current: true,
+            contentHash: hash("tg-active-bid-demo:requirements:v2"),
+          },
+        ]
+      : []),
+    capabilityPack,
+  ];
+}
+
+function buildRequirements(
+  amendmentDetected: boolean,
+): LifecycleWorkspace["requirements"] {
+  const currentRequirementsEvidence = amendmentDetected
+    ? "evidence-requirements-v2"
+    : "evidence-requirements-v1";
+
+  return [
   {
     id: "req-tax-standing",
     title: "Current tax-standing certificate",
@@ -53,7 +72,7 @@ const requirements: LifecycleWorkspace["requirements"] = [
     status: "covered",
     currentValue: "Certificate dated within 30 days",
     previousValue: null,
-    evidenceIds: ["evidence-requirements-v2", "evidence-capability-pack"],
+    evidenceIds: [currentRequirementsEvidence, "evidence-capability-pack"],
     owner: "Bid operations",
     blocker: false,
   },
@@ -64,7 +83,7 @@ const requirements: LifecycleWorkspace["requirements"] = [
     status: "needs_review",
     currentValue: "Certificate attached; scope match requires human review",
     previousValue: null,
-    evidenceIds: ["evidence-requirements-v2", "evidence-capability-pack"],
+    evidenceIds: [currentRequirementsEvidence, "evidence-capability-pack"],
     owner: "Quality lead",
     blocker: true,
   },
@@ -72,12 +91,14 @@ const requirements: LifecycleWorkspace["requirements"] = [
     id: "req-delivery",
     title: "Maximum delivery time",
     category: "delivery",
-    status: "changed",
-    currentValue: "10 calendar days",
-    previousValue: "15 calendar days",
-    evidenceIds: ["evidence-requirements-v1", "evidence-requirements-v2"],
+    status: amendmentDetected ? "changed" : "covered",
+    currentValue: amendmentDetected ? "10 calendar days" : "15 calendar days",
+    previousValue: amendmentDetected ? "15 calendar days" : null,
+    evidenceIds: amendmentDetected
+      ? ["evidence-requirements-v1", "evidence-requirements-v2"]
+      : ["evidence-requirements-v1"],
     owner: "Operations lead",
-    blocker: true,
+    blocker: amendmentDetected,
   },
   {
     id: "req-warranty",
@@ -86,7 +107,7 @@ const requirements: LifecycleWorkspace["requirements"] = [
     status: "covered",
     currentValue: "24 months",
     previousValue: null,
-    evidenceIds: ["evidence-requirements-v2", "evidence-capability-pack"],
+    evidenceIds: [currentRequirementsEvidence, "evidence-capability-pack"],
     owner: "Product lead",
     blocker: false,
   },
@@ -97,51 +118,76 @@ const requirements: LifecycleWorkspace["requirements"] = [
     status: "covered",
     currentValue: "Template completed in CLP, taxes separated",
     previousValue: null,
-    evidenceIds: ["evidence-requirements-v2"],
+    evidenceIds: [currentRequirementsEvidence],
     owner: "Pricing lead",
     blocker: false,
   },
-];
+  ];
+}
 
 function bidTasks(
+  selected: boolean,
   qualificationApproved: boolean,
+  amendmentDetected: boolean,
+  requirements: LifecycleWorkspace["requirements"],
 ): LifecycleWorkspace["bidTasks"] {
+  const planUnlocked = selected && qualificationApproved;
   return [
     {
       id: "task-price",
       title: "Complete commercial workbook",
       agent: "bid_agent",
-      status: "complete",
+      status: planUnlocked ? "complete" : "blocked",
       requirementIds: ["req-price-template"],
       dependsOn: [],
       humanOwner: "Pricing lead",
+      reopenedByChangeId: null,
     },
     {
       id: "task-technical-response",
-      title: "Update technical response for amendment v2",
+      title: amendmentDetected
+        ? "Update technical response for amendment v2"
+        : "Complete technical response",
       agent: "bid_agent",
-      status: qualificationApproved ? "in_progress" : "blocked",
+      status: !planUnlocked
+        ? "blocked"
+        : amendmentDetected
+          ? "in_progress"
+          : "complete",
       requirementIds: ["req-delivery", "req-warranty"],
       dependsOn: ["approval-qualification"],
       humanOwner: "Product lead",
+      reopenedByChangeId: amendmentDetected
+        ? "change-delivery-window"
+        : null,
     },
     {
       id: "task-delivery-confirmation",
-      title: "Confirm 10-day delivery capacity",
+      title: amendmentDetected
+        ? "Reconfirm 10-day delivery capacity"
+        : "Confirm 15-day delivery capacity",
       agent: "requirements_agent",
-      status: "blocked",
+      status: !planUnlocked
+        ? "blocked"
+        : amendmentDetected
+          ? "blocked"
+          : "complete",
       requirementIds: ["req-delivery"],
       dependsOn: ["task-technical-response"],
       humanOwner: "Operations lead",
+      reopenedByChangeId: amendmentDetected
+        ? "change-delivery-window"
+        : null,
     },
     {
       id: "task-certificate-review",
       title: "Validate CE certificate scope",
       agent: "compliance_agent",
-      status: "needs_review",
+      status: planUnlocked ? "needs_review" : "blocked",
       requirementIds: ["req-ce-certificate"],
       dependsOn: [],
       humanOwner: "Quality lead",
+      reopenedByChangeId: null,
     },
     {
       id: "task-submission-approval",
@@ -156,21 +202,26 @@ function bidTasks(
         "task-certificate-review",
       ],
       humanOwner: "Bid manager",
+      reopenedByChangeId: null,
     },
   ];
 }
 
 function buildStages(
+  selected: boolean,
   qualificationApproved: boolean,
+  amendmentDetected: boolean,
 ): LifecycleWorkspace["stages"] {
   return [
     {
       id: "discovery",
       label: "Discovery",
       agent: "opportunity_agent",
-      status: "complete",
-      summary: "Opportunity normalized from the admitted notice.",
-      metric: "1 selected",
+      status: selected ? "complete" : "active",
+      summary: selected
+        ? "The recommended opportunity was selected by the bidder."
+        : "Three opportunities ranked; one is recommended for selection.",
+      metric: selected ? "1 selected" : "3 ranked",
       evidenceIds: ["evidence-opportunity-notice"],
       requiresApproval: null,
     },
@@ -178,10 +229,16 @@ function buildStages(
       id: "qualification",
       label: "Qualification",
       agent: "qualification_agent",
-      status: qualificationApproved ? "complete" : "needs_review",
+      status: !selected
+        ? "not_started"
+        : qualificationApproved
+          ? "complete"
+          : "needs_review",
       summary: qualificationApproved
         ? "Fit and capacity assumptions approved by the bid manager."
-        : "Fit score is ready; a human must authorize bid investment.",
+        : selected
+          ? "Fit score is ready; a human must authorize bid investment."
+          : "Qualification begins after opportunity selection.",
       metric: "84 / 100",
       evidenceIds: ["evidence-opportunity-notice", "evidence-capability-pack"],
       requiresApproval: "qualification",
@@ -190,14 +247,16 @@ function buildStages(
       id: "requirements",
       label: "Requirements",
       agent: "requirements_agent",
-      status: "active",
+      status: qualificationApproved ? "active" : "not_started",
       summary: "Every current requirement is partitioned by readiness state.",
-      metric: "3 / 5 covered",
-      evidenceIds: [
-        "evidence-requirements-v1",
-        "evidence-requirements-v2",
-        "evidence-capability-pack",
-      ],
+      metric: amendmentDetected ? "3 / 5 covered" : "4 / 5 covered",
+      evidenceIds: amendmentDetected
+        ? [
+            "evidence-requirements-v1",
+            "evidence-requirements-v2",
+            "evidence-capability-pack",
+          ]
+        : ["evidence-requirements-v1", "evidence-capability-pack"],
       requiresApproval: null,
     },
     {
@@ -206,10 +265,20 @@ function buildStages(
       agent: "bid_agent",
       status: qualificationApproved ? "active" : "blocked",
       summary: qualificationApproved
-        ? "The amendment-aware response plan is active."
+        ? amendmentDetected
+          ? "Affected tasks were reopened by amendment v2."
+          : "The dependency-aware response plan is active."
         : "Tasks are proposed but cannot start before qualification approval.",
-      metric: qualificationApproved ? "2 active" : "1 / 5 complete",
-      evidenceIds: ["evidence-requirements-v2"],
+      metric: !qualificationApproved
+        ? "Locked"
+        : amendmentDetected
+          ? "2 replanned"
+          : "3 / 5 complete",
+      evidenceIds: [
+        amendmentDetected
+          ? "evidence-requirements-v2"
+          : "evidence-requirements-v1",
+      ],
       requiresApproval: null,
     },
     {
@@ -217,19 +286,30 @@ function buildStages(
       label: "Compliance",
       agent: "compliance_agent",
       status: "blocked",
-      summary: "Delivery capacity and certificate scope remain unresolved.",
-      metric: "2 blockers",
-      evidenceIds: ["evidence-requirements-v2", "evidence-capability-pack"],
+      summary: amendmentDetected
+        ? "Delivery capacity and certificate scope remain unresolved."
+        : "Certificate scope remains unresolved.",
+      metric: amendmentDetected ? "2 blockers" : "1 blocker",
+      evidenceIds: [
+        amendmentDetected
+          ? "evidence-requirements-v2"
+          : "evidence-requirements-v1",
+        "evidence-capability-pack",
+      ],
       requiresApproval: "compliance",
     },
     {
       id: "monitoring",
       label: "Monitoring",
       agent: "monitoring_agent",
-      status: "active",
-      summary: "Amendment v2 changed delivery and triggered a bounded replan.",
-      metric: "1 change",
-      evidenceIds: ["evidence-requirements-v1", "evidence-requirements-v2"],
+      status: qualificationApproved ? "active" : "not_started",
+      summary: amendmentDetected
+        ? "Amendment v2 changed delivery and triggered a bounded replan."
+        : "No later publication has been admitted into the workspace.",
+      metric: amendmentDetected ? "1 change" : "Watching",
+      evidenceIds: amendmentDetected
+        ? ["evidence-requirements-v1", "evidence-requirements-v2"]
+        : ["evidence-requirements-v1"],
       requiresApproval: null,
     },
     {
@@ -348,7 +428,9 @@ export function validateLifecycleWorkspace(
     },
     {
       gate: "change_impact_completeness",
-      passed: changed.length > 0 && validChangePartitions,
+      passed:
+        (changed.length === 0 && workspace.changes.length === 0) ||
+        (changed.length > 0 && validChangePartitions),
       details: "The amendment identifies affected and unchanged requirements.",
     },
     {
@@ -366,11 +448,21 @@ export function validateLifecycleWorkspace(
 
 export function runLifecycleWorkspace(input: {
   workspaceId: string;
+  selectedOpportunityId?: "opportunity-clinic-supplies" | null;
+  observedChangeIds?: "change-delivery-window"[];
   approvals?: LifecycleApprovalId[];
 }): LifecycleWorkspace {
   const request = LifecycleRunRequestSchema.parse(input);
+  const selected =
+    request.selectedOpportunityId === "opportunity-clinic-supplies";
+  const amendmentDetected = request.observedChangeIds.includes(
+    "change-delivery-window",
+  );
   const approved = new Set(request.approvals);
-  const qualificationApproved = approved.has("qualification");
+  const qualificationApproved =
+    selected && approved.has("qualification");
+  const evidence = buildEvidence(amendmentDetected);
+  const requirements = buildRequirements(amendmentDetected);
   const now = new Date().toISOString();
 
   const withoutValidation: Omit<LifecycleWorkspace, "validationResults"> = {
@@ -378,13 +470,20 @@ export function runLifecycleWorkspace(input: {
     workspaceId: request.workspaceId,
     generatedAt: now,
     dataStatus: "synthetic",
+    selectedOpportunityId: selected
+      ? "opportunity-clinic-supplies"
+      : null,
     opportunity: {
       title: "Regional clinic diagnostic supplies",
       buyer: "Regional Health Network",
       jurisdiction: "CL",
       procedureId: "CL-BID-DEMO-2026-01",
       deadline: "2026-07-27T21:00:00.000Z",
-      lifecycleState: "bid_in_preparation",
+      lifecycleState: !selected
+        ? "discovered"
+        : qualificationApproved
+          ? "bid_in_preparation"
+          : "qualification_pending",
       fitScore: 84,
       valueBand: "CLP 45M-60M",
     },
@@ -419,33 +518,50 @@ export function runLifecycleWorkspace(input: {
     ],
     evidence,
     requirements,
-    bidTasks: bidTasks(qualificationApproved),
-    stages: buildStages(qualificationApproved),
-    changes: [
-      {
-        id: "change-delivery-window",
-        title: "Delivery window reduced by amendment v2",
-        detectedAt: "2026-07-20T13:30:00.000Z",
-        sourceId: "source-requirements",
-        affectedRequirementIds: ["req-delivery"],
-        unchangedRequirementIds: [
-          "req-tax-standing",
-          "req-ce-certificate",
-          "req-warranty",
-          "req-price-template",
-        ],
-        action: "replan",
-        authority: "shadow",
-      },
-    ],
+    bidTasks: bidTasks(
+      selected,
+      qualificationApproved,
+      amendmentDetected,
+      requirements,
+    ),
+    stages: buildStages(
+      selected,
+      qualificationApproved,
+      amendmentDetected,
+    ),
+    changes: amendmentDetected
+      ? [
+          {
+            id: "change-delivery-window",
+            title: "Delivery window reduced by amendment v2",
+            detectedAt: "2026-07-20T13:30:00.000Z",
+            sourceId: "source-requirements",
+            affectedRequirementIds: ["req-delivery"],
+            unchangedRequirementIds: [
+              "req-tax-standing",
+              "req-ce-certificate",
+              "req-warranty",
+              "req-price-template",
+            ],
+            action: "replan",
+            authority: "shadow",
+          },
+        ]
+      : [],
     approvals: [
       {
         id: "qualification",
         label: "Authorize bid investment",
-        status: qualificationApproved ? "approved" : "ready",
+        status: qualificationApproved
+          ? "approved"
+          : selected
+            ? "ready"
+            : "blocked",
         reason: qualificationApproved
           ? "The bid manager approved the bounded qualification result."
-          : "An 84/100 fit score cannot allocate team capacity without approval.",
+          : selected
+            ? "An 84/100 fit score cannot allocate team capacity without approval."
+            : "Select the recommended opportunity before authorizing investment.",
         approvedBy: qualificationApproved ? "Bid manager" : null,
         approvedAt: qualificationApproved ? now : null,
       },
@@ -453,7 +569,9 @@ export function runLifecycleWorkspace(input: {
         id: "compliance",
         label: "Approve compliance package",
         status: "blocked",
-        reason: "Delivery capacity and certificate scope remain unresolved.",
+        reason: amendmentDetected
+          ? "Delivery capacity and certificate scope remain unresolved."
+          : "Certificate scope remains unresolved.",
         approvedBy: null,
         approvedAt: null,
       },
@@ -466,9 +584,13 @@ export function runLifecycleWorkspace(input: {
         approvedAt: null,
       },
     ],
-    nextAction: qualificationApproved
-      ? "Resolve the delivery and certificate blockers before compliance review."
-      : "A bid manager must approve qualification before preparation can proceed.",
+    nextAction: !selected
+      ? "Select the recommended opportunity to open a controlled qualification."
+      : !qualificationApproved
+        ? "A bid manager must approve qualification before preparation can proceed."
+        : amendmentDetected
+          ? "Resolve the delivery and certificate blockers before compliance review."
+          : "Monitor publications while the team resolves the certificate review.",
     submissionAuthority: "human_only",
   };
 

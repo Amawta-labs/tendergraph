@@ -1,21 +1,25 @@
 [
   {
-    "spokenText": "A high-fit tender appears with one week left. Your team must decide whether to bid, reconstruct every requirement, coordinate the response, and catch any amendment before submission. TenderGraph is an agentic tender operating system built for that complete workflow.",
+    "spokenText": "Three opportunities arrive with different fit, timing, and delivery risk. TenderGraph ranks each one and recommends select, review, or pass. We choose the high-fit clinic tender, but the agent cannot allocate company resources. A bid manager must explicitly approve the investment before work begins.",
     "captions": [
-      "A high-fit tender appears with one week left.",
-      "The team must decide, reconstruct requirements, coordinate the response,",
-      "and catch every amendment before submission.",
-      "TenderGraph is an agentic tender operating system for the complete workflow."
+      "Three opportunities arrive with different fit, timing, and delivery risk.",
+      "TenderGraph recommends select, review, or pass.",
+      "We choose the high-fit clinic tender.",
+      "The agent still cannot allocate company resources.",
+      "A bid manager must approve the investment."
     ]
   },
   {
-    "spokenText": "Seven bounded agents cover discovery, qualification, requirements, bid preparation, compliance, monitoring, and outcomes. A human qualification gate unlocks the bid plan. Two unresolved requirements still block compliance, and no agent can release the bid. New evidence replans only the affected work.",
+    "spokenText": "Approval unlocks five evidence-bound requirements and a dependency-aware bid plan with named owners. Compliance remains blocked by a certificate review. Then amendment v two arrives and shortens delivery from fifteen to ten days. TenderGraph checks the complete requirement set, proves four remain valid, reopens only the two affected tasks, and adds a second blocker. Final submission stays disabled because release authority is permanently human-only.",
     "captions": [
-      "Seven bounded agents cover the full bidding lifecycle.",
-      "A human qualification gate unlocks the bid plan.",
-      "Two unresolved requirements still block compliance.",
-      "No agent can release the bid.",
-      "New evidence replans only the affected work."
+      "Approval unlocks evidence-bound requirements and the bid plan.",
+      "Named owners receive dependency-aware tasks.",
+      "Compliance remains blocked by an unresolved certificate review.",
+      "Then amendment v2 shortens delivery from 15 to 10 days.",
+      "TenderGraph checks all five requirements: 1 changed, 4 remain valid.",
+      "Only the two affected tasks are reopened.",
+      "A second blocker appears. Final submission remains disabled.",
+      "Release authority is permanently human-only."
     ]
   },
   {

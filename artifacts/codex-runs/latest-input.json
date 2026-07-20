@@ -1,7 +1,7 @@
 {
   "contractVersion": "codex-composition.v1",
-  "runId": "24544cec-ca9d-480a-b710-1f944e9c75f0",
-  "createdAt": "2026-07-20T19:01:29.764Z",
+  "runId": "fb4aa8fb-bcc1-4c00-b7e3-55092f8dc523",
+  "createdAt": "2026-07-20T19:44:28.098Z",
   "requestedModel": "gpt-5.6-terra",
   "fixture": {
     "id": "cl-real-5802381-7547UCUK",
@@ -15,7 +15,7 @@
     }
   },
   "answerPlan": {
-    "requestId": "f8514a78-b2fa-4c9f-8701-53a5bc072eac",
+    "requestId": "dda8c44d-1a31-487e-b53d-36462fd31dc1",
     "scope": {
       "jurisdiction": "CL",
       "procedureId": "5802381-7547UCUK",

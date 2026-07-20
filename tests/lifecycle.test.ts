@@ -7,7 +7,7 @@ import {
 import { LifecycleWorkspaceSchema } from "../src/lib/lifecycle/schemas";
 
 describe("agentic tender lifecycle", () => {
-  it("builds a valid seven-stage workspace from versioned evidence", () => {
+  it("builds a valid discovery workspace before bidder selection", () => {
     const workspace = runLifecycleWorkspace({
       workspaceId: "tg-active-bid-demo",
     });
@@ -19,14 +19,18 @@ describe("agentic tender lifecycle", () => {
       workspace.opportunityMatches.map((opportunity) => opportunity.fitScore),
     ).toEqual([84, 72, 46]);
     expect(workspace.opportunityMatches[0].status).toBe("selected");
-    expect(workspace.evidence.some((item) => !item.current)).toBe(true);
+    expect(workspace.selectedOpportunityId).toBeNull();
+    expect(workspace.changes).toHaveLength(0);
     expect(workspace.evidence.some((item) => item.current)).toBe(true);
     expect(workspace.validationResults.every((gate) => gate.passed)).toBe(true);
 
     const { validationResults: _, ...candidate } = structuredClone(workspace);
-    candidate.evidence.find(
-      (item) => item.id === "evidence-requirements-v1",
-    )!.current = true;
+    candidate.evidence.push({
+      ...candidate.evidence.find(
+        (item) => item.id === "evidence-requirements-v1",
+      )!,
+      id: "evidence-requirements-duplicate",
+    });
     expect(
       validateLifecycleWorkspace(candidate).find(
         (gate) => gate.gate === "current_source_set",
@@ -37,6 +41,7 @@ describe("agentic tender lifecycle", () => {
   it("keeps bid preparation blocked before human qualification approval", () => {
     const workspace = runLifecycleWorkspace({
       workspaceId: "tg-active-bid-demo",
+      selectedOpportunityId: "opportunity-clinic-supplies",
     });
 
     expect(
@@ -55,6 +60,7 @@ describe("agentic tender lifecycle", () => {
   it("activates the bid plan only after a named human approval", () => {
     const workspace = runLifecycleWorkspace({
       workspaceId: "tg-active-bid-demo",
+      selectedOpportunityId: "opportunity-clinic-supplies",
       approvals: ["qualification"],
     });
 
@@ -75,7 +81,7 @@ describe("agentic tender lifecycle", () => {
       workspace.bidTasks.find(
         (task) => task.id === "task-technical-response",
       )?.status,
-    ).toBe("in_progress");
+    ).toBe("complete");
 
     const { validationResults: _, ...candidate } = structuredClone(workspace);
     candidate.approvals.find(
@@ -91,6 +97,9 @@ describe("agentic tender lifecycle", () => {
   it("preserves a complete requirement partition when an amendment changes one item", () => {
     const workspace = runLifecycleWorkspace({
       workspaceId: "tg-active-bid-demo",
+      selectedOpportunityId: "opportunity-clinic-supplies",
+      observedChangeIds: ["change-delivery-window"],
+      approvals: ["qualification"],
     });
     const change = workspace.changes[0];
     const partition = new Set([
@@ -125,6 +134,7 @@ describe("agentic tender lifecycle", () => {
   it("never grants agents submission authority", () => {
     const workspace = runLifecycleWorkspace({
       workspaceId: "tg-active-bid-demo",
+      selectedOpportunityId: "opportunity-clinic-supplies",
       approvals: ["qualification"],
     });
 

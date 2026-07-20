@@ -1,156 +1,175 @@
 1
-00:00:00,000 --> 00:00:03,534
-A high-fit tender appears with one week left.
+00:00:00,000 --> 00:00:05,054
+Three opportunities arrive with different fit,
+timing, and delivery risk.
 
 2
-00:00:03,534 --> 00:00:07,510
-The team must decide, reconstruct requirements,
-coordinate the response,
+00:00:05,054 --> 00:00:08,086
+TenderGraph recommends select, review, or pass.
 
 3
-00:00:07,510 --> 00:00:10,161
-and catch every amendment before submission.
+00:00:08,086 --> 00:00:11,118
+We choose the high-fit clinic tender.
 
 4
-00:00:10,161 --> 00:00:15,020
-TenderGraph is an agentic tender operating system
-for the complete workflow.
+00:00:11,118 --> 00:00:14,655
+The agent still cannot allocate company resources.
 
 5
-00:00:15,570 --> 00:00:19,808
-Seven bounded agents cover the full bidding
-lifecycle.
+00:00:14,655 --> 00:00:18,193
+A bid manager must approve the investment.
 
 6
-00:00:19,808 --> 00:00:24,046
-A human qualification gate unlocks the bid plan.
+00:00:18,743 --> 00:00:22,173
+Approval unlocks evidence-bound requirements and the
+bid plan.
 
 7
-00:00:24,046 --> 00:00:27,224
-Two unresolved requirements still block compliance.
+00:00:22,173 --> 00:00:24,316
+Named owners receive dependency-aware tasks.
 
 8
-00:00:27,224 --> 00:00:30,403
-No agent can release the bid.
+00:00:24,316 --> 00:00:27,745
+Compliance remains blocked by an unresolved
+certificate review.
 
 9
-00:00:30,403 --> 00:00:34,111
-New evidence replans only the affected work.
+00:00:27,745 --> 00:00:32,032
+Then amendment v2 shortens delivery from 15 to 10
+days.
 
 10
-00:00:34,661 --> 00:00:39,617
+00:00:32,032 --> 00:00:36,319
+TenderGraph checks all five requirements: 1 changed,
+4 remain valid.
+
+11
+00:00:36,319 --> 00:00:39,320
+Only the two affected tasks are reopened.
+
+12
+00:00:39,320 --> 00:00:42,750
+A second blocker appears. Final submission remains
+disabled.
+
+13
+00:00:42,750 --> 00:00:44,893
+Release authority is permanently human-only.
+
+14
+00:00:45,443 --> 00:00:50,792
 The operating layer is proven against a
 hash-verified public evaluation.
 
-11
-00:00:39,617 --> 00:00:43,086
+15
+00:00:50,792 --> 00:00:54,537
 Every conclusion is bound to exact evidence.
 
-12
-00:00:43,086 --> 00:00:48,537
+16
+00:00:54,537 --> 00:01:00,421
 The inspector exposes source, page, quotation,
 parser, authority, URL, and hash.
 
-13
-00:00:48,537 --> 00:00:52,502
+17
+00:01:00,421 --> 00:01:04,700
 A commission recommendation is not a signed
 contract.
 
-14
-00:00:53,052 --> 00:00:58,029
+18
+00:01:05,250 --> 00:01:10,399
 The question runs through ChatGPT-authenticated
 Codex without an API key.
 
-15
-00:00:58,029 --> 00:01:01,015
+19
+00:01:10,399 --> 00:01:13,489
 GPT-5.6 composes only from admitted claims.
 
-16
-00:01:01,015 --> 00:01:04,996
+20
+00:01:13,489 --> 00:01:17,608
 The trace retains the model and Session ID.
 
-17
-00:01:04,996 --> 00:01:09,475
+21
+00:01:17,608 --> 00:01:22,242
 Fifteen code-owned gates reject invention, evidence
 swaps, scope contamination,
 
-18
-00:01:09,475 --> 00:01:11,466
+22
+00:01:22,242 --> 00:01:24,302
 leakage, and incomplete output.
 
-19
-00:01:12,016 --> 00:01:15,855
+23
+00:01:24,852 --> 00:01:28,705
 A new official PDF becomes hashed, addressable
 evidence.
 
-20
-00:01:15,855 --> 00:01:18,734
+24
+00:01:28,705 --> 00:01:31,595
 It does not automatically become authority.
 
-21
-00:01:18,734 --> 00:01:22,573
+25
+00:01:31,595 --> 00:01:35,449
 Codex compares the update with every active
 conclusion.
 
-22
-00:01:22,573 --> 00:01:28,332
+26
+00:01:35,449 --> 00:01:41,229
 Six gates validate scope, evidence, complete impact,
 action semantics, and shadow authority.
 
-23
-00:01:28,332 --> 00:01:30,731
+27
+00:01:41,229 --> 00:01:43,637
 Nothing changes before human review.
 
-24
-00:01:31,281 --> 00:01:34,974
+28
+00:01:44,187 --> 00:01:47,857
 A corrective resolution is the harder test.
 
-25
-00:01:34,974 --> 00:01:38,666
+29
+00:01:47,857 --> 00:01:51,527
 The original winner and loss explanation change.
 
-26
-00:01:38,666 --> 00:01:41,304
+30
+00:01:51,527 --> 00:01:54,149
 The award rule remains valid.
 
-27
-00:01:41,304 --> 00:01:46,579
+31
+00:01:54,149 --> 00:01:59,392
 The result matches the versioned reference and
 cannot promote itself.
 
-28
-00:01:47,129 --> 00:01:51,300
+32
+00:01:59,942 --> 00:02:04,248
 The enforcement is measured: 49 tests and 23 golden
 scenarios.
 
-29
-00:01:51,300 --> 00:01:55,471
+33
+00:02:04,248 --> 00:02:08,555
 It includes 6 lifecycle, 15 composition, and 6
 impact gates.
 
-30
-00:01:55,471 --> 00:01:58,808
+34
+00:02:08,555 --> 00:02:12,000
 The harness admitted 0 of 8 injected faults.
 
-31
-00:01:58,808 --> 00:02:02,145
+35
+00:02:12,000 --> 00:02:15,445
 This capture retains three real Codex Session IDs.
 
-32
-00:02:02,695 --> 00:02:07,619
+36
+00:02:15,995 --> 00:02:20,880
 Codex accelerated architecture, implementation,
 testing, and production diagnosis.
 
-33
-00:02:07,619 --> 00:02:13,773
+37
+00:02:20,880 --> 00:02:26,987
 TenderGraph gives companies an agentic bidding team
 with governed memory.
 
-34
-00:02:13,773 --> 00:02:19,312
+38
+00:02:26,987 --> 00:02:32,483
 Agents can discover, qualify, prepare, check,
 monitor, and learn.
 
-35
-00:02:19,312 --> 00:02:23,620
+39
+00:02:32,483 --> 00:02:36,758
 GPT-5.6 can reason. Humans remain the authority.

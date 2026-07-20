@@ -82,6 +82,7 @@ export const LifecycleBidTaskSchema = z.strictObject({
   requirementIds: z.array(z.string().min(1)),
   dependsOn: z.array(z.string().min(1)),
   humanOwner: z.string().min(1).nullable(),
+  reopenedByChangeId: z.string().min(1).nullable(),
 });
 
 export const LifecycleStageSchema = z.strictObject({
@@ -120,13 +121,18 @@ export const LifecycleWorkspaceSchema = z.strictObject({
   workspaceId: z.string().min(1),
   generatedAt: z.string().datetime(),
   dataStatus: z.literal("synthetic"),
+  selectedOpportunityId: z.string().min(1).nullable(),
   opportunity: z.strictObject({
     title: z.string().min(1),
     buyer: z.string().min(1),
     jurisdiction: z.string().min(1),
     procedureId: z.string().min(1),
     deadline: z.string().datetime(),
-    lifecycleState: z.literal("bid_in_preparation"),
+    lifecycleState: z.enum([
+      "discovered",
+      "qualification_pending",
+      "bid_in_preparation",
+    ]),
     fitScore: z.number().int().min(0).max(100),
     valueBand: z.string().min(1),
   }),
@@ -160,6 +166,13 @@ export const LifecycleWorkspaceSchema = z.strictObject({
 
 export const LifecycleRunRequestSchema = z.strictObject({
   workspaceId: z.literal("tg-active-bid-demo"),
+  selectedOpportunityId: z
+    .literal("opportunity-clinic-supplies")
+    .nullable()
+    .default(null),
+  observedChangeIds: z
+    .array(z.literal("change-delivery-window"))
+    .default([]),
   approvals: z.array(LifecycleApprovalIdSchema).default([]),
 });
 

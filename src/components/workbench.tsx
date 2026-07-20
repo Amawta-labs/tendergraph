@@ -136,6 +136,8 @@ export function Workbench({
   );
   const [inspectorTab, setInspectorTab] = useState<InspectorTab>("operations");
   const [lifecycleFocus, setLifecycleFocus] = useState(initialLifecycleFocus);
+  const [lifecycleWorkspace, setLifecycleWorkspace] =
+    useState(initialLifecycle);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [inspectorOpen, setInspectorOpen] = useState(false);
   const [running, setRunning] = useState(false);
@@ -468,7 +470,9 @@ export function Workbench({
                 <span>/</span>
                 CL-BID-DEMO-2026-01
                 <span>/</span>
-                Bid in preparation
+                {formatLabel(
+                  lifecycleWorkspace.opportunity.lifecycleState,
+                )}
               </p>
             ) : (
               <p>
@@ -500,7 +504,10 @@ export function Workbench({
 
         <div className="conversation-scroll">
           {lifecycleFocus && (
-            <LifecycleConsole initialWorkspace={initialLifecycle} />
+            <LifecycleConsole
+              initialWorkspace={initialLifecycle}
+              onWorkspaceChange={setLifecycleWorkspace}
+            />
           )}
 
           {!lifecycleFocus && (
@@ -879,22 +886,22 @@ export function Workbench({
           <div className="inspector-body">
             <div className="inspector-heading">
               <h2>Operating contract</h2>
-              <code>{initialLifecycle.contractVersion}</code>
+              <code>{lifecycleWorkspace.contractVersion}</code>
             </div>
             <div className="operations-summary">
               <div>
                 <span>Current sources</span>
                 <strong>
-                  {initialLifecycle.evidence.filter((item) => item.current).length}
+                  {lifecycleWorkspace.evidence.filter((item) => item.current).length}
                 </strong>
               </div>
               <div>
                 <span>Requirements</span>
-                <strong>{initialLifecycle.requirements.length}</strong>
+                <strong>{lifecycleWorkspace.requirements.length}</strong>
               </div>
               <div>
                 <span>Agent stages</span>
-                <strong>{initialLifecycle.stages.length}</strong>
+                <strong>{lifecycleWorkspace.stages.length}</strong>
               </div>
               <div>
                 <span>Authority</span>
@@ -903,7 +910,7 @@ export function Workbench({
             </div>
             <div className="operations-section">
               <h3>Versioned source set</h3>
-              {initialLifecycle.evidence.map((item) => (
+              {lifecycleWorkspace.evidence.map((item) => (
                 <div className="operations-row" key={item.id}>
                   <FileText size={15} />
                   <span>
@@ -918,7 +925,7 @@ export function Workbench({
             </div>
             <div className="operations-section">
               <h3>Lifecycle gates</h3>
-              {initialLifecycle.validationResults.map((gate) => (
+              {lifecycleWorkspace.validationResults.map((gate) => (
                 <div className="operations-row gate-row" key={gate.gate}>
                   {gate.passed ? (
                     <CheckCircle2 size={15} />

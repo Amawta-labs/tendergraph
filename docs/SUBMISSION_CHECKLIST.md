@@ -49,7 +49,7 @@ This is an operational checklist derived from the supplied Official Rules. The H
 
 ## Video
 
-- [x] Render the 2:20 dynamic chat-first demo with live composition, ingestion, impact discovery, correction flows, English TTS, burned captions, and no duplicate selectable subtitle track at `public/tendergraph-build-week-chat-first-demo.mp4`.
+- [x] Render the 2:37 dynamic operational demo with opportunity selection, human investment approval, amendment-driven replanning, live composition, ingestion, impact discovery, correction flows, English TTS, burned captions, and no duplicate selectable subtitle track at `public/tendergraph-build-week-chat-first-demo.mp4`.
 - [x] Keep the video under three minutes.
 - [x] Show what was built and how Codex and GPT-5.6 were used.
 - [x] Anonymize real buyer and supplier display names while preserving scores, scope, evidence anchors, and hashes.

@@ -35,6 +35,9 @@ for required in \
   "$CAPTURE_MANIFEST" \
   "$CAPTURE_VIDEO" \
   "$CAPTURE_DIR/lifecycle-workspace.png" \
+  "$CAPTURE_DIR/lifecycle-selected.png" \
+  "$CAPTURE_DIR/lifecycle-amendment.png" \
+  "$CAPTURE_DIR/lifecycle-replanned.png" \
   "$CAPTURE_DIR/lifecycle-approved.png" \
   "$CAPTURE_DIR/public-evidence.png" \
   "$CAPTURE_DIR/codex-trace.png" \
@@ -50,7 +53,7 @@ done
 
 capture_contract="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.contract)' "$CAPTURE_MANIFEST")"
 capture_presentation="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.presentation)' "$CAPTURE_MANIFEST")"
-if [[ "$capture_contract" != "tendergraph-chat-first-capture.v4" ]]; then
+if [[ "$capture_contract" != "tendergraph-chat-first-capture.v5" ]]; then
   echo "Unexpected capture contract: $capture_contract" >&2
   exit 1
 fi
@@ -309,6 +312,9 @@ if [[ "$subtitle_streams" -ne 0 ]]; then
 fi
 
 cp "$CAPTURE_DIR/lifecycle-workspace.png" "$OUTPUT_DIR/lifecycle-workspace.png"
+cp "$CAPTURE_DIR/lifecycle-selected.png" "$OUTPUT_DIR/lifecycle-selected.png"
+cp "$CAPTURE_DIR/lifecycle-amendment.png" "$OUTPUT_DIR/lifecycle-amendment.png"
+cp "$CAPTURE_DIR/lifecycle-replanned.png" "$OUTPUT_DIR/lifecycle-replanned.png"
 cp "$CAPTURE_DIR/lifecycle-approved.png" "$OUTPUT_DIR/lifecycle-approved.png"
 cp "$CAPTURE_DIR/public-evidence.png" "$OUTPUT_DIR/chat-first-evidence.png"
 cp "$CAPTURE_DIR/codex-trace.png" "$OUTPUT_DIR/chat-first-codex-trace.png"

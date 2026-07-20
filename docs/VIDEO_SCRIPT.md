@@ -1,6 +1,6 @@
 # TenderGraph Dynamic Demo Script
 
-Final runtime: **2:20.133**. Narration, burned captions, and on-screen labels
+Final runtime: **2:37.380**. Narration, burned captions, and on-screen labels
 are in English.
 The video contains no music or third-party brand footage. The public case uses
 stable supplier aliases while preserving procedure scope, scores, evidence
@@ -12,31 +12,48 @@ with `scripts/capture-live-codex-demo.mjs`, then render with
 `scripts/render-submission-video.sh`. The renderer expects Python Piper 1.4 and
 the `en_US-lessac-medium` voice through `PIPER_PYTHON` and `VOICE_MODEL`.
 
-## 0:00-0:19 - Enterprise risk and product
+## 0:00-0:18 - Discovery, selection, and investment approval
 
-**Screen:** Complete workbench. The capture cycles through findings, evidence,
-and the registered public event instead of holding a static overview.
+**Screen:** Three ranked opportunities begin without a bidder selection. The
+user selects the recommended opportunity, then a named bid manager approves
+the investment gate.
 
 **Narration:**
 
-"Companies want agents to reason across fragmented tender records. But a
-hallucination, a superseded source, or an unauthorized inference cannot become
-a business decision. TenderGraph lets GPT five point six reason while evidence,
-authority, claims, changes, and human approval remain separate and verifiable."
+"Three opportunities arrive with different fit, timing, and delivery risk.
+TenderGraph ranks each one and recommends select, review, or pass. We choose
+the high-fit clinic tender, but the agent cannot allocate company resources. A
+bid manager must explicitly approve the investment before work begins."
 
-## 0:19-0:37 - Evidence-bound answers
+## 0:18-0:45 - Operational lifecycle and amendment
+
+**Screen:** Requirements and the bid plan unlock. Compliance remains blocked.
+The monitor detects amendment v2, proves one requirement changed and four did
+not, then reopens two affected tasks. The disabled submission control remains
+visible.
+
+**Narration:**
+
+"Approval unlocks five evidence-bound requirements and a dependency-aware bid
+plan with named owners. Compliance remains blocked by a certificate review.
+Then amendment v two arrives and shortens delivery from fifteen to ten days.
+TenderGraph checks the complete requirement set, proves four remain valid,
+reopens only the two affected tasks, and adds a second blocker. Final submission
+stays disabled because release authority is permanently human-only."
+
+## 0:45-1:05 - Evidence-bound public case
 
 **Screen:** The inspector advances through source anchors while the camera
 removes the sidebar and keeps both claims and evidence legible.
 
 **Narration:**
 
-"This goes beyond summarization. Every answer is assembled from promoted claims
-bound to exact evidence. The inspector exposes source, page, quotation, parser,
-authority, URL, and hash, while preserving a critical boundary: a commission
-recommendation is not a signed contract."
+"The operating layer is proven against a hash-verified public Chilean
+evaluation. Every conclusion is bound to exact evidence. The inspector exposes
+source, page, quotation, parser, authority, URL, and hash, while preserving a
+critical limit: a commission recommendation is not a signed contract."
 
-## 0:37-0:56 - Live Codex runtime
+## 1:05-1:25 - Live Codex runtime
 
 **Action:** Run the public question through the ChatGPT-authenticated Codex
 surface. The camera holds the active composer during execution, then moves to
@@ -44,69 +61,58 @@ the model, full Session ID, gates, and runtime stages.
 
 **Narration:**
 
-"Here the question runs through a ChatGPT-authenticated Codex session without
+"The question runs through a ChatGPT-authenticated Codex session without
 an API key. GPT five point six composes only from admitted claims. The trace
-retains the model and Session ID; fifteen code-owned gates reject invention,
+retains the model and Session ID. Fifteen code-owned gates reject invention,
 evidence swaps, scope contamination, leakage, and incomplete output."
 
-## 0:56-1:16 - Ingestion and impact discovery
+## 1:25-1:44 - Ingestion and impact discovery
 
 **Action:** Attach the official PDF, extract eight anchors, navigate the new
 evidence, run impact discovery, and inspect the admitted shadow proposal.
 
 **Narration:**
 
-"I attach the official PDF. TenderGraph extracts eight hashed anchors without
-granting authority. Codex compares a later public selection record with every
-active claim and finds one corroboration. Six independent gates validate scope,
-evidence, action semantics, and shadow authority. Nothing changes before human
-review."
+"Attach a new official PDF and TenderGraph extracts hashed, addressable evidence
+without granting it authority. Codex compares the update with every active
+conclusion. Six independent gates validate scope, evidence, complete impact,
+action semantics, and shadow authority. Nothing changes before human review."
 
-## 1:16-1:30 - Corrective resolution
+## 1:44-2:00 - Corrective resolution
 
 **Action:** Open the visibly synthetic Chile correction benchmark, inspect the
 registered diff, and run live impact discovery.
 
 **Narration:**
 
-"A later corrective resolution is harder. TenderGraph finds two supersessions:
-the original winner and loss explanation change, while the award rule stays
-stable. The result matches the versioned reference and cannot promote itself
-into official truth."
+"A corrective resolution is the harder test. TenderGraph finds two
+supersessions: the original winner and loss explanation change, while the award
+rule remains valid. The result matches the versioned reference exactly and
+cannot promote itself into organizational truth."
 
-## 1:30-1:47 - Decision graph
-
-**Screen:** Move between both supersession proposals and their evidence
-dependencies.
-
-**Narration:**
-
-"This is a decision graph, not generic RAG: versioned sources, evidence
-dependencies, reviewed claims, and explicit supersession. The same contracts
-already run across Chilean, European, and UK tender structures and common
-procurement formats."
-
-## 1:47-2:01 - Verified enforcement
+## 2:00-2:16 - Verified enforcement
 
 **Screen:** Verification slide backed by the current reports and three fresh
 capture Session IDs.
 
 **Narration:**
 
-"The enforcement is measured: forty-four tests, twenty-three golden scenarios,
-fifteen composition gates, six impact gates, and zero of eight injected faults
-admitted. This capture retains three fresh Codex Session IDs."
+"The enforcement is measured: forty-nine tests, twenty-three golden scenarios,
+six lifecycle gates, fifteen composition gates, six impact gates, and zero of
+eight injected faults admitted. This capture retains three real Codex Session
+IDs."
 
-## 2:01-2:20 - Why this can win
+## 2:16-2:37 - Why this can win
 
 **Screen:** Judging-criteria alignment and dated Build Week Git history.
 
 **Narration:**
 
-"Codex accelerated implementation, verification, testing, and this redesign.
-TenderGraph does not merely answer procurement questions. It controls what AI
-is allowed to conclude and how those conclusions may change when evidence
-changes. GPT five point six can reason. It cannot become authority."
+"Codex accelerated architecture, implementation, adversarial testing,
+production diagnosis, and this product redesign. TenderGraph gives companies
+an agentic bidding team with governed memory. Agents can discover, qualify,
+prepare, check, monitor, and learn. GPT five point six can reason. Humans remain
+the authority."
 
 ## Editing contract
 

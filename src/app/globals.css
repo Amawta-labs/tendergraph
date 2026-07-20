@@ -401,6 +401,30 @@ code {
   gap: 12px;
 }
 
+.lifecycle-event {
+  min-height: 54px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #91c9ac;
+  background: #e9f8f0;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  animation: lifecycle-event-in 360ms ease-out;
+}
+
+.lifecycle-event span {
+  color: var(--muted);
+  display: grid;
+  gap: 2px;
+  font-size: 8px;
+}
+
+.lifecycle-event strong {
+  color: var(--ink);
+  font-size: 10px;
+}
+
 .lifecycle-title {
   min-width: 0;
   display: flex;
@@ -681,6 +705,11 @@ code {
   color: var(--ink);
 }
 
+.lifecycle-tabs button:disabled {
+  color: #aeb7b3;
+  cursor: not-allowed;
+}
+
 .lifecycle-table {
   display: grid;
 }
@@ -794,6 +823,29 @@ code {
   color: var(--green);
 }
 
+.opportunity-select {
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid #087a4d;
+  border-radius: 4px;
+  background: #087a4d;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.opportunity-selected {
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
 .opportunity-row:has(.opportunity-fit.pass) > b {
   color: var(--muted);
 }
@@ -900,6 +952,75 @@ code {
   text-transform: uppercase;
 }
 
+.monitoring-change.detected {
+  border-left: 3px solid var(--amber);
+  background: #fffdf9;
+}
+
+.monitoring-change em {
+  margin-top: 7px;
+  color: var(--amber);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.monitoring-change em span {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #c6a56f;
+}
+
+.monitoring-idle {
+  min-height: 78px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--soft-line);
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.monitoring-idle > span {
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+  background: var(--green-soft);
+  color: var(--green);
+  display: grid;
+  place-items: center;
+}
+
+.monitoring-idle strong {
+  font-size: 10px;
+}
+
+.monitoring-idle p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.monitoring-idle button {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid #087a4d;
+  border-radius: 4px;
+  background: white;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 8px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .monitoring-authority {
   min-height: 58px;
   padding: 10px 14px;
@@ -919,6 +1040,57 @@ code {
 
 .monitoring-authority strong {
   color: var(--ink);
+}
+
+.submission-lock {
+  min-height: 60px;
+  padding: 10px 14px;
+  border-top: 1px solid #e5c78e;
+  background: #fff9ed;
+  color: var(--amber);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.submission-lock > span {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  background: var(--amber-soft);
+  display: grid;
+  place-items: center;
+}
+
+.submission-lock p {
+  min-width: 0;
+  margin: 0;
+  color: var(--muted);
+  display: grid;
+  gap: 3px;
+  font-size: 8px;
+}
+
+.submission-lock strong {
+  color: var(--ink);
+  font-size: 10px;
+}
+
+.submission-lock button {
+  min-height: 32px;
+  margin-left: auto;
+  padding: 0 10px;
+  border: 1px solid #d7cbb4;
+  border-radius: 4px;
+  background: #ede9e1;
+  color: #8b8170;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 8px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: not-allowed;
 }
 
 .lifecycle-next-action {
@@ -2126,6 +2298,18 @@ code {
   }
 }
 
+@keyframes lifecycle-event-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .mobile-scrim {
   display: none;
 }
@@ -2342,6 +2526,30 @@ code {
 
   .monitoring-change b {
     grid-column: 2;
+  }
+
+  .monitoring-idle {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .monitoring-idle button {
+    grid-column: 2;
+    justify-content: center;
+  }
+
+  .submission-lock {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .submission-lock p {
+    width: calc(100% - 39px);
+  }
+
+  .submission-lock button {
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
   }
 
   .message {

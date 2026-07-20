@@ -12,7 +12,7 @@
   `artifacts/submission/tendergraph-build-week-chat-first-demo.en.srt` for the
   YouTube caption upload; it is stored away from the MP4 so desktop players do
   not auto-enable a duplicate layer
-- Duration: 2:24.212
+- Duration: 2:37.380
 - Resolution: 1920x1080
 - Language: English
 
@@ -35,10 +35,6 @@ benchmark.
 
 Built with Codex and GPT-5.6 for OpenAI Build Week.
 
-Live demo: https://openaihack.vercel.app/?submission=public
-Correction benchmark: https://openaihack.vercel.app/?case=cl-correction-demo&submission=public
-Code: https://github.com/Amawta-labs/tendergraph
-
 Verified in the demo:
 - 49/49 contract and adversarial tests
 - 23/23 deterministic golden scenarios
@@ -54,21 +50,27 @@ boundaries. The Chile correction case is visibly synthetic. The narration is
 AI-assisted; the video contains no music or third-party brand footage.
 
 Chapters:
-00:00 The one-week bidding problem
-00:15 Seven agents and human authority
-00:34 Hash-verified public evidence
-00:53 Live Codex and GPT-5.6 runtime
-01:12 Document ingestion and impact discovery
-01:31 Corrective resolution
-01:47 Verified enforcement
-02:02 Agentic bidding with governed memory
+00:00 Three opportunities ranked
+00:08 Select the high-fit tender
+00:15 Human investment approval
+00:19 Requirements and bid plan unlocked
+00:25 Compliance blocked
+00:28 Amendment v2 arrives
+00:36 Affected work reopened
+00:39 Final submission retained
+00:45 Hash-verified public evidence
+01:05 Live Codex and GPT-5.6 runtime
+01:25 Document ingestion and impact discovery
+01:44 Corrective resolution
+02:00 Verified enforcement
+02:16 Agentic bidding with governed memory
 
 ## Upload settings
 
 - Visibility: **Public**
 - Audience: **No, it is not made for kids**
 - Video language: **English**
-- Recording date: **July 18, 2026**
+- Recording date: **July 20, 2026**
 - Category: **Science & Technology**
 - License: **Standard YouTube License**
 - Paid promotion: **No**

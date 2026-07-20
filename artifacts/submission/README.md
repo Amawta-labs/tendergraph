@@ -10,14 +10,14 @@
 - English subtitles:
   `tendergraph-build-week-chat-first-demo.en.srt`, burned into the picture and
   provided separately for upload; the MP4 has no selectable subtitle track
-- Duration: 144.212 seconds
+- Duration: 157.380 seconds
 - Video: H.264, 1920x1080, 30 fps
 - Audio: AAC, mono, 48 kHz
-- Integrated loudness: -18.7 LUFS
-- True peak: -2.94 dBFS
-- SHA-256: `b4d8539492e30df9eb4e2c6722adab2dca01d4bd91344943b501f27066358638`
+- Integrated loudness: -19.0 LUFS
+- True peak: -2.2 dBFS
+- SHA-256: `e63ebf57a953b86e93abf05d9b015af474d6b683e80cfb6848e0c43999d7c387`
 - Subtitle SHA-256:
-  `01f7aa9b8b4e02ccf1d271ca200732f0933a64c90866f563b642a52f083497b4`
+  `f1033a1248ca1a924abbcc6b35a9d7bace2b306f701ce9589990b17e00752aa6`
 
 ## Devpost media
 
@@ -32,9 +32,9 @@ corrective-resolution benchmark, and verified enforcement. The capture
 contains three fresh
 authenticated Codex runs:
 
-- Composition: `019f80e7-9b52-7b10-ae3d-35df0aa2b250`
-- Public impact: `019f80e7-f8ff-7360-a5cc-4934d722072a`
-- Correction impact: `019f80e8-525e-7c30-9382-1e073464ce6b`
+- Composition: `019f810e-f312-75c2-a9a6-6349bc58777a`
+- Public impact: `019f810f-574e-7d12-bec9-34cebbe48a22`
+- Correction impact: `019f810f-c3c6-7602-9268-b608a9acdba5`
 
 The public presentation replaces buyer and supplier display names with stable
 aliases while preserving scope, scores, evidence anchors, hashes, and
@@ -44,6 +44,9 @@ video contains no music or third-party brand footage.
 ## Chat-first still images
 
 - `lifecycle-workspace.png`: ranked opportunities and the seven-stage workspace.
+- `lifecycle-selected.png`: bidder selection awaiting investment approval.
+- `lifecycle-amendment.png`: new amendment with one changed and four unchanged requirements.
+- `lifecycle-replanned.png`: two affected tasks reopened by amendment v2.
 - `lifecycle-approved.png`: qualification approved with compliance still blocked.
 - `chat-first-workbench.png`: complete public workbench.
 - `chat-first-evidence.png`: addressable evidence inspector.
@@ -62,7 +65,7 @@ Start the authenticated local workbench, then run:
 ```bash
 node scripts/capture-live-codex-demo.mjs \
   --url http://localhost:3001 \
-  --output-dir /tmp/tendergraph-chat-first-capture-v4
+  --output-dir /tmp/tendergraph-chat-first-capture
 
 CAPTURE_DIR=/tmp/tendergraph-chat-first-capture \
 PIPER_PYTHON=/path/to/piper-python \
@@ -71,6 +74,6 @@ VOICE_MODEL=/path/to/en_US-lessac-medium.onnx \
 ```
 
 The capturer rejects missing live Codex composition, Session IDs, validation
-gates, or expected impact proposals. Its v4 contract also retains six active
+gates, or expected impact proposals. Its v5 contract also retains six active
 chapter ranges. The renderer rejects a non-anonymized capture, frozen-frame
 padding, missing audio, and a runtime of 180 seconds or longer.

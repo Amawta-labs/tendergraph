@@ -9,6 +9,7 @@ import {
   ClipboardCheck,
   FileSearch,
   ListChecks,
+  LockKeyhole,
   LoaderCircle,
   Radar,
   RefreshCw,
@@ -17,7 +18,7 @@ import {
   Target,
   UserCheck,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import type {
   LifecycleApprovalId,
@@ -51,13 +52,17 @@ const statusLabels = {
 
 export function LifecycleConsole({
   initialWorkspace,
+  onWorkspaceChange,
 }: {
   initialWorkspace: LifecycleWorkspace;
+  onWorkspaceChange?: (workspace: LifecycleWorkspace) => void;
 }) {
   const [workspace, setWorkspace] = useState(initialWorkspace);
   const [tab, setTab] = useState<LifecycleTab>("opportunities");
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
+  const [eventLabel, setEventLabel] = useState("");
+  const eventTimerRef = useRef<number | null>(null);
   const approvedIds = useMemo(
     () =>
       workspace.approvals
@@ -74,19 +79,44 @@ export function LifecycleConsole({
   const qualification = workspace.approvals.find(
     (approval) => approval.id === "qualification",
   );
+  const selected = workspace.selectedOpportunityId !== null;
+  const qualificationApproved = qualification?.status === "approved";
+  const amendmentDetected = workspace.changes.length > 0;
 
-  async function runLifecycle(approval?: LifecycleApprovalId) {
+  useEffect(
+    () => () => {
+      if (eventTimerRef.current !== null) {
+        window.clearTimeout(eventTimerRef.current);
+      }
+    },
+    [],
+  );
+
+  async function runLifecycle(options?: {
+    approval?: LifecycleApprovalId;
+    select?: boolean;
+    detectAmendment?: boolean;
+    eventLabel?: string;
+  }) {
     setRunning(true);
     setError("");
     try {
-      const approvals = approval
-        ? [...new Set([...approvedIds, approval])]
+      const approvals = options?.approval
+        ? [...new Set([...approvedIds, options.approval])]
         : approvedIds;
       const response = await fetch("/api/lifecycle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           workspaceId: workspace.workspaceId,
+          selectedOpportunityId:
+            options?.select || selected
+              ? "opportunity-clinic-supplies"
+              : null,
+          observedChangeIds:
+            options?.detectAmendment || amendmentDetected
+              ? ["change-delivery-window"]
+              : [],
           approvals,
         }),
       });
@@ -94,7 +124,19 @@ export function LifecycleConsole({
       if (!response.ok) {
         throw new Error(body.error ?? "Lifecycle run failed");
       }
-      setWorkspace(body as LifecycleWorkspace);
+      const nextWorkspace = body as LifecycleWorkspace;
+      setWorkspace(nextWorkspace);
+      onWorkspaceChange?.(nextWorkspace);
+      if (options?.eventLabel) {
+        setEventLabel(options.eventLabel);
+        if (eventTimerRef.current !== null) {
+          window.clearTimeout(eventTimerRef.current);
+        }
+        eventTimerRef.current = window.setTimeout(
+          () => setEventLabel(""),
+          4200,
+        );
+      }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Lifecycle run failed");
     } finally {
@@ -136,6 +178,16 @@ export function LifecycleConsole({
         </button>
       </div>
 
+      {eventLabel && (
+        <div className="lifecycle-event" role="status">
+          <Radar size={17} />
+          <span>
+            <strong>{eventLabel}</strong>
+            The workspace was revalidated against all six lifecycle gates.
+          </span>
+        </div>
+      )}
+
       <div className="lifecycle-metrics">
         <div>
           <span>Opportunity fit</span>
@@ -173,7 +225,7 @@ export function LifecycleConsole({
 
       <div className="lifecycle-command-row">
         <div>
-          {qualification?.status === "approved" ? (
+          {qualificationApproved ? (
             <CheckCircle2 size={18} />
           ) : (
             <UserCheck size={18} />
@@ -182,18 +234,25 @@ export function LifecycleConsole({
             <strong>
               {qualification?.status === "approved"
                 ? "Qualification approved"
-                : "Human gate ready"}
+                : selected
+                  ? "Human gate ready"
+                  : "Opportunity decision pending"}
             </strong>
             {qualification?.reason}
           </span>
         </div>
-        {qualification?.status !== "approved" && (
+        {selected && !qualificationApproved && (
           <button
             type="button"
             disabled={running}
-            onClick={() => void runLifecycle("qualification")}
+            onClick={() =>
+              void runLifecycle({
+                approval: "qualification",
+                eventLabel: "Bid investment approved",
+              })
+            }
           >
-            Approve qualification
+            Approve bid investment
             <ArrowRight size={16} />
           </button>
         )}
@@ -214,6 +273,7 @@ export function LifecycleConsole({
           role="tab"
           aria-selected={tab === "requirements"}
           className={tab === "requirements" ? "selected" : ""}
+          disabled={!qualificationApproved}
           onClick={() => setTab("requirements")}
         >
           Requirements
@@ -221,17 +281,9 @@ export function LifecycleConsole({
         <button
           type="button"
           role="tab"
-          aria-selected={tab === "compliance"}
-          className={tab === "compliance" ? "selected" : ""}
-          onClick={() => setTab("compliance")}
-        >
-          Compliance
-        </button>
-        <button
-          type="button"
-          role="tab"
           aria-selected={tab === "bid_plan"}
           className={tab === "bid_plan" ? "selected" : ""}
+          disabled={!qualificationApproved}
           onClick={() => setTab("bid_plan")}
         >
           Bid plan
@@ -239,8 +291,19 @@ export function LifecycleConsole({
         <button
           type="button"
           role="tab"
+          aria-selected={tab === "compliance"}
+          className={tab === "compliance" ? "selected" : ""}
+          disabled={!qualificationApproved}
+          onClick={() => setTab("compliance")}
+        >
+          Compliance
+        </button>
+        <button
+          type="button"
+          role="tab"
           aria-selected={tab === "monitoring"}
           className={tab === "monitoring" ? "selected" : ""}
+          disabled={!qualificationApproved}
           onClick={() => setTab("monitoring")}
         >
           Monitoring
@@ -265,7 +328,31 @@ export function LifecycleConsole({
                   day: "numeric",
                 })}
               </span>
-              <b>{opportunity.status}</b>
+              {opportunity.id === "opportunity-clinic-supplies" ? (
+                selected ? (
+                  <b className="opportunity-selected">
+                    <Check size={13} />
+                    Selected
+                  </b>
+                ) : (
+                  <button
+                    className="opportunity-select"
+                    type="button"
+                    disabled={running}
+                    onClick={() =>
+                      void runLifecycle({
+                        select: true,
+                        eventLabel: "Opportunity selected",
+                      })
+                    }
+                  >
+                    Select
+                    <ArrowRight size={13} />
+                  </button>
+                )
+              ) : (
+                <b>{opportunity.status}</b>
+              )}
             </div>
           ))}
         </div>
@@ -321,6 +408,12 @@ export function LifecycleConsole({
                     ? ` / ${task.dependsOn.length} dependencies`
                     : " / ready"}
                 </small>
+                {task.reopenedByChangeId && (
+                  <em>
+                    <RefreshCw size={12} />
+                    Reopened by amendment v2
+                  </em>
+                )}
               </div>
               <span>{task.humanOwner ?? "Agent owned"}</span>
               <b>{task.status.replaceAll("_", " ")}</b>
@@ -356,19 +449,48 @@ export function LifecycleConsole({
 
       {tab === "monitoring" && (
         <div className="monitoring-view">
-          {workspace.changes.map((change) => (
-            <div className="monitoring-change" key={change.id}>
-              <span><Radar size={19} /></span>
-              <div>
-                <strong>{change.title}</strong>
-                <p>
-                  {change.affectedRequirementIds.length} requirement changed;{" "}
-                  {change.unchangedRequirementIds.length} remain valid.
-                </p>
+          {amendmentDetected ? (
+            workspace.changes.map((change) => (
+              <div className="monitoring-change detected" key={change.id}>
+                <span><Radar size={19} /></span>
+                <div>
+                  <strong>New amendment detected</strong>
+                  <p>{change.title}</p>
+                  <em>
+                    {change.affectedRequirementIds.length} changed
+                    <span />
+                    {change.unchangedRequirementIds.length} unchanged
+                  </em>
+                </div>
+                <b>Shadow replan</b>
               </div>
-              <b>Shadow replan</b>
+            ))
+          ) : (
+            <div className="monitoring-idle">
+              <span><Radar size={20} /></span>
+              <div>
+                <strong>No new amendments</strong>
+                <p>The current source set is being monitored for later releases.</p>
+              </div>
+              <button
+                type="button"
+                disabled={running}
+                onClick={() =>
+                  void runLifecycle({
+                    detectAmendment: true,
+                    eventLabel: "Amendment v2 detected",
+                  })
+                }
+              >
+                {running ? (
+                  <LoaderCircle className="spin" size={15} />
+                ) : (
+                  <Radar size={15} />
+                )}
+                Check for amendments
+              </button>
             </div>
-          ))}
+          )}
           <div className="monitoring-authority">
             <ShieldCheck size={17} />
             <span>
@@ -379,6 +501,18 @@ export function LifecycleConsole({
           </div>
         </div>
       )}
+
+      <div className="submission-lock">
+        <span><LockKeyhole size={17} /></span>
+        <p>
+          <strong>Final submission retained</strong>
+          Human approval required after every compliance blocker is resolved.
+        </p>
+        <button type="button" disabled>
+          <Send size={14} />
+          Submit bid
+        </button>
+      </div>
 
       <div className="lifecycle-next-action">
         <span><Send size={16} /></span>

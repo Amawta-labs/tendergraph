@@ -24,26 +24,25 @@ before its confirmation exists.
 - `/feedback` state: **submitted with logs**; receipt preserved at
   `artifacts/submission/codex-feedback.json`.
 
-## Final public video
+## Current replacement video candidate
 
 - File: `public/tendergraph-build-week-chat-first-demo.mp4`
-- YouTube: https://www.youtube.com/watch?v=G0XekMloa4c
-- Duration: **2:20.133**
+- Current YouTube publication to replace: https://www.youtube.com/watch?v=G0XekMloa4c
+- Upload state: **the new operational cut is rendered locally and still needs
+  its public YouTube upload**
+- Duration: **2:37.380**
 - Video SHA-256:
-  `ecf41f57aee84332a2ead51d21872567edfed770d9389b1bb57fad25c4930e79`
+  `e63ebf57a953b86e93abf05d9b015af474d6b683e80cfb6848e0c43999d7c387`
 - English subtitle sidecar:
   `artifacts/submission/tendergraph-build-week-chat-first-demo.en.srt`
 - Subtitle SHA-256:
-  `8a2ab4e0bfd1b918aae773c95c0d9958b1c246ec8ea74a58b43b05e34c3b7c84`
+  `f1033a1248ca1a924abbcc6b35a9d7bace2b306f701ce9589990b17e00752aa6`
 - Captions: burned into the picture; the MP4 has no selectable subtitle track
   that could duplicate them. Use the sidecar only for the YouTube caption upload.
 - Runtime evidence: fresh composition and two impact-discovery Codex sessions
   preserved in `artifacts/submission/chat-first-capture.json`.
-- YouTube publication: **public and playable while signed out**.
-- Production asset deployment: **verified against the local SHA-256**.
-- Deployment ID: `dpl_8Xf2ASZ1QK3EtRWFkoyCejVXL8nC`
-- Immutable deployment: https://openaihack-do8xy9ypz-amawta.vercel.app
-- Production alias: https://openaihack.vercel.app
+- YouTube publication: **pending replacement upload**.
+- Production asset deployment: **pending this change set**.
 
 ## GitHub publication
 

@@ -90,24 +90,46 @@ async function main() {
     mark("publicReady");
     mark("lifecycleSceneStart");
     await screenshot(page, options.outputDir, "lifecycle-workspace");
-    await page.getByRole("tab", { name: "Requirements" }).click();
-    await beat();
-    await page.getByRole("tab", { name: "Compliance" }).click();
-    await beat();
-    await page.getByRole("tab", { name: "Opportunities" }).click();
-    await beat();
+    await beat(1600);
+    await page.getByRole("button", { name: "Select", exact: true }).click();
+    await page.getByText("Opportunity selected").waitFor();
+    await beat(1800);
+    mark("opportunitySelected");
+    await screenshot(page, options.outputDir, "lifecycle-selected");
+    await page
+      .getByRole("button", { name: "Approve bid investment" })
+      .click();
+    await page.getByText("Bid investment approved").waitFor();
+    await beat(1900);
+    mark("qualificationApproved");
     mark("lifecycleSceneEnd");
 
     mark("lifecycleControlStart");
-    await page.getByRole("button", { name: "Approve qualification" }).click();
-    await page.getByText("Qualification approved").waitFor();
-    await beat();
+    await page.getByRole("tab", { name: "Requirements" }).click();
+    await beat(1800);
     await page.getByRole("tab", { name: "Bid plan" }).click();
-    await beat();
-    await page.getByRole("tab", { name: "Monitoring" }).click();
-    await beat();
+    await beat(1900);
     await page.getByRole("tab", { name: "Compliance" }).click();
-    await beat();
+    await beat(1800);
+    await page.getByRole("tab", { name: "Monitoring" }).click();
+    await page
+      .getByRole("button", { name: "Check for amendments" })
+      .waitFor();
+    await beat(1600);
+    await page
+      .getByRole("button", { name: "Check for amendments" })
+      .click();
+    await page.getByText("Amendment v2 detected").waitFor();
+    await beat(1900);
+    mark("amendmentDetected");
+    await screenshot(page, options.outputDir, "lifecycle-amendment");
+    await page.getByRole("tab", { name: "Bid plan" }).click();
+    await page.getByText("Reopened by amendment v2").first().waitFor();
+    await beat(1900);
+    mark("tasksReplanned");
+    await screenshot(page, options.outputDir, "lifecycle-replanned");
+    await page.getByRole("tab", { name: "Compliance" }).click();
+    await beat(1700);
     await screenshot(page, options.outputDir, "lifecycle-approved");
     mark("lifecycleControlEnd");
 
@@ -278,7 +300,7 @@ async function main() {
     await copyFile(recordedPath, finalVideo);
 
     const manifest = {
-      contract: "tendergraph-chat-first-capture.v4",
+      contract: "tendergraph-chat-first-capture.v5",
       capturedAt: new Date().toISOString(),
       url: `${options.url}/?submission=public`,
       presentation: "public_anonymized",

@@ -1,13 +1,13 @@
 {
   "mode": "live",
   "readerOutput": {
-    "title": "Tender award recommendation",
+    "title": "StructuredTenderAnswer",
     "summary": "3 promoted claims answer the request. Every statement below is bound to reviewed evidence by the claim contract.",
     "status": "official",
     "decisionStage": "commission_recommendation",
     "sections": [
       {
-        "heading": "Evaluation scores",
+        "heading": "Evaluation results",
         "body": "Comercial Hagelin obtained the highest evaluated percentage, 98.33%, followed by Metalurgica Silcosil at 88.50%; all six remaining suppliers scored below 73%.",
         "claimIds": [
           "claim-cl-real-scores"
@@ -17,7 +17,7 @@
         ]
       },
       {
-        "heading": "Commission proposal",
+        "heading": "Commission recommendation",
         "body": "The evaluation commission proposed awarding the office furniture purchase to Comercial Hagelin SpA; this snapshot does not establish that a final contract was signed.",
         "claimIds": [
           "claim-cl-real-award-recommendation"
@@ -44,9 +44,9 @@
     "recommendation": "Use the cited evidence and unresolved review items before taking a consequential procurement decision."
   },
   "trace": {
-    "traceId": "ba0f1b01-2d31-436b-a387-8048beb6c273",
-    "requestId": "f8514a78-b2fa-4c9f-8701-53a5bc072eac",
-    "createdAt": "2026-07-20T19:01:40.728Z",
+    "traceId": "27cb0c0c-04a6-4b0b-bec1-71ba5ae1e8ce",
+    "requestId": "dda8c44d-1a31-487e-b53d-36462fd31dc1",
+    "createdAt": "2026-07-20T19:44:40.195Z",
     "resolvedScope": {
       "jurisdiction": "CL",
       "procedureId": "5802381-7547UCUK",
@@ -71,7 +71,7 @@
     ],
     "model": "gpt-5.6-terra",
     "compositionSurface": "codex",
-    "codexSessionId": "019f80e7-9b52-7b10-ae3d-35df0aa2b250",
+    "codexSessionId": "019f810e-f312-75c2-a9a6-6349bc58777a",
     "compositionMode": "live",
     "validationResults": [
       {
@@ -209,7 +209,7 @@
         "passed": true,
         "code": null,
         "details": {
-          "elapsedMs": 10948,
+          "elapsedMs": 12077,
           "limitMs": 140000
         }
       },
@@ -242,8 +242,8 @@
     ],
     "fallbackReason": null,
     "timings": {
-      "compositionMs": 10948,
-      "totalMs": 10948
+      "compositionMs": 12077,
+      "totalMs": 12077
     },
     "stages": [
       {
@@ -292,7 +292,7 @@
         "status": "completed",
         "sourceState": null,
         "artifactIds": [
-          "f8514a78-b2fa-4c9f-8701-53a5bc072eac",
+          "dda8c44d-1a31-487e-b53d-36462fd31dc1",
           "structured_tender_answer.v1"
         ],
         "details": {
