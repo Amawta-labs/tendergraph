@@ -21,7 +21,8 @@
 
 ## Devpost media
 
-Upload the five 1920x1080 images under `devpost-media/` in filename order.
+Upload the seven 1920x1080 production captures under
+`devpost-media-operational/` in filename order.
 Their public titles and captions are maintained in
 `../../docs/DEVPOST_FORM_COPY.md`.
 

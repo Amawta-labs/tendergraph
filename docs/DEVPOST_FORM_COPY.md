@@ -37,46 +37,62 @@ Codex, GPT-5.6, Next.js, React, TypeScript, Zod, Vitest, Playwright, Vercel
 
 ## Media gallery
 
-Upload these 1920x1080 images in this order.
+Upload these 1920x1080 production captures in this order.
 
-### 1. Agentic bid workspace
+### 1. Ranked opportunity inbox
 
-- File: `artifacts/submission/devpost-media/01-agentic-bid-workspace.png`
-- Title: One governed workspace across the tender lifecycle
-- Caption: TenderGraph ranks opportunities, qualifies the selected tender,
-  tracks current requirements, prepares the bid, blocks unresolved compliance,
-  monitors amendments, and keeps submission authority human-only.
+- File: `artifacts/submission/devpost-media-operational/01-opportunities-ranked.png`
+- Title: Agents rank opportunities before company resources are committed
+- Caption: TenderGraph scores three reproducible opportunities and recommends
+  select, review, or pass. The bidder has not selected an opportunity yet, and
+  every downstream operational stage remains locked.
 
-### 2. Exact evidence
+### 2. Human investment gate
 
-- File: `artifacts/submission/devpost-media/02-exact-evidence.png`
-- Title: Every reviewed claim leads back to its source
-- Caption: The evidence inspector exposes source, page, section, quoted passage,
-  parser identity, content hash, and authority status instead of asking judges
-  to trust generated prose.
+- File: `artifacts/submission/devpost-media-operational/02-human-investment-gate.png`
+- Title: Selection does not silently allocate bidder resources
+- Caption: After the recommended tender is selected, a named bid manager must
+  approve the investment decision before requirements and preparation work can
+  begin.
 
-### 3. Decision change
+### 3. Dependency-aware bid plan
 
-- File: `artifacts/submission/devpost-media/03-decision-change.png`
-- Title: New evidence changes claims, not history
-- Caption: A visibly synthetic corrective resolution produces two shadow
-  supersession proposals while one reviewed claim remains unchanged. No
-  conclusion is promoted without human review.
+- File: `artifacts/submission/devpost-media-operational/03-bid-plan-unlocked.png`
+- Title: Human approval unlocks an evidence-bound preparation plan
+- Caption: Requirements drive named tasks and explicit dependencies. Compliance
+  stays blocked while the certificate review remains unresolved, and the final
+  submission control remains disabled.
 
-### 4. Live Codex trace
+### 4. Complete amendment impact
 
-- File: `artifacts/submission/devpost-media/04-live-codex-trace.png`
+- File: `artifacts/submission/devpost-media-operational/04-amendment-impact.png`
+- Title: One changed requirement, four explicitly preserved
+- Caption: Amendment v2 shortens delivery from 15 to 10 days. TenderGraph checks
+  the complete requirement set, supersedes the old source, and proposes a
+  bounded shadow replan.
+
+### 5. Replanned work and retained submission
+
+- File: `artifacts/submission/devpost-media-operational/05-replanned-submission-held.png`
+- Title: Only affected tasks reopen; agents still cannot submit
+- Caption: The technical response and delivery confirmation are reopened with
+  direct amendment provenance. Unaffected work remains complete and final
+  release authority stays human-only.
+
+### 6. Hash-verified public case
+
+- File: `artifacts/submission/devpost-media-operational/06-evidence-bound-public-case.png`
+- Title: Every reviewed conclusion leads back to exact evidence
+- Caption: The separate public Chilean case exposes source, page, section,
+  quoted passage, parser identity, hash, and authority while preserving the
+  distinction between an evaluation recommendation and a signed contract.
+
+### 7. Live Codex trace
+
+- File: `artifacts/submission/devpost-media-operational/07-live-codex-trace.png`
 - Title: GPT-5.6 reasoning inside code-owned contracts
-- Caption: The live trace retains the GPT-5.6 Terra model, Codex Session ID,
-  runtime stages, and 15 passed composition gates.
-
-### 5. Verified enforcement
-
-- File: `artifacts/submission/devpost-media/05-verified-enforcement.png`
-- Title: A working system, not a prompt demo
-- Caption: 49/49 tests, 23/23 deterministic scenarios, 15/15 composition gates,
-  6/6 impact gates, 0/8 controlled faults admitted, and three fresh retained
-  Codex runs.
+- Caption: The retained live trace exposes the GPT-5.6 Terra model, Codex
+  Session ID, runtime stages, and all 15 passed composition gates.
 
 ## Project story
 
