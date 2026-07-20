@@ -34,9 +34,12 @@ This is an operational checklist derived from the supplied Official Rules. The H
 - [x] Make the repository public with the Apache-2.0 license, or share the private repository with `testing@devpost.com` and `build-week-event@openai.com`.
 - [x] README explains installation, testing, Codex collaboration, product decisions, runtime use of GPT-5.6, and fallback behavior.
 - [x] Judges can test https://openaihack.vercel.app without rebuilding or authentication.
-- [x] Local live-Codex and plugin instructions are documented.
+- [x] Local live-Codex and plugin instructions are documented for
+  `$tendergraph-operate` and `$tendergraph-analyze`.
 - [x] Redeploy the final video and confirm its hosted hash is accessible without login; recheck it through the judging period.
-- [x] Run the final command set for the new freeze candidate: typecheck, 44 tests, deterministic eval, ablation, Codex composition smoke, Codex impact smoke, build, and dependency audit.
+- [x] Run the final command set for the new freeze candidate: typecheck, 49
+  tests, deterministic eval, ablation, Codex composition smoke, Codex impact
+  smoke, lifecycle verification, build, and dependency audit.
 
 ## Devpost fields
 
