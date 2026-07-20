@@ -1,11 +1,13 @@
 ---
 name: tendergraph-analyze
-description: Run TenderGraph tender, opening, award, compliance, or evidence analysis through GPT-5.6 in Codex without an API key. Use when asked to audit a TenderGraph golden case, explain who won or lost and why, produce a procurement trace, verify evidence-backed claims, or demonstrate the Build Week Codex runtime.
+description: Run TenderGraph opening, award, correction, or evidence analysis through GPT-5.6 in Codex without an API key. Use when asked to audit a TenderGraph golden case, explain who was recommended or lost and why, discover claim impact, produce a procurement trace, verify evidence-backed claims, or demonstrate the Build Week Codex runtime. Use tendergraph-operate for opportunity qualification, bid planning, compliance, amendments, or submission authority.
 ---
 
 # TenderGraph Analyze
 
-Run the application-owned harness. Do not answer the procurement question directly from model memory.
+Run the application-owned evidence harness. Do not answer the procurement
+question directly from model memory. For the bidder lifecycle, switch to
+`$tendergraph-operate`.
 
 ## Workflow
 

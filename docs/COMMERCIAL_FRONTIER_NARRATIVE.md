@@ -189,7 +189,8 @@ case, and product experience.
   15/15 gates.
 - Two live GPT-5.6 Terra impact runs, each passing 6/6 impact gates with exact
   reference agreement: one corroboration and one two-claim supersession.
-- A Codex plugin and skill that make the workflow runnable without an API key.
+- A Codex plugin with operational and evidence skills that make the workflow
+  runnable without an API key.
 
 ## Defensibility
 

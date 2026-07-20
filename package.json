@@ -17,6 +17,7 @@
     "eval:ablation": "tsx evals/ablation.ts",
     "compliance:licenses": "node scripts/generate-license-inventory.mjs",
     "tendergraph:codex": "tsx src/cli/codex-run.ts",
+    "tendergraph:lifecycle": "tsx src/cli/lifecycle-run.ts",
     "tendergraph:impact": "tsx src/cli/codex-impact.ts"
   },
   "dependencies": {

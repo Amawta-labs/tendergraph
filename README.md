@@ -38,7 +38,7 @@ policies, approvals, or validations are authoritative.
 - Risk-tiered claim admission with human review required for consequential claims.
 - Deterministic answer planning and validation gates outside the prompt.
 - GPT-5.6 Terra structured composition through ChatGPT-authenticated Codex.
-- A distributable Codex plugin and skill for running the evidence audit without an API key.
+- A distributable Codex plugin with operational and evidence skills that run without an API key.
 - Automatic deterministic fallback when the model is unavailable or violates a contract.
 - Separate reader output and a validated six-stage audit trace.
 - A validated, predeclared incremental evidence-delta contract for corroboration, invalidation, and claim supersession.
@@ -103,7 +103,17 @@ codex plugin marketplace add /absolute/path/to/openaihack
 codex plugin add tendergraph@tendergraph-local
 ```
 
-Invoke `$tendergraph-analyze` from Codex to run the same workflow. Invalid or policy-violating GPT-5.6 output is discarded and replaced by the deterministic composer.
+Invoke `$tendergraph-operate` to run discovery, selection, qualification, bid
+planning, compliance, and amendment impact through the six lifecycle gates.
+Invoke `$tendergraph-analyze` for the evidence-backed opening, award, and
+correction workflow. Invalid or policy-violating GPT-5.6 output is discarded
+and replaced by the deterministic composer.
+
+The operational skill can also be exercised directly:
+
+```bash
+npm run tendergraph:lifecycle -- --state amended
+```
 
 The `Codex live` workbench action calls the local `/api/codex-run` bridge, which executes the same typed plugin workflow and returns a safe deterministic result if the Codex process is unavailable. The Responses API adapter remains available for teams with separate API billing, but it is optional and is not the Build Week demo path.
 

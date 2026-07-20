@@ -97,7 +97,8 @@ coverage or autonomous submission.
   unchanged requirements, and affected bid tasks reopened.
 - A public evaluation case and synthetic portability/correction benchmarks.
 - A ChatGPT-authenticated Codex runtime path that does not require an API key.
-- A distributable TenderGraph Codex plugin and `$tendergraph-analyze` skill.
+- A distributable TenderGraph Codex plugin with `$tendergraph-operate` and
+  `$tendergraph-analyze` skills.
 - Immutable six-stage local audit traces retrievable across local processes; hosted durable storage is a production boundary.
 - Claim invalidation, supersession, and exact before/after evidence dependency diffs.
 - 49 unit/adversarial tests, 23 deterministic evaluation scenarios, an 8-fault enforcement ablation, a 2-run live composition evaluation, and a 2-run live impact evaluation.
@@ -162,7 +163,9 @@ codex plugin marketplace add /absolute/path/to/openaihack
 codex plugin add tendergraph@tendergraph-local
 ```
 
-Invoke `$tendergraph-analyze` in Codex.
+Invoke `$tendergraph-operate` for the governed bidder lifecycle or
+`$tendergraph-analyze` for evidence-backed opening, award, and correction
+analysis.
 
 ## Limitations
 

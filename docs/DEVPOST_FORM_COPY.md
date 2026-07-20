@@ -262,10 +262,11 @@ the seven-stage lifecycle, the public-versus-synthetic evidence boundary,
 mandatory approval for consequential actions, and permanent human authority
 over bid submission.
 
-The analysis workflow is also packaged as a Codex plugin and
-`$tendergraph-analyze` skill. The authenticated local runtime uses a
-ChatGPT-authenticated Codex session and does not require a separate OpenAI API
-key.
+The workflow is also packaged as a Codex plugin with two bounded skills.
+`$tendergraph-operate` runs the governed bidder lifecycle and its six gates;
+`$tendergraph-analyze` runs evidence-backed opening, award, and correction
+analysis. The authenticated analysis runtime uses a ChatGPT-authenticated
+Codex session and does not require a separate OpenAI API key.
 
 ### Challenges we ran into
 
@@ -329,7 +330,7 @@ through the plugin.
 - Production PDF ingestion with stable, addressable evidence anchors.
 - Desktop and mobile verification with no console errors.
 - A public Apache-2.0 repository with reproducible setup, a reusable Codex
-  plugin and skill, dated Build Week history, and a hash-verified submission
+  plugin and two skills, dated Build Week history, and a hash-verified submission
   package.
 
 ### What we learned
@@ -403,7 +404,8 @@ snapshot; correction and portability fixtures are explicitly synthetic.
 
 ## Plugin or developer-tool instructions
 
-TenderGraph includes a Codex plugin and the `$tendergraph-analyze` skill.
+TenderGraph includes a Codex plugin with `$tendergraph-operate` for the bidder
+lifecycle and `$tendergraph-analyze` for evidence-backed decisions.
 
 **Supported platforms**
 
@@ -427,6 +429,9 @@ codex plugin add tendergraph@tendergraph-local
 Start Codex from the repository and invoke:
 
 ```text
+Use $tendergraph-operate to run the complete amended lifecycle and explain
+every authority gate.
+
 Use $tendergraph-analyze to audit the Chile public evaluation case and publish
 its trace.
 ```
@@ -439,6 +444,7 @@ npm run eval
 npm run eval:ablation
 npm run eval:codex
 npm run eval:impact
+npm run tendergraph:lifecycle -- --state amended
 npm run dev
 ```
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "TenderGraph Operate"
+  short_description: "Run the governed tender lifecycle"
+  default_prompt: "Use $tendergraph-operate to run the complete amended lifecycle and explain every authority gate."

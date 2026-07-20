@@ -1,25 +1,36 @@
 {
   "name": "tendergraph",
-  "version": "0.1.0",
-  "description": "Evidence-backed tender analysis with GPT-5.6 and a code-owned audit harness",
+  "version": "0.2.0+codex.20260720204215",
+  "description": "Agentic tender operations and evidence-backed analysis with GPT-5.6 and code-owned authority gates",
   "author": {
     "name": "TenderGraph"
   },
   "license": "Apache-2.0",
-  "keywords": ["procurement", "tenders", "audit", "gpt-5.6"],
+  "keywords": [
+    "procurement",
+    "tenders",
+    "bidding",
+    "audit",
+    "gpt-5.6"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "TenderGraph",
-    "shortDescription": "Audit tenders with evidence-backed GPT-5.6",
-    "longDescription": "Runs procurement analysis through GPT-5.6 in Codex, then enforces claim admission, evidence grounding, scope isolation, and deterministic fallback in application code.",
+    "shortDescription": "Operate and audit tenders with governed GPT-5.6",
+    "longDescription": "Coordinates opportunity selection, qualification, requirements, bid planning, amendment impact, and human-only submission while retaining an evidence-backed GPT-5.6 audit workflow.",
     "developerName": "TenderGraph",
     "category": "Productivity",
-    "capabilities": ["Analysis", "Structured output", "Audit trace"],
+    "capabilities": [
+      "Tender operations",
+      "Analysis",
+      "Structured output",
+      "Audit trace"
+    ],
     "brandColor": "#19704D",
     "defaultPrompt": [
+      "Run the complete TenderGraph operational lifecycle and explain every authority gate.",
       "Audit the Chile public evaluation and publish its trace.",
-      "Explain who was recommended for award and why, with evidence.",
-      "Run the TenderGraph portability proof for the EU case."
+      "Explain who was recommended for award and why, with evidence."
     ]
   }
 }
