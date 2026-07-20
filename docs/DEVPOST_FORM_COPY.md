@@ -383,24 +383,36 @@ outcome preserved over time.
 
 ## Testing instructions
 
-1. Open https://openaihack.vercel.app and inspect the synthetic active-bid
-   workspace.
-2. Compare the three ranked opportunities, approve qualification, and inspect
-   requirements, bid plan, compliance blockers, monitoring impact, and the six
-   lifecycle gates. Submission authority must remain human-only.
-3. Select the public Chile evaluation from the sidebar and inspect its
-   addressable evidence and 15 validation gates.
-4. Upload a supported document in the evidence control plane and inspect its
-   hash, parser, evidence-anchor count, and authority state.
-5. Open https://openaihack.vercel.app/?case=cl-correction-demo to inspect the
-   supersession diff and automatic shadow impact proposal.
-6. For the live Codex path, follow the repository README with Node.js 24+,
-   npm 11+, Codex CLI 0.144.0+, and a ChatGPT-authenticated `codex login`
+No credentials are required.
+
+1. Open https://openaihack.vercel.app/?submission=public. The default screen is
+   a clearly labeled synthetic active-bid benchmark.
+2. Compare the three ranked opportunities. Select **Regional clinic diagnostic
+   supplies** and click **Approve bid investment** to pass the human
+   qualification gate.
+3. Inspect **Requirements**, **Bid plan**, and **Compliance**. The plan is
+   dependency-aware, unresolved gaps block compliance, and final submission
+   remains disabled and human-only.
+4. Open **Monitoring** and click **Check for amendments**. Confirm that the
+   delivery amendment changes one requirement, preserves four as unchanged,
+   reopens two affected tasks, and passes all six lifecycle gates.
+5. Select the public Chile evaluation from the sidebar. Inspect its
+   evidence-backed answer, exact source anchors, and 15 validation gates.
+6. Attach a supported document and click **Extract evidence** to inspect its
+   content hash, parser result, evidence-anchor count, and `context_only`
+   authority state.
+7. Open
+   https://openaihack.vercel.app/?case=cl-correction-demo&submission=public to
+   inspect the before/after decision diff, claim supersession, and shadow impact
+   proposal requiring human review.
+8. For live GPT-5.6/Codex testing, follow the repository README with Node.js
+   24+, npm 11+, Codex CLI 0.144.0+, and a ChatGPT-authenticated `codex login`
    session. No `OPENAI_API_KEY` is required.
 
 The hosted environment may use the deterministic composer because local
 ChatGPT authentication is never copied into Vercel. The public case is a frozen
-snapshot; correction and portability fixtures are explicitly synthetic.
+snapshot; the active-bid, correction, and portability fixtures are explicitly
+synthetic.
 
 ## Plugin or developer-tool instructions
 
