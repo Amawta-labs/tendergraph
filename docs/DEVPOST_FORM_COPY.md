@@ -10,8 +10,8 @@ TenderGraph
 
 ### Elevator pitch
 
-An auditable procurement agent that shows exactly what new evidence changes,
-what remains valid, and the source behind every claim.
+An agentic tender operating system that turns changing procurement evidence
+into reviewable decisions.
 
 ### Category
 
@@ -39,13 +39,13 @@ Codex, GPT-5.6, Next.js, React, TypeScript, Zod, Vitest, Playwright, Vercel
 
 Upload these 1920x1080 images in this order.
 
-### 1. Auditable workbench
+### 1. Agentic bid workspace
 
-- File: `artifacts/submission/devpost-media/01-auditable-workbench.png`
-- Title: Procurement decisions, reconstructed and reviewable
-- Caption: TenderGraph turns a hash-verified public evaluation into reviewed
-  findings, exact citations, a visible evidence-change event, and a proposal
-  that remains under human control.
+- File: `artifacts/submission/devpost-media/01-agentic-bid-workspace.png`
+- Title: One governed workspace across the tender lifecycle
+- Caption: TenderGraph ranks opportunities, qualifies the selected tender,
+  tracks current requirements, prepares the bid, blocks unresolved compliance,
+  monitors amendments, and keeps submission authority human-only.
 
 ### 2. Exact evidence
 
@@ -74,7 +74,7 @@ Upload these 1920x1080 images in this order.
 
 - File: `artifacts/submission/devpost-media/05-verified-enforcement.png`
 - Title: A working system, not a prompt demo
-- Caption: 44/44 tests, 23/23 deterministic scenarios, 15/15 composition gates,
+- Caption: 49/49 tests, 23/23 deterministic scenarios, 15/15 composition gates,
   6/6 impact gates, 0/8 controlled faults admitted, and three fresh retained
   Codex runs.
 
@@ -82,11 +82,16 @@ Upload these 1920x1080 images in this order.
 
 ### Commercial claim
 
-TenderGraph is the decision-change control plane for the multi-trillion-dollar
-tender economy. It converts fragmented opening, evaluation, award, and
-correction records into a versioned graph of source-backed claims, so bidder
-teams can reconstruct who was recommended, why competitors lost, and exactly
-what new evidence changed without trusting an opaque AI summary.
+TenderGraph is an agentic tender operating system for the multi-trillion-dollar
+tender economy. It gives bidder teams one governed workspace to discover
+opportunities, qualify fit, reconstruct requirements, prepare compliant bids,
+monitor changes, and learn from outcomes.
+
+Its differentiator is the trusted operating layer beneath those agents:
+versioned documents, addressable evidence, dependency-aware requirements,
+explicit approvals, and code-owned gates. Agents may reason and propose, but
+they cannot silently turn stale evidence or generated prose into an approved
+business action.
 
 Public procurement alone represented
 [12.7% of OECD GDP and 29.9% of government expenditure in 2023](https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/size-of-public-procurement_6979cd47.html).
@@ -98,6 +103,12 @@ documentation](https://www.oecd.org/en/publications/smes-in-public-procurement_9
 as persistent supplier barriers.
 
 ### Inspiration
+
+Our goal is to let companies compete in tenders with agents, not merely ask
+questions about procurement PDFs. That requires more than autonomous prose.
+Before an agent prepares or monitors a bid, it must know which documents are
+current, which requirements changed, which conclusions remain supported, and
+who is authorized to approve the next action.
 
 TenderGraph grew out of a real procurement analysis project in Chile. We were
 asked to examine a tender at the opening stage. By the time we completed the
@@ -130,9 +141,26 @@ conclusion.
 
 ### What it does
 
-TenderGraph is an auditable procurement agent. It reconstructs who was
-recommended, why competitors were not recommended, and which exact source
-passage supports each reviewed claim.
+TenderGraph coordinates seven bounded agents across the bidding lifecycle:
+opportunity discovery, qualification, requirements, bid preparation,
+compliance, monitoring, and outcome learning.
+
+The default workspace contains a clearly labelled synthetic opportunity inbox.
+It ranks three opportunities, selects a regional clinic tender, and exposes its
+fit score, deadline, blockers, and source state. A human qualification approval
+unlocks the dependency-aware bid plan. The requirements agent separates covered
+items from blockers, the compliance agent refuses approval while evidence is
+missing, and the monitoring agent classifies a delivery amendment against
+every active requirement. Submission authority remains human-only.
+
+This is a bounded working release, not a claim of universal live discovery.
+The opportunity inbox and active-bid case are synthetic so the complete flow is
+reproducible without private bidder data. Licensed live connectors remain a
+next step.
+
+The outcome module is grounded in a hash-verified public Chilean evaluation.
+TenderGraph reconstructs who was recommended, why competitors were not
+recommended, and which exact source passage supports each reviewed claim.
 
 The default case is a hash-verified public Chilean evaluation. TenderGraph
 compares the evaluated scores, identifies the commission's recommendation, and
@@ -176,6 +204,11 @@ it can reach human review. This adopts the central lesson of
 [*From Prompts to Contracts*](https://arxiv.org/abs/2607.08028): guarantees that
 matter must be owned and enforced by code, not merely requested in a prompt.
 
+The new `tender-lifecycle.v1` contract connects seven stage agents to a shared
+versioned workspace. Six additional lifecycle gates validate current sources,
+requirement-to-evidence bindings, complete change partitions, task
+dependencies, amendment coverage, and human-only submission authority.
+
 Codex was also our development collaborator. It helped map the research
 architecture into contracts, implement the harness and chat-first workbench,
 generate adversarial tests, verify the public case, diagnose serverless
@@ -212,12 +245,17 @@ through the plugin.
 
 - In a controlled enforcement ablation, the full harness admitted 0/8 injected
   faults while schema-only admission accepted 8/8.
+- A working seven-stage lifecycle turns three ranked opportunities into a
+  governed bid plan with explicit qualification, compliance, and submission
+  authority.
+- Six lifecycle gates pass while unresolved evidence correctly blocks
+  compliance and submission.
 - Two live Codex composition runs passed 15/15 gates.
 - Two live Codex impact runs passed 6/6 gates and matched their versioned
   references exactly.
 - The synthetic correction benchmark found 2/2 expected supersessions while
   preserving the explicitly unchanged claim.
-- All 44 unit and adversarial tests and all 23 deterministic contract scenarios
+- All 49 unit and adversarial tests and all 23 deterministic contract scenarios
   pass.
 - Production PDF ingestion converts the four-page public evaluation into eight
   addressable evidence anchors with stable hashes and locators.
@@ -245,16 +283,17 @@ checks found failures that local execution could not.
 
 ### What's next for TenderGraph
 
-Next we will add licensed live procurement connectors, OCR for scanned
-documents, durable hosted trace and review storage, organization-level access
-controls, and jurisdiction-specific policy packs. Multi-format ingestion and
-assisted impact discovery with mandatory review are implemented today;
-universal live-source coverage is not claimed.
+Next we will replace the synthetic opportunity inbox with licensed live
+procurement connectors, add OCR for scanned documents, persist organizational
+workspaces and approvals, and introduce jurisdiction-specific policy packs.
+Multi-format ingestion, lifecycle orchestration, requirement readiness,
+dependency-aware bid planning, monitored change impact, and mandatory review
+are implemented today; universal live-source coverage is not claimed.
 
-The initial commercial wedge is post-opening and post-award intelligence for
-bidder teams, where public outcomes make value observable. From there,
-TenderGraph can expand into continuous award monitoring, organization-specific
-review policies, portfolio-level competitor intelligence, and private RFPs.
+The initial buyer is a bidder team that needs to move from opportunity to
+review-ready proposal without losing control of evidence or authority. Public
+outcomes then close the loop: every award, loss reason, correction, and reviewed
+decision becomes reusable memory for the next bid.
 
 The moat is the customer's accumulated decision graph: every source, reviewed
 claim, evidence dependency, correction event, and approved outcome preserved
@@ -262,14 +301,18 @@ over time.
 
 ## Testing instructions
 
-1. Open https://openaihack.vercel.app.
-2. Inspect the public Chile case, its addressable evidence, and the 15
-   validation gates.
-3. Upload a supported document in the evidence control plane and inspect its
+1. Open https://openaihack.vercel.app and inspect the synthetic active-bid
+   workspace.
+2. Compare the three ranked opportunities, approve qualification, and inspect
+   requirements, bid plan, compliance blockers, monitoring impact, and the six
+   lifecycle gates. Submission authority must remain human-only.
+3. Select the public Chile evaluation from the sidebar and inspect its
+   addressable evidence and 15 validation gates.
+4. Upload a supported document in the evidence control plane and inspect its
    hash, parser, evidence-anchor count, and authority state.
-4. Open https://openaihack.vercel.app/?case=cl-correction-demo to inspect the
+5. Open https://openaihack.vercel.app/?case=cl-correction-demo to inspect the
    supersession diff and automatic shadow impact proposal.
-5. For the live Codex path, follow the repository README with Node.js 24+,
+6. For the live Codex path, follow the repository README with Node.js 24+,
    npm 11+, Codex CLI 0.144.0+, and a ChatGPT-authenticated `codex login`
    session. No `OPENAI_API_KEY` is required.
 
@@ -320,7 +363,7 @@ npm run dev
 
 Expected results for the submitted version:
 
-- 44/44 unit and adversarial tests.
+- 49/49 unit and adversarial tests.
 - 23/23 deterministic contract scenarios.
 - Enforcement harness admits 0/8 controlled injected faults; schema-only
   admission accepts 8/8.

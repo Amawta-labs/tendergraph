@@ -2,16 +2,17 @@
 
 ## The claim
 
-**TenderGraph is the decision-change control plane for the multi-trillion-dollar
-tender economy.**
+**TenderGraph is the trusted operating layer for agentic tender teams in the
+multi-trillion-dollar tender economy.**
 
-It turns fragmented opening, evaluation, award, and correction records into a
-versioned graph of source-backed claims. Bidder teams can reconstruct who was
-recommended, why competitors lost, and exactly what new evidence changed
-without trusting an opaque AI summary.
+It coordinates discovery, qualification, requirements, bid preparation,
+compliance, monitoring, and outcomes on top of a versioned graph of sources,
+requirements, evidence, actions, and approvals. Agents can move work forward
+without being allowed to convert stale evidence or generated prose into an
+approved business action.
 
-This is not document automation. It is a commercial intelligence and evidence
-layer for decisions that change over time.
+This is not document automation. It is the governed memory, evidence, and
+control layer required for an autonomous bidding team.
 
 ## Why the market matters
 
@@ -39,11 +40,14 @@ TenderGraph is designed around those questions.
 ## The commercial wedge
 
 The initial buyer is a bidder's commercial intelligence, proposal, or public
-sector sales team. The initial workflow is post-opening and post-award
-reconstruction, where an observable public decision lets the product prove
-value:
+sector sales team. The working product spans the full operating loop:
 
-- compress a fragmented award file into an inspectable decision record;
+- rank opportunities and qualify fit;
+- reconstruct current requirements from versioned evidence;
+- coordinate dependency-aware bid tasks;
+- block compliance and submission when evidence is incomplete;
+- monitor amendments and prove which requirements remain unchanged;
+- compress a fragmented award file into an inspectable outcome record;
 - preserve exact evidence for debriefs, internal review, and challenge
   preparation;
 - turn losses into reusable institutional knowledge instead of isolated PDF
@@ -51,7 +55,8 @@ value:
 - detect when a correction changes the winner or loss rationale without
   silently rewriting unrelated conclusions.
 
-The current Build Week system now ingests PDF, DOCX, HTML, JSON, CSV, Markdown,
+The current Build Week system includes a visibly synthetic active-bid benchmark
+covering all seven stages and a hash-verified public outcome case. It ingests PDF, DOCX, HTML, JSON, CSV, Markdown,
 and text into hashed, addressable evidence, then asks GPT-5.6/Codex to discover
 which active claims may be corroborated, invalidated, superseded, or require
 review. The proposal is validated in code and remains in shadow mode until a
@@ -81,6 +86,14 @@ new document
   -> GPT-5.6/Codex claim-by-claim impact classification
   -> code-owned impact gates
   -> shadow proposal and mandatory human review
+
+ranked opportunity
+  -> human qualification
+  -> current requirements and bid dependencies
+  -> compliance review
+  -> amendment monitoring
+  -> human-only submission
+  -> outcome evidence returned to decision memory
 ```
 
 OpenAI's agent guidance identifies complex decision-making, difficult-to-
@@ -157,9 +170,14 @@ case, and product experience.
 ## Evidence demonstrated in the submission
 
 - One hash-verified public Chilean evaluation with addressable evidence.
+- One seven-stage synthetic active-bid workspace with three ranked
+  opportunities, requirement readiness, bid dependencies, compliance blockers,
+  and human-only submission authority.
+- Six passing lifecycle gates.
 - A visible synthetic correction benchmark with two explicit supersessions.
 - 15 code-owned runtime gates.
-- 44/44 unit and adversarial tests, including PDF ingestion and impact attacks.
+- 49/49 unit and adversarial tests, including lifecycle authority, PDF
+  ingestion, and impact attacks.
 - 23/23 deterministic contract scenarios.
 - An enforcement ablation where the harness admitted 0/8 injected faults and
   the schema-only control admitted 8/8.

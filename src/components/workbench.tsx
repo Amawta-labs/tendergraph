@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 
+import { LifecycleConsole } from "@/components/lifecycle-console";
 import type {
   CaseFixture,
   CompositionResult,
@@ -43,10 +44,11 @@ import type {
   ImpactDiscoveryResult,
   SourceManifest,
 } from "@/lib/harness/schemas";
+import type { LifecycleWorkspace } from "@/lib/lifecycle/schemas";
 import { redactSubmissionText } from "@/lib/submission-redaction";
 
 type RuntimeMode = "codex" | "api" | "fallback";
-type InspectorTab = "evidence" | "changes" | "trace";
+type InspectorTab = "operations" | "evidence" | "changes" | "trace";
 
 interface RuntimeCapabilities {
   apiConfigured: boolean;
@@ -61,6 +63,8 @@ interface WorkbenchProps {
   evidenceDeltas: EvidenceDeltaResult[];
   publicPresentation: boolean;
   runtimeCapabilities: RuntimeCapabilities;
+  initialLifecycle: LifecycleWorkspace;
+  initialLifecycleFocus: boolean;
 }
 
 const questions: Record<string, string> = {
@@ -116,6 +120,8 @@ export function Workbench({
   evidenceDeltas,
   publicPresentation,
   runtimeCapabilities,
+  initialLifecycle,
+  initialLifecycleFocus,
 }: WorkbenchProps) {
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const [fixtureId, setFixtureId] = useState(initialFixtureId);
@@ -128,7 +134,8 @@ export function Workbench({
   const [selectedEvidenceId, setSelectedEvidenceId] = useState(
     initialResult.readerOutput.sections[0]?.evidenceIds[0] ?? "",
   );
-  const [inspectorTab, setInspectorTab] = useState<InspectorTab>("evidence");
+  const [inspectorTab, setInspectorTab] = useState<InspectorTab>("operations");
+  const [lifecycleFocus, setLifecycleFocus] = useState(initialLifecycleFocus);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [inspectorOpen, setInspectorOpen] = useState(false);
   const [running, setRunning] = useState(false);
@@ -206,6 +213,8 @@ export function Workbench({
     setImpact(null);
     setError("");
     setPipelineError("");
+    setLifecycleFocus(false);
+    setInspectorTab("evidence");
     void executeAudit(nextId, nextQuestion, "fallback");
   }
 
@@ -387,11 +396,12 @@ export function Workbench({
           type="button"
           onClick={() => {
             setSidebarOpen(false);
-            composerRef.current?.focus();
+            setLifecycleFocus(true);
+            setInspectorTab("operations");
           }}
         >
           <Plus size={17} />
-          New analysis
+          New bid workspace
         </button>
 
         <div className="sidebar-section-label">Recent tenders</div>
@@ -399,7 +409,11 @@ export function Workbench({
           {fixtures.map((item) => (
             <button
               type="button"
-              className={item.id === fixtureId ? "tender-item selected" : "tender-item"}
+              className={
+                !lifecycleFocus && item.id === fixtureId
+                  ? "tender-item selected"
+                  : "tender-item"
+              }
               key={item.id}
               onClick={() => changeFixture(item.id)}
             >
@@ -410,7 +424,9 @@ export function Workbench({
                   {item.scope.jurisdiction} / {item.scope.procedureId}
                 </small>
               </span>
-              {item.id === fixtureId && <i aria-label="Current tender" />}
+              {!lifecycleFocus && item.id === fixtureId && (
+                <i aria-label="Current tender" />
+              )}
             </button>
           ))}
         </nav>
@@ -421,7 +437,7 @@ export function Workbench({
             <strong>Review queue</strong>
             <small>Items awaiting human review</small>
           </div>
-          <b>{reviewCount}</b>
+          <b>{lifecycleFocus ? 3 : reviewCount}</b>
         </div>
 
         <div className="sidebar-footer">
@@ -441,19 +457,35 @@ export function Workbench({
       <main className="conversation-column">
         <header className="conversation-header">
           <div>
-            <h1>{displayText(shortNames[fixture.id] ?? fixture.name)}</h1>
-            <p>
-              {fixture.scope.jurisdiction}
-              <span>/</span>
-              {fixture.scope.procedureId}
-              {fixture.scope.lotId && <><span>/</span>{fixture.scope.lotId}</>}
-            </p>
+            <h1>
+              {lifecycleFocus
+                ? "Agentic tender operations"
+                : displayText(shortNames[fixture.id] ?? fixture.name)}
+            </h1>
+            {lifecycleFocus ? (
+              <p>
+                CL
+                <span>/</span>
+                CL-BID-DEMO-2026-01
+                <span>/</span>
+                Bid in preparation
+              </p>
+            ) : (
+              <p>
+                {fixture.scope.jurisdiction}
+                <span>/</span>
+                {fixture.scope.procedureId}
+                {fixture.scope.lotId && <><span>/</span>{fixture.scope.lotId}</>}
+              </p>
+            )}
           </div>
           <div className="verified-state">
             <ShieldCheck size={15} />
-            {fixture.dataStatus === "public_snapshot"
-              ? "Evidence verified"
-              : "Benchmark verified"}
+            {lifecycleFocus
+              ? "6/6 lifecycle gates"
+              : fixture.dataStatus === "public_snapshot"
+                ? "Evidence verified"
+                : "Benchmark verified"}
           </div>
           <button
             className="mobile-inspector-button"
@@ -467,7 +499,12 @@ export function Workbench({
         </header>
 
         <div className="conversation-scroll">
-          <section className="message user-message" aria-label="Your question">
+          {lifecycleFocus && (
+            <LifecycleConsole initialWorkspace={initialLifecycle} />
+          )}
+
+          {!lifecycleFocus && (
+          <><section className="message user-message" aria-label="Your question">
             <div className="message-avatar user-avatar"><UserRound size={17} /></div>
             <div className="message-content">
               <div className="message-byline">
@@ -665,9 +702,11 @@ export function Workbench({
               </span>
             </div>
           )}
+          </>
+          )}
         </div>
 
-        <div className="composer-area">
+        {!lifecycleFocus && <div className="composer-area">
           {uploadFile && (
             <div className="attachment-tray">
               <FileText size={19} />
@@ -789,7 +828,7 @@ export function Workbench({
               </button>
             )}
           </div>
-        </div>
+        </div>}
       </main>
 
       {inspectorOpen && (
@@ -803,7 +842,11 @@ export function Workbench({
 
       <aside className={`inspector ${inspectorOpen ? "mobile-open" : ""}`}>
         <div className="inspector-tabs" role="tablist" aria-label="Analysis inspector">
-          {(["evidence", "changes", "trace"] as InspectorTab[]).map((tab) => (
+          {(
+            lifecycleFocus
+              ? (["operations"] as InspectorTab[])
+              : (["evidence", "changes", "trace"] as InspectorTab[])
+          ).map((tab) => (
             <button
               type="button"
               role="tab"
@@ -812,7 +855,13 @@ export function Workbench({
               key={tab}
               onClick={() => setInspectorTab(tab)}
             >
-              {tab === "evidence" ? "Evidence" : tab === "changes" ? "Changes" : "Trace"}
+              {tab === "operations"
+                ? "Operating contract"
+                : tab === "evidence"
+                  ? "Evidence"
+                  : tab === "changes"
+                    ? "Changes"
+                    : "Trace"}
             </button>
           ))}
           <button
@@ -825,6 +874,77 @@ export function Workbench({
             <X size={18} />
           </button>
         </div>
+
+        {inspectorTab === "operations" && (
+          <div className="inspector-body">
+            <div className="inspector-heading">
+              <h2>Operating contract</h2>
+              <code>{initialLifecycle.contractVersion}</code>
+            </div>
+            <div className="operations-summary">
+              <div>
+                <span>Current sources</span>
+                <strong>
+                  {initialLifecycle.evidence.filter((item) => item.current).length}
+                </strong>
+              </div>
+              <div>
+                <span>Requirements</span>
+                <strong>{initialLifecycle.requirements.length}</strong>
+              </div>
+              <div>
+                <span>Agent stages</span>
+                <strong>{initialLifecycle.stages.length}</strong>
+              </div>
+              <div>
+                <span>Authority</span>
+                <strong>Human</strong>
+              </div>
+            </div>
+            <div className="operations-section">
+              <h3>Versioned source set</h3>
+              {initialLifecycle.evidence.map((item) => (
+                <div className="operations-row" key={item.id}>
+                  <FileText size={15} />
+                  <span>
+                    <strong>{item.label}</strong>
+                    <small>{item.version}</small>
+                  </span>
+                  <b className={item.current ? "current" : "superseded"}>
+                    {item.current ? "Current" : "Superseded"}
+                  </b>
+                </div>
+              ))}
+            </div>
+            <div className="operations-section">
+              <h3>Lifecycle gates</h3>
+              {initialLifecycle.validationResults.map((gate) => (
+                <div className="operations-row gate-row" key={gate.gate}>
+                  {gate.passed ? (
+                    <CheckCircle2 size={15} />
+                  ) : (
+                    <AlertTriangle size={15} />
+                  )}
+                  <span>
+                    <strong>{formatLabel(gate.gate)}</strong>
+                    <small>{gate.details}</small>
+                  </span>
+                  <b className={gate.passed ? "current" : "superseded"}>
+                    {gate.passed ? "Passed" : "Failed"}
+                  </b>
+                </div>
+              ))}
+            </div>
+            <div className="operations-authority">
+              <LockKeyhole size={17} />
+              <span>
+                <strong>Human-only submission authority</strong>
+                Agents may discover, qualify, plan, check and monitor. They
+                cannot release a bid.
+              </span>
+            </div>
+          </div>
+        )}
 
         {inspectorTab === "evidence" && (
           <div className="inspector-body">

@@ -83,39 +83,43 @@ async function main() {
     await page.goto(`${options.url}/?submission=public`, {
       waitUntil: "networkidle",
     });
-    await page.locator(".send-button").waitFor();
+    await page
+      .getByRole("heading", { name: "Regional clinic diagnostic supplies" })
+      .waitFor();
     await beat(1200);
     mark("publicReady");
-    mark("problemSceneStart");
-    await screenshot(page, options.outputDir, "public-chat-first");
+    mark("lifecycleSceneStart");
+    await screenshot(page, options.outputDir, "lifecycle-workspace");
+    await page.getByRole("tab", { name: "Requirements" }).click();
+    await beat();
+    await page.getByRole("tab", { name: "Compliance" }).click();
+    await beat();
+    await page.getByRole("tab", { name: "Opportunities" }).click();
+    await beat();
+    mark("lifecycleSceneEnd");
 
+    mark("lifecycleControlStart");
+    await page.getByRole("button", { name: "Approve qualification" }).click();
+    await page.getByText("Qualification approved").waitFor();
+    await beat();
+    await page.getByRole("tab", { name: "Bid plan" }).click();
+    await beat();
+    await page.getByRole("tab", { name: "Monitoring" }).click();
+    await beat();
+    await page.getByRole("tab", { name: "Compliance" }).click();
+    await beat();
+    await screenshot(page, options.outputDir, "lifecycle-approved");
+    mark("lifecycleControlEnd");
+
+    await page
+      .getByRole("button", { name: /Office furniture evaluation/ })
+      .click();
+    await page.locator(".send-button").waitFor();
+    await beat(900);
+    mark("evidenceSceneStart");
     await page.locator(".claim-row").nth(0).click();
     await beat();
     await page.getByRole("button", { name: "Next evidence" }).click();
-    await beat();
-    await page.locator(".claim-row").nth(1).click();
-    await beat();
-    mark("evidenceOpened");
-    await page.locator(".claim-row").nth(2).click();
-    await beat();
-    await page.getByRole("tab", { name: "Changes" }).click();
-    await beat();
-    await page.getByRole("tab", { name: "Evidence" }).click();
-    await beat();
-    mark("problemSceneEnd");
-
-    mark("evidenceSceneStart");
-    await page.getByRole("button", { name: "Next evidence" }).click();
-    await beat();
-    await page.getByRole("button", { name: "Next evidence" }).click();
-    await beat();
-    await page.getByRole("button", { name: "Next evidence" }).click();
-    await beat();
-    await page.getByRole("button", { name: "Next evidence" }).click();
-    await beat();
-    await page.getByRole("button", { name: "Previous evidence" }).click();
-    await beat();
-    await page.getByRole("button", { name: "Previous evidence" }).click();
     await beat();
     await page.locator(".claim-row").nth(1).click();
     await beat();
@@ -241,24 +245,6 @@ async function main() {
     await screenshot(page, options.outputDir, "correction-impact");
     mark("correctionSceneEnd");
 
-    mark("graphSceneStart");
-    await page.getByRole("button", { name: "Inspect evidence" }).first().click();
-    await beat();
-    await page.getByRole("button", { name: "Next evidence" }).click();
-    await beat();
-    await page.getByRole("tab", { name: "Changes" }).click();
-    await beat();
-    await scrollInspector("bottom");
-    const inspectButtons = page.getByRole("button", { name: "Inspect evidence" });
-    if ((await inspectButtons.count()) > 1) {
-      await inspectButtons.nth(1).click();
-      await beat();
-      await page.getByRole("tab", { name: "Changes" }).click();
-      await beat();
-    }
-    await scrollInspector("top");
-    mark("graphSceneEnd");
-
     if (codexResult.trace?.compositionSurface !== "codex") {
       throw new Error("Composition did not complete through Codex");
     }
@@ -292,7 +278,7 @@ async function main() {
     await copyFile(recordedPath, finalVideo);
 
     const manifest = {
-      contract: "tendergraph-chat-first-capture.v3",
+      contract: "tendergraph-chat-first-capture.v4",
       capturedAt: new Date().toISOString(),
       url: `${options.url}/?submission=public`,
       presentation: "public_anonymized",

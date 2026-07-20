@@ -1,8 +1,15 @@
 # TenderGraph
 
-TenderGraph is an auditable procurement intelligence workbench for bidder teams. This repository implements a vertical slice of **opening and award analysis** using a code-owned harness around GPT-5.6.
+TenderGraph is an **agentic tender operating system for bidder teams**. It
+coordinates opportunity discovery, qualification, requirement analysis, bid
+preparation, compliance, monitoring, and outcome learning on top of a
+code-owned evidence and authority layer around GPT-5.6.
 
-The model composes answers. It does not decide which sources, claims, policies, or validations are authoritative.
+This Build Week release implements a bounded end-to-end workspace plus the
+hardest reusable layer: deciding which documents are current, what requirements
+changed, which conclusions remain valid, and who may approve the next action.
+The model reasons and proposes. It does not decide which sources, claims,
+policies, approvals, or validations are authoritative.
 
 **Public demo:** https://openaihack.vercel.app
 
@@ -14,6 +21,18 @@ The model composes answers. It does not decide which sources, claims, policies, 
 
 ## What runs today
 
+- A seven-stage active-bid workspace covering discovery, qualification,
+  requirements, bid preparation, compliance, monitoring, and outcome learning.
+- A ranked, visibly synthetic opportunity inbox with fit scores, deadlines,
+  blockers, and a selected opportunity. Universal live-source discovery is not
+  claimed.
+- A versioned source set, requirement readiness matrix, dependency-aware bid
+  plan, compliance blockers, and a complete amendment impact partition.
+- Human qualification approval that unlocks bid work while compliance approval
+  and submission authority remain blocked and human-only.
+- Six lifecycle gates enforcing current sources, evidence binding, complete
+  requirement impact, task dependencies, change coverage, and submission
+  authority.
 - One hash-verified public Chilean evaluation case plus four synthetic benchmarks covering Chilean corrections, Chilean deep evidence, TED, and UK Contracts Finder structures.
 - Source manifests with hashes, eligibility status, runtime policy, selection rule, retrieval mode, provenance, and evidence anchors.
 - Risk-tiered claim admission with human review required for consequential claims.
@@ -27,10 +46,15 @@ The model composes answers. It does not decide which sources, claims, policies, 
 - GPT-5.6/Codex impact discovery that classifies every active claim against new evidence in shadow mode; six code-owned gates and mandatory human review prevent automatic authority changes.
 - A 23-scenario benchmark, one-property fault-injection tests, and a two-scenario live impact benchmark.
 - A responsive, chat-first workbench with a tender sidebar, structured
-  conversation, contextual evidence/change/trace inspector, document ingestion,
-  impact proposals, and explicit runtime state.
+  conversation, agentic lifecycle console, contextual evidence/change/trace
+  inspector, document ingestion, impact proposals, and explicit runtime state.
 
-The default case is a frozen public Mercado Público evaluation report. TenderGraph preserves its decision-stage limitation: the source contains a commission recommendation, not proof of a signed final contract. The remaining portability fixtures are synthetic and visibly labelled.
+The default screen is a synthetic active-bid benchmark so judges can exercise
+the complete operating flow without exposing private bidder data. The sidebar
+retains the frozen public Mercado Público evaluation report. TenderGraph
+preserves its decision-stage limitation: the source contains a commission
+recommendation, not proof of a signed final contract. All synthetic fixtures
+are visibly labelled.
 
 ## Run locally
 
@@ -110,6 +134,15 @@ The credential-free runners persist their reports at
 ## Harness flow
 
 ```text
+ranked opportunity
+  -> human qualification gate
+  -> current versioned sources and requirement readiness
+  -> dependency-aware bid plan
+  -> compliance blockers and human approval
+  -> monitored amendments and complete requirement partition
+  -> human-only submission authority
+  -> outcome evidence and reusable decision memory
+
 request + procedure scope
   -> source manifests and evidence records
   -> risk-tiered claim admission
@@ -134,6 +167,21 @@ See [`docs/HARNESS_ENGINEERING_PLAN.md`](docs/HARNESS_ENGINEERING_PLAN.md) for t
 The boundary between prior domain exploration and new Build Week work is recorded in [`docs/BUILD_WEEK_PROVENANCE.md`](docs/BUILD_WEEK_PROVENANCE.md).
 
 ## API
+
+### `POST /api/lifecycle`
+
+```json
+{
+  "workspaceId": "tg-active-bid-demo",
+  "approvals": ["qualification"]
+}
+```
+
+Returns the typed `tender-lifecycle.v1` workspace, including ranked
+opportunities, seven agent stages, current and superseded sources, requirement
+readiness, bid tasks, approvals, amendment impact, and six code-owned gates.
+The benchmark is deterministic and synthetic; submission authority is always
+`human_only`.
 
 ### `POST /api/harness`
 
@@ -173,11 +221,19 @@ Codex was used to:
 
 - Inspect and reconcile the existing TenderGraph pre-project with the paper.
 - Translate the paper's source-to-claim pipeline into procurement-domain schemas.
-- Implement the harness, deterministic composer, OpenAI boundary, UI, tests, and evaluation runner.
+- Implement the lifecycle contracts, agent workspace, harness, deterministic
+  composer, OpenAI boundary, UI, tests, and evaluation runner.
 - Identify the paper's key limitation: contract preservation does not prove upstream claim correctness, so TenderGraph adds domain-specific claim verification targets.
 - Preserve the product decisions that consequential procurement conclusions require evidence and human approval.
 
-Codex accelerated repository inspection, contract implementation, adversarial test generation, public-source verification, browser review, and repeatable build/evaluation work. The team made the product and engineering decisions: the bidder audience and opening/award scope; the public-versus-synthetic truth boundary; the commission-recommendation limitation; human approval for consequential claims; incremental dependency reevaluation; and deterministic fallback as the final authority boundary.
+Codex accelerated repository inspection, contract implementation, adversarial
+test generation, public-source verification, browser review, and repeatable
+build/evaluation work. The team made the product and engineering decisions:
+the bidder audience and full lifecycle scope; the public-versus-synthetic truth
+boundary; the commission-recommendation limitation; human approval for
+qualification, compliance, consequential claims, and submission; incremental
+dependency reevaluation; and deterministic fallback as the final authority
+boundary.
 
 Codex is also a product runtime surface: `plugins/tendergraph` packages the analysis workflow, while `src/cli/codex-run.ts` invokes GPT-5.6 Terra in a read-only sandbox and records the resulting Codex session ID in the audit trace.
 

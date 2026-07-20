@@ -7,8 +7,9 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "TenderGraph | Auditable procurement intelligence",
-  description: "Evidence-backed opening and award analysis with a code-owned AI harness.",
+  title: "TenderGraph | Agentic tender operating system",
+  description:
+    "A governed workspace for discovering, qualifying, preparing, monitoring, and reviewing tenders.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

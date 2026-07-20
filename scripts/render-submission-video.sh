@@ -34,7 +34,8 @@ fi
 for required in \
   "$CAPTURE_MANIFEST" \
   "$CAPTURE_VIDEO" \
-  "$CAPTURE_DIR/public-chat-first.png" \
+  "$CAPTURE_DIR/lifecycle-workspace.png" \
+  "$CAPTURE_DIR/lifecycle-approved.png" \
   "$CAPTURE_DIR/public-evidence.png" \
   "$CAPTURE_DIR/codex-trace.png" \
   "$CAPTURE_DIR/document-ingestion.png" \
@@ -49,7 +50,7 @@ done
 
 capture_contract="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.contract)' "$CAPTURE_MANIFEST")"
 capture_presentation="$(node -e 'const x=require(process.argv[1]);process.stdout.write(x.presentation)' "$CAPTURE_MANIFEST")"
-if [[ "$capture_contract" != "tendergraph-chat-first-capture.v3" ]]; then
+if [[ "$capture_contract" != "tendergraph-chat-first-capture.v4" ]]; then
   echo "Unexpected capture contract: $capture_contract" >&2
   exit 1
 fi
@@ -88,7 +89,7 @@ magick -size 1920x1080 xc:'#f5f7f6' \
   -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 58 -fill '#151a18' \
   -annotate +380+118 'A working system, not a prompt demo' \
   -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 25 -fill '#66716c' \
-  -annotate +384+168 'Code-owned contracts around GPT-5.6 and Codex' \
+  -annotate +384+168 'A governed tender lifecycle around GPT-5.6 and Codex' \
   -fill white -stroke '#dce2df' -strokewidth 2 \
   -draw 'roundrectangle 380,235 760,455 7,7' \
   -draw 'roundrectangle 790,235 1170,455 7,7' \
@@ -97,7 +98,7 @@ magick -size 1920x1080 xc:'#f5f7f6' \
   -draw 'roundrectangle 790,490 1170,710 7,7' \
   -draw 'roundrectangle 1200,490 1580,710 7,7' \
   -stroke none -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 58 -fill '#087a4d' \
-  -annotate +450+345 '44/44' -annotate +860+345 '23/23' -annotate +1275+345 '15/15' \
+  -annotate +450+345 '49/49' -annotate +860+345 '23/23' -annotate +1275+345 '15/15' \
   -annotate +458+600 '6/6' -annotate +855+600 '0/8' -annotate +1260+600 '3 LIVE' \
   -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 20 -fill '#66716c' \
   -annotate +455+402 'contract tests' \
@@ -121,23 +122,23 @@ magick -size 1920x1080 xc:'#f5f7f6' \
   -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 42 -fill white \
   -annotate +46+82 'TenderGraph' \
   -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 20 -fill '#89a098' \
-  -annotate +46+125 'WHY THIS CAN WIN' \
+  -annotate +46+125 'AGENTIC TENDER OPERATIONS' \
   -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 51 -fill '#151a18' \
-  -annotate +380+115 'GPT-5.6 can reason. It cannot become authority.' \
+  -annotate +380+115 'An agentic bidding team with governed memory' \
   -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 25 -fill '#087a4d' \
   -annotate +390+238 'TECHNOLOGICAL IMPLEMENTATION' \
   -annotate +1050+238 'COMPLETE PRODUCT DESIGN' \
   -annotate +390+485 'CREDIBLE UNIVERSAL IMPACT' \
   -annotate +1050+485 'DIFFERENTIATED IDEA' \
   -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 22 -fill '#39433f' \
-  -annotate +390+280 'Codex and GPT-5.6 execute inside' \
+  -annotate +390+280 'Seven bounded agents execute inside' \
   -annotate +390+314 'typed, adversarially tested contracts.' \
-  -annotate +1050+280 'Chat-first workflow, evidence inspector,' \
-  -annotate +1050+314 'document ingestion, diffs, and trace.' \
-  -annotate +390+527 'Every jurisdiction publishes changing' \
-  -annotate +390+561 'tender documents and award records.' \
-  -annotate +1050+527 'Controls what AI may conclude and' \
-  -annotate +1050+561 'how conclusions change with evidence.' \
+  -annotate +1050+280 'Discovery, requirements, bid plan,' \
+  -annotate +1050+314 'compliance, monitoring, and outcomes.' \
+  -annotate +390+527 'Bidder teams coordinate high-value work' \
+  -annotate +390+561 'across fragmented changing evidence.' \
+  -annotate +1050+527 'Current sources, changed requirements,' \
+  -annotate +1050+561 'explicit approvals, and human release.' \
   -stroke '#dce2df' -strokewidth 2 \
   -draw 'line 380,385 1580,385' -draw 'line 380,635 1580,635' \
   -stroke none -font /usr/share/fonts/noto/NotoSans-Bold.ttf -pointsize 26 -fill '#151a18' \
@@ -149,7 +150,7 @@ magick -size 1920x1080 xc:'#f5f7f6' \
   -annotate +380+884 "$commit_four" \
   -annotate +380+922 "$commit_five" \
   -font /usr/share/fonts/noto/NotoSans-Regular.ttf -pointsize 21 -fill '#66716c' \
-  -annotate +380+1000 'Evidence changes. Claims are re-evaluated. Human authority remains explicit.' \
+  -annotate +380+1000 'Agents move the bid forward. Human authority remains explicit.' \
   "$WORK_DIR/closing.png"
 
 mapfile -t NARRATION < <(
@@ -185,33 +186,33 @@ declare -a SCENE_SOURCE=(
 )
 
 declare -a CLIP_START=(
-  "$(marker problemSceneStart)"
+  "$(marker lifecycleSceneStart)"
+  "$(marker lifecycleControlStart)"
   "$(marker evidenceSceneStart)"
   "$(marker codexSceneStart)"
   "$(marker ingestionSceneStart)"
   "$(marker correctionSceneStart)"
-  "$(marker graphSceneStart)"
   "0"
   "0"
 )
 
 declare -a CLIP_END=(
-  "$(marker problemSceneEnd)"
+  "$(marker lifecycleSceneEnd)"
+  "$(marker lifecycleControlEnd)"
   "$(marker evidenceSceneEnd)"
   "$(marker codexSceneEnd)"
   "$(marker ingestionSceneEnd)"
   "$(marker correctionSceneEnd)"
-  "$(marker graphSceneEnd)"
   "0"
   "0"
 )
 
 declare -a SCENE_FRAME_FILTER=(
   "scale=1920:1080:flags=lanczos"
+  "scale=1920:1080:flags=lanczos"
   "crop=1632:918:288:min(t*10\\,162),scale=1920:1080:flags=lanczos"
   "crop=1632:918:288:if(lt(t\\,11)\\,162\\,max(162-(t-11)*24\\,0)),scale=1920:1080:flags=lanczos"
   "crop=1632:918:288:max(162-t*8\\,0),scale=1920:1080:flags=lanczos"
-  "crop=1632:918:288:min(t*10\\,162),scale=1920:1080:flags=lanczos"
   "crop=1632:918:288:min(t*10\\,162),scale=1920:1080:flags=lanczos"
   ""
   ""
@@ -272,7 +273,7 @@ ffmpeg -hide_banner -loglevel error -y \
   -af 'volume=-2.4dB,alimiter=limit=0.78:level=false' \
   -c:a aac -b:a 160k -ar 48000 \
   -movflags +faststart \
-  -metadata title='TenderGraph - Auditable Procurement Decision Compiler' \
+  -metadata title='TenderGraph - Agentic Tender Operating System' \
   "$base_video"
 
 node "$ROOT_DIR/scripts/generate-video-subtitles.mjs" \
@@ -288,7 +289,7 @@ ffmpeg -hide_banner -loglevel error -y \
   -c:v libx264 -preset medium -crf 19 -pix_fmt yuv420p \
   -c:a copy \
   -movflags +faststart \
-  -metadata title='TenderGraph - Auditable Procurement Decision Compiler' \
+  -metadata title='TenderGraph - Agentic Tender Operating System' \
   "$FINAL_VIDEO"
 
 duration="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$FINAL_VIDEO")"
@@ -307,7 +308,8 @@ if [[ "$subtitle_streams" -ne 0 ]]; then
   exit 1
 fi
 
-cp "$CAPTURE_DIR/public-chat-first.png" "$OUTPUT_DIR/chat-first-workbench.png"
+cp "$CAPTURE_DIR/lifecycle-workspace.png" "$OUTPUT_DIR/lifecycle-workspace.png"
+cp "$CAPTURE_DIR/lifecycle-approved.png" "$OUTPUT_DIR/lifecycle-approved.png"
 cp "$CAPTURE_DIR/public-evidence.png" "$OUTPUT_DIR/chat-first-evidence.png"
 cp "$CAPTURE_DIR/codex-trace.png" "$OUTPUT_DIR/chat-first-codex-trace.png"
 cp "$CAPTURE_DIR/document-ingestion.png" "$OUTPUT_DIR/chat-first-ingestion.png"

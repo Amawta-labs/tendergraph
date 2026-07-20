@@ -1,7 +1,7 @@
 {
   "contractVersion": "codex-candidate-record.v1",
-  "sha256": "64a81f608cb82960d215903b4a47efb629a4f3672bde4887b462263b43593849",
-  "characterCount": 1190,
+  "sha256": "81eeb9d787f11203e30202a19730745ce215d1d38770a6b6e9ee982cd4e379ce",
+  "characterCount": 1354,
   "outputSchemaValid": true,
   "rawCandidateRetained": false
 }

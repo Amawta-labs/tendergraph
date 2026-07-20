@@ -3,31 +3,35 @@
 ## Source files
 
 - Video: `public/tendergraph-build-week-chat-first-demo.mp4`
-- Public YouTube URL: https://www.youtube.com/watch?v=G0XekMloa4c
+- Current public YouTube URL: https://www.youtube.com/watch?v=G0XekMloa4c
+- Action required: upload the regenerated lifecycle video and replace this URL
+  in Devpost, README, and submission docs.
 - Hosted transfer URL: https://openaihack.vercel.app/tendergraph-build-week-chat-first-demo.mp4
 - Thumbnail: `artifacts/submission/chat-first-verification.png`
 - English captions: burned into the MP4 and available as
   `artifacts/submission/tendergraph-build-week-chat-first-demo.en.srt` for the
   YouTube caption upload; it is stored away from the MP4 so desktop players do
   not auto-enable a duplicate layer
-- Duration: 2:20.133
+- Duration: 2:24.212
 - Resolution: 1920x1080
 - Language: English
 
 ## Title
 
-TenderGraph - The Auditable Procurement Decision Compiler | OpenAI Build Week
+TenderGraph - Agentic Tender Operating System | OpenAI Build Week
 
 ## Description
 
-TenderGraph turns fragmented tender records into an auditable decision state:
-who was recommended, why competitors lost, which evidence proves every claim,
-and what changed when later records or corrective resolutions arrived.
+TenderGraph is an agentic tender operating system for bidder teams. Seven
+bounded agents coordinate opportunity discovery, qualification, requirements,
+bid preparation, compliance, monitoring, and outcome learning.
 
-This is not a generic document chatbot. The working product combines a
-chat-first workflow, addressable evidence, multi-format document ingestion,
-automatic impact discovery, explicit claim supersession, human review, and a
-complete audit trace.
+The working release ranks opportunities, gates bid investment, reconstructs
+current requirements from versioned sources, builds a dependency-aware bid
+plan, blocks incomplete compliance, monitors amendments, and reserves final
+submission for a human. Its evidence layer is also demonstrated against a
+hash-verified public Chilean evaluation and a visibly synthetic correction
+benchmark.
 
 Built with Codex and GPT-5.6 for OpenAI Build Week.
 
@@ -36,8 +40,9 @@ Correction benchmark: https://openaihack.vercel.app/?case=cl-correction-demo&sub
 Code: https://github.com/Amawta-labs/tendergraph
 
 Verified in the demo:
-- 44/44 contract and adversarial tests
+- 49/49 contract and adversarial tests
 - 23/23 deterministic golden scenarios
+- 6/6 lifecycle gates
 - 15/15 composition gates
 - 6/6 impact-discovery gates
 - 0/8 injected faults admitted by the enforcement harness
@@ -49,14 +54,14 @@ boundaries. The Chile correction case is visibly synthetic. The narration is
 AI-assisted; the video contains no music or third-party brand footage.
 
 Chapters:
-00:00 Enterprise risk and product
-00:19 Evidence-bound answers
-00:37 Live Codex and GPT-5.6 runtime
-00:56 Document ingestion and impact discovery
-01:16 Corrective resolution
-01:30 The decision graph
+00:00 The one-week bidding problem
+00:15 Seven agents and human authority
+00:34 Hash-verified public evidence
+00:53 Live Codex and GPT-5.6 runtime
+01:12 Document ingestion and impact discovery
+01:31 Corrective resolution
 01:47 Verified enforcement
-02:01 Why TenderGraph can win
+02:02 Agentic bidding with governed memory
 
 ## Upload settings
 

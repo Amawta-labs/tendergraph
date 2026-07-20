@@ -1,157 +1,156 @@
 1
-00:00:00,000 --> 00:00:04,171
-Companies want agents to reason across fragmented
-tender records.
+00:00:00,000 --> 00:00:03,534
+A high-fit tender appears with one week left.
 
 2
-00:00:04,171 --> 00:00:08,805
-But a hallucination, a superseded source, or an
-unauthorized inference
+00:00:03,534 --> 00:00:07,510
+The team must decide, reconstruct requirements,
+coordinate the response,
 
 3
-00:00:08,805 --> 00:00:11,122
-cannot become a business decision.
+00:00:07,510 --> 00:00:10,161
+and catch every amendment before submission.
 
 4
-00:00:11,122 --> 00:00:12,975
-TenderGraph lets GPT-5.6 reason.
+00:00:10,161 --> 00:00:15,020
+TenderGraph is an agentic tender operating system
+for the complete workflow.
 
 5
-00:00:12,975 --> 00:00:18,073
-Evidence, authority, claims, changes, and human
-approval remain separate and verifiable.
+00:00:15,570 --> 00:00:19,808
+Seven bounded agents cover the full bidding
+lifecycle.
 
 6
-00:00:18,623 --> 00:00:20,666
-This goes beyond summarization.
+00:00:19,808 --> 00:00:24,046
+A human qualification gate unlocks the bid plan.
 
 7
-00:00:20,666 --> 00:00:26,284
-Every answer is assembled from promoted claims bound
-to exact evidence.
+00:00:24,046 --> 00:00:27,224
+Two unresolved requirements still block compliance.
 
 8
-00:00:26,284 --> 00:00:31,902
+00:00:27,224 --> 00:00:30,403
+No agent can release the bid.
+
+9
+00:00:30,403 --> 00:00:34,111
+New evidence replans only the affected work.
+
+10
+00:00:34,661 --> 00:00:39,617
+The operating layer is proven against a
+hash-verified public evaluation.
+
+11
+00:00:39,617 --> 00:00:43,086
+Every conclusion is bound to exact evidence.
+
+12
+00:00:43,086 --> 00:00:48,537
 The inspector exposes source, page, quotation,
 parser, authority, URL, and hash.
 
-9
-00:00:31,902 --> 00:00:35,988
+13
+00:00:48,537 --> 00:00:52,502
 A commission recommendation is not a signed
 contract.
 
-10
-00:00:36,538 --> 00:00:41,851
-The question runs through a ChatGPT-authenticated
-Codex session without an API key.
-
-11
-00:00:41,851 --> 00:00:44,507
-GPT-5.6 composes only from admitted claims.
-
-12
-00:00:44,507 --> 00:00:48,049
-The trace retains the model and Session ID.
-
-13
-00:00:48,049 --> 00:00:52,476
-Fifteen code-owned gates reject invention, evidence
-swaps, and scope contamination.
-
 14
-00:00:52,476 --> 00:00:55,575
-They also reject leakage and incomplete output.
+00:00:53,052 --> 00:00:58,029
+The question runs through ChatGPT-authenticated
+Codex without an API key.
 
 15
-00:00:56,125 --> 00:00:58,346
-I attach the official PDF.
+00:00:58,029 --> 00:01:01,015
+GPT-5.6 composes only from admitted claims.
 
 16
-00:00:58,346 --> 00:01:01,900
-TenderGraph extracts eight hashed anchors without
-granting authority.
+00:01:01,015 --> 00:01:04,996
+The trace retains the model and Session ID.
 
 17
-00:01:01,900 --> 00:01:08,119
-Codex compares a later public record with every
-active claim and finds one corroboration.
+00:01:04,996 --> 00:01:09,475
+Fifteen code-owned gates reject invention, evidence
+swaps, scope contamination,
 
 18
-00:01:08,119 --> 00:01:13,006
-Six independent gates validate scope, evidence,
-action semantics, and shadow authority.
+00:01:09,475 --> 00:01:11,466
+leakage, and incomplete output.
 
 19
-00:01:13,006 --> 00:01:15,227
-Nothing changes before human review.
+00:01:12,016 --> 00:01:15,855
+A new official PDF becomes hashed, addressable
+evidence.
 
 20
-00:01:15,777 --> 00:01:18,426
-A later corrective resolution is harder.
+00:01:15,855 --> 00:01:18,734
+It does not automatically become authority.
 
 21
-00:01:18,426 --> 00:01:24,164
-The original winner and loss explanation change,
-while the award rule stays stable.
+00:01:18,734 --> 00:01:22,573
+Codex compares the update with every active
+conclusion.
 
 22
-00:01:24,164 --> 00:01:29,903
-The result matches the versioned reference and
-cannot promote itself into official truth.
+00:01:22,573 --> 00:01:28,332
+Six gates validate scope, evidence, complete impact,
+action semantics, and shadow authority.
 
 23
-00:01:30,453 --> 00:01:33,878
-This is a decision graph, not generic RAG.
+00:01:28,332 --> 00:01:30,731
+Nothing changes before human review.
 
 24
-00:01:33,878 --> 00:01:37,731
-It connects versioned sources, evidence
-dependencies, and reviewed claims.
+00:01:31,281 --> 00:01:34,974
+A corrective resolution is the harder test.
 
 25
-00:01:37,731 --> 00:01:39,871
-It also records explicit supersession.
+00:01:34,974 --> 00:01:38,666
+The original winner and loss explanation change.
 
 26
-00:01:39,871 --> 00:01:44,581
-The same contracts run across Chilean, European, and
-UK tender structures
+00:01:38,666 --> 00:01:41,304
+The award rule remains valid.
 
 27
-00:01:44,581 --> 00:01:46,293
-and common procurement formats.
+00:01:41,304 --> 00:01:46,579
+The result matches the versioned reference and
+cannot promote itself.
 
 28
-00:01:46,843 --> 00:01:50,748
-The enforcement is measured: 44 tests and 23 golden
+00:01:47,129 --> 00:01:51,300
+The enforcement is measured: 49 tests and 23 golden
 scenarios.
 
 29
-00:01:50,748 --> 00:01:54,263
-It includes 15 composition gates and 6 impact gates.
+00:01:51,300 --> 00:01:55,471
+It includes 6 lifecycle, 15 composition, and 6
+impact gates.
 
 30
-00:01:54,263 --> 00:01:57,388
+00:01:55,471 --> 00:01:58,808
 The harness admitted 0 of 8 injected faults.
 
 31
-00:01:57,388 --> 00:02:00,512
-This capture retains three fresh Codex Session IDs.
+00:01:58,808 --> 00:02:02,145
+This capture retains three real Codex Session IDs.
 
 32
-00:02:01,062 --> 00:02:05,664
-Codex accelerated implementation, verification,
-testing, and this redesign.
+00:02:02,695 --> 00:02:07,619
+Codex accelerated architecture, implementation,
+testing, and production diagnosis.
 
 33
-00:02:05,664 --> 00:02:10,265
-TenderGraph controls what AI is allowed to conclude
+00:02:07,619 --> 00:02:13,773
+TenderGraph gives companies an agentic bidding team
+with governed memory.
 
 34
-00:02:10,265 --> 00:02:15,442
-and how those conclusions may change when evidence
-changes.
+00:02:13,773 --> 00:02:19,312
+Agents can discover, qualify, prepare, check,
+monitor, and learn.
 
 35
-00:02:15,442 --> 00:02:19,468
-GPT-5.6 can reason. It cannot become authority.
+00:02:19,312 --> 00:02:23,620
+GPT-5.6 can reason. Humans remain the authority.

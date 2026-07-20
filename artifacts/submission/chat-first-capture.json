@@ -1,54 +1,53 @@
 {
-  "contract": "tendergraph-chat-first-capture.v3",
-  "capturedAt": "2026-07-20T16:23:34.699Z",
-  "url": "http://localhost:3001/?submission=public",
+  "contract": "tendergraph-chat-first-capture.v4",
+  "capturedAt": "2026-07-20T19:02:31.363Z",
+  "url": "http://localhost:3002/?submission=public",
   "presentation": "public_anonymized",
   "viewport": {
     "width": 1920,
     "height": 1080
   },
   "markers": {
-    "publicReady": 2314,
-    "problemSceneStart": 2314,
-    "evidenceOpened": 6447,
-    "problemSceneEnd": 10480,
-    "evidenceSceneStart": 10480,
-    "evidenceSceneEnd": 19915,
-    "codexSceneStart": 20623,
-    "codexRunStarted": 20623,
-    "codexRunCompleted": 35130,
-    "traceOpened": 37792,
-    "codexSceneEnd": 41294,
-    "ingestionSceneStart": 41294,
-    "documentAttached": 42745,
-    "documentExtracted": 44841,
-    "publicImpactStarted": 47642,
-    "publicImpactCompleted": 58598,
-    "ingestionSceneEnd": 63093,
-    "correctionSceneStart": 63093,
-    "correctionReady": 64957,
-    "correctionImpactStarted": 70692,
-    "correctionImpactCompleted": 84265,
-    "correctionSceneEnd": 84350,
-    "graphSceneStart": 84350,
-    "graphSceneEnd": 94497,
-    "captureCompleted": 94497
+    "publicReady": 2017,
+    "lifecycleSceneStart": 2017,
+    "lifecycleSceneEnd": 6154,
+    "lifecycleControlStart": 6154,
+    "lifecycleControlEnd": 11634,
+    "evidenceSceneStart": 12661,
+    "evidenceSceneEnd": 16832,
+    "codexSceneStart": 17542,
+    "codexRunStarted": 17543,
+    "codexRunCompleted": 29110,
+    "traceOpened": 31792,
+    "codexSceneEnd": 35365,
+    "ingestionSceneStart": 35365,
+    "documentAttached": 36825,
+    "documentExtracted": 38469,
+    "publicImpactStarted": 41408,
+    "publicImpactCompleted": 51990,
+    "ingestionSceneEnd": 56573,
+    "correctionSceneStart": 56573,
+    "correctionReady": 58460,
+    "correctionImpactStarted": 64316,
+    "correctionImpactCompleted": 79050,
+    "correctionSceneEnd": 79185,
+    "captureCompleted": 79185
   },
   "composition": {
     "model": "gpt-5.6-terra",
-    "codexSessionId": "019f8055-e5c2-7e82-9b46-b25a50ca3e26",
-    "traceId": "89d456b6-f155-4740-b208-a722cc384b65",
+    "codexSessionId": "019f80e7-9b52-7b10-ae3d-35df0aa2b250",
+    "traceId": "ba0f1b01-2d31-436b-a387-8048beb6c273",
     "gatesPassed": 15,
     "gatesTotal": 15
   },
   "publicImpact": {
-    "codexSessionId": "019f8056-4e75-7631-ad74-4be23b3ea56e",
+    "codexSessionId": "019f80e7-f8ff-7360-a5cc-4934d722072a",
     "gatesPassed": 6,
     "gatesTotal": 6,
     "proposals": 1
   },
   "correctionImpact": {
-    "codexSessionId": "019f8056-a7f0-7cf0-bdb4-d839208acf17",
+    "codexSessionId": "019f80e8-525e-7c30-9382-1e073464ce6b",
     "gatesPassed": 6,
     "gatesTotal": 6,
     "proposals": 2,
@@ -56,6 +55,6 @@
   },
   "video": {
     "path": "chat-first-system.webm",
-    "sha256": "d5236d746b3a639330ccce3db1bea27af14d61ffebac19431f38a1afdc7da60b"
+    "sha256": "d668f731fcb222bab980458ee85a42cd2e2599fc13b2bdeef29da0f1713cb683"
   }
 }

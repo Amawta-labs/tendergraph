@@ -6,6 +6,7 @@ import {
   listFixtures,
 } from "@/lib/harness/fixtures";
 import { runHarness } from "@/lib/harness/run";
+import { runLifecycleWorkspace } from "@/lib/lifecycle/engine";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +46,10 @@ export default async function Home({ searchParams }: HomeProps) {
         apiModel: process.env.OPENAI_MODEL ?? "gpt-5.6",
         hosted: Boolean(process.env.VERCEL),
       }}
+      initialLifecycle={runLifecycleWorkspace({
+        workspaceId: "tg-active-bid-demo",
+      })}
+      initialLifecycleFocus={!params.case}
     />
   );
 }
